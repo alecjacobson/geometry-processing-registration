@@ -27,3 +27,10 @@
 *.exe
 *.out
 *.app
+
+*.un~
+*.swo
+*.swp
+build/*
+*.DS_Store
+solution/*.cpp
