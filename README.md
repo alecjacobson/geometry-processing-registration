@@ -550,6 +550,14 @@ would kidnap people and force them to fit in his bed by stretching them or
 cutting off their legs. In our case, we are forcing $\Rot$ to be perfectly
 orthogonal (no "longer", no "shorter).
 
+Solving this kind of problem relies on some linear algebra kung fu, but the
+solution will be beautifully simple.
+
+This energy is _quadratic_ in $\t$ and there are no other constraints on
+$\t$. We can immediately solve for the optimal $\t*$---leaving $\Rot$ as an unknown---by
+setting all derivatives with respect to unknowns in $\t$ to zero:
+
+<!--
 It well known that this type of problem can be solved by a small [singular
 value
 decomposition](https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem#Proof).
@@ -790,6 +798,7 @@ maximimization problem may be expanded as:
 \\]
 
 This is maximized if all $\M$ is a diagonal matrix with ones along the diagonal
+-->
 
 <!--
 ### Pseudocode of Rigid ICP algorithm
