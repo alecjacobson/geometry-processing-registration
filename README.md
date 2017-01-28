@@ -554,123 +554,40 @@ Solving this kind of problem relies on some linear algebra kung fu, but the
 solution will be beautifully simple.
 
 This energy is _quadratic_ in $\t$ and there are no other constraints on
-$\t$. We can immediately solve for the optimal $\t*$---leaving $\Rot$ as an unknown---by
+$\t$. We can immediately solve for the optimal $\t^*$---leaving $\Rot$ as an unknown---by
 setting all derivatives with respect to unknowns in $\t$ to zero:
 
-<!--
-It well known that this type of problem can be solved by a small [singular
-value
-decomposition](https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem#Proof).
-Let's examine how this comes about in our case. We begin by converting our
-energy above into matrix form:
-
 \\[
-∑_{i=1}^k (\Rot \x_i + \t - \p_i) ⋅ (\Rot \x_i + \t - \p_i)  = 
-∑_{i=1}^k \tr{(\Rot \x_i + \t - \p_i) (\Rot \x_i + \t -
-\p_i)^\transpose},
+\begin{align}
+\t^*
+  &= \argmin_{\t} ∑_{i=1}^k ‖\Rot \x_i + \t - \p_i‖²  \\\\
+  &= \argmin_\t \left\|\Rot \X^\transpose + \t \One^\transpose - \P^\transpose\right\|^2_F,
+\end{align}
 \\]
-where $\tr{\A}$ takes the
-[trace](https://en.wikipedia.org/wiki/Trace_(linear_algebra)) of the matrix
-$\A$ and recall that the [dot
-product](https://en.wikipedia.org/wiki/Dot_product) of two vectors is equal to
-the trace of their [outer product](https://en.wikipedia.org/wiki/Outer_product)
-
+where $\One ∈ \R^{k}$ is a vector ones. Setting the partial derivative with
+respect to $\t$ of this
+quadratic energy to zero finds the minimum:
 \\[
-\x ⋅ \p = \tr{ \x \p^\transpose}.
+\begin{align}
+0 
+  &= \frac{∂}{∂\t} \left\|\Rot \X^\transpose + \t \One^\transpose - \P^\transpose\right\|^2_F \\\\
+  &= \One^\transpose \One \t + \Rot \X^\transpose \One - \P^\transpose \One,
+\end{align}
 \\]
 
-Trace has a large number of nice
-[properties](https://en.wikipedia.org/wiki/Trace_(linear_algebra)#Properties).
-The first one we'll use is that trace commutes with summation, so we can write
-our energy as:
+Rearranging terms above reveals that the optimal $\t$ is the vector aligning
+the [centroids](https://en.wikipedia.org/wiki/Centroid) of the points in $\P$
+and the points in $\X$ rotated by the---yet-unknown---$\Rot$. Introducing
+variables for the respective centroids $\hat{\p} = \tfrac{1}{k} ∑_{i=1}^k
+\p_i$ and $\hat{\x} = \tfrac{1}{k} ∑_{i=1}^k \x_i$, we can write the
+formula for the optimal  $\t$:
 
 \\[
-\tr{ (\X \Rot^\transpose + \One \t^\transpose - \P)^\transpose (\X \Rot^\transpose + \One \t^\transpose - \P) },
-\\]
-where $\One ∈ \R^{k×1}$ is a vector ones. We can expand the matrix
-multiplication, revealing how each term depends on $\Rot$ or $\t$ or neither
-(constant):
-
-\\[
-\tr{ \Rot \X^\transpose \X \Rot }
-+
-2 \tr{ \Rot \X^\transpose \One \t^\transpose }
--
-2 \tr{ \Rot \X^\transpose \P }
-+
-\tr{ \t \One^\transpose \One \t^\transpose }
--
-2 \tr{ \P^\transpose \One \t^\transpose }
-+
-\tr{ \P^\transpose \P }.
-\\]
-
-This energy is _quadratic_ in $\t$ and there are no other constraints on
-$\t$. We can immediately solve for $\t$---leaving $\Rot$ as an unknown---by
-setting all derivatives with respect to unknowns in $\t$ to zero:
-
-
-\\[
-0=
-\frac{∂}{∂\t}\left[
-\tr{ \Rot \X^\transpose \X \Rot }
-+
-2 \tr{ \Rot \X^\transpose \One \t^\transpose }
--
-2 \tr{ \Rot \X^\transpose \P }
-+
-\tr{ \t \One^\transpose \One \t^\transpose }
--
-2 \tr{ \P^\transpose \One \t^\transpose }
-+
-\tr{ \P^\transpose \P }
-\right]
-\\]
-
-This is simplified by removing terms that are constant with respect to $\t$:
-
-\\[
-0
-=
-\frac{∂}{∂\t}\left[
-2 \tr{ \Rot \X^\transpose \One \t^\transpose }
-+
-\tr{ \t \One^\transpose \One \t^\transpose }
--
-2 \tr{ \P^\transpose \One \t^\transpose }
-\right]
-\\]
-
-Before applying the partial derivative operator to each term, 
-let's recognize a few pieces. The terms $\X^\transpose \One$ and $\P^\transpose
-\One$ are simply summing up all of the points component-wise in $\X$ and $\P$
-respectively. Similarly, $\One^\transpose \One$ is just summing up 1's, so this
-is just counting. With this in mind, taking partial derivatives of each term
-reveals that $\t$ must be the vector aligning the
-[centroids](https://en.wikipedia.org/wiki/Centroid) of the point set $\P$  and
-the point set $\X$ _rotated_ by the yet-unknown rotation $\Rot$:
-
-\\[
-0=
-2 \Rot \X^\transpose \One
-+
-2 k \t
--
-2 \P^\transpose \One
-⇒ 
-\t = 
-\underbrace{\left(\frac{\P^\transpose \One}{k}\right)}_{\overline{\p}} -
-\Rot 
-\underbrace{\left(\frac{\X^\transpose \One}{k}\right)}_{\overline{\x}}
-\\]
-where we introduce $\overline{\x}∈\R³$ and $\overline{\p}∈\R³$ as the centroids of $\X$
-and $\P$. 
-
-Written with respect to these centroids the optimal translation is a simple
-difference:
-
-\\[
-\t = \overline{\p} - \Rot \overline{\x}
+\begin{align}
+\t 
+  &= \frac{\P^\transpose \One - \Rot \X^\transpose \One}{ \One^\transpose \One} \\\\
+  &= \hat{\p} - \Rot \hat{\x}.
+\end{align}
 \\]
 
 Now we have a formula for the optimal translation vector $\t$ in terms of the
@@ -680,125 +597,68 @@ for all occurrences of $\t$ in our energy written in its original summation
 form:
 
 \\[
-\mathop{\text{minimize}}_{\Rot ∈ SO(3)} 
- ∑_{i=1}^k \tr{(\Rot \x_i + \left( \overline{\p} - \Rot\overline{\x}\right) -
- \p_i) (\Rot \x_i + \left( \overline{\p} - \Rot\overline{\x} \right) - \p_i)^\transpose}.
+\mathop{\text{minimize}}_{\Rot ∈ SO(3)}  ∑\limits_{i=1}^k \left\| \Rot \x_i + ( \hat{\p} - \Rot\hat{\x}) - \p_i \right\|^2 \\\
+\mathop{\text{minimize}}_{\Rot ∈ SO(3)}  ∑\limits_{i=1}^k \left\| \Rot (\x_i - \hat{\x}) - (\p_i - \hat{\p}) \right\|^2 \\\\
+\mathop{\text{minimize}}_{\Rot ∈ SO(3)}  ∑\limits_{i=1}^k \left\| \Rot \overline{\x}_i - \overline{\p}_i \right\|^2 \\\\
+\mathop{\text{minimize}}_{\Rot ∈ SO(3)}  \left\| \Rot \overline{\X}^\transpose - \overline{\P}^\transpose \right\|_F^2,
 \\]
 
-
-Rearranging terms, we can see that this is equivalent to finding the 
-rotation the best aligns the _relative positions_ in $\X$ and $\Y$ with respect
-to their respective centroids $\overline{\x}$ and $\overline{\y}$.
-
-\\[
-\mathop{\text{minimize}}_{\Rot ∈ SO(3)} 
-∑_{i=1}^k \tr{
-\left(\Rot \left(\x_i - \overline{\x}\right) - \left(\p_i-\overline{\p}\right)\right) 
-\left(\Rot \left(\x_i - \overline{\x}\right) -
-\left(\p_i-\overline{\p}\right)\right)^\transpose} 
-\\]
-
-Let us introduce matrices 
-$\hat{\X} ∈ \R^{n×3}$
-and 
-$\hat{\P} ∈ \R^{n×3}$
-so that the ith row 
-holds the vectors from the ith point to its respective centroids: e.g., $\X_i
-= (\x_i - \overline{\x})^\transpose$. Then we can
-write our problem in matrix form again:
-
-\\[
-\mathop{\text{minimize}}_{\Rot ∈ SO(3)} 
-\tr{ (\hat{\X}\Rot^\transpose - \hat{\P}) (\hat{\X}\Rot^\transpose - \hat{\P})^\transpose }.
-\\]
+where we introduce $\overline{\X} ∈ \R^{k × 3}$ where the ith row contains the
+_relative position_ of the ith point to the centroid $\hat{\x}$: i.e.,
+$\overline{\x}_i = (\x_i - \hat{\x})$ (and analagously for $\overline{\P}$).
 
 Now we have the canonical form of the [orthogonal procrustes
 problem](https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem). To
-find the rotation matrix $\Rot$ that minimizes this, first start by expanding
-all terms of the energy and removing those that are constant with respect to
-$\Rot$:
+find the optimal rotation matrix $\Rot^*$ we will massage the terms in the
+_minimization_ until we have a _maximization_ problem involving the [Frobenius
+inner-product](https://en.wikipedia.org/wiki/Frobenius_inner_product) of the
+unknown rotation $\Rot$ and [covariance
+matrix](https://en.wikipedia.org/wiki/Covariance_matrix) of $\X$ and $\P$:
 
 \\[
 \begin{align}
-\tr{ 
-(\hat{\X}\Rot^\transpose) (\hat{\X}\Rot^\transpose)^\transpose
--2 \hat{\P} \Rot \hat{\X}^\transpose
-+ \hat{\P} \hat{\P}^\transpose
-} 
-& = 
-\tr{ 
-\hat{\X}\underbrace{\Rot^\transpose \Rot}_{\text{identity}} \hat{\X}^\transpose
--2 \hat{\P} \Rot \hat{\X}^\transpose
-}
-+\text{constant}, \\\\
-& = 
-\tr{ 
-\hat{\X} \hat{\X}^\transpose
--2 \hat{\P} \Rot \hat{\X}^\transpose
-}+\text{constant}, \\\\
-& = 
--2 
-\tr{ \hat{\P} \Rot \hat{\X}^\transpose }+\text{constant}.
+\Rot^* 
+&= \argmin_{\Rot ∈ SO(3)} \left\| \Rot \overline{\X}^\transpose - \overline{\P}^\transpose \right\|_F^2 \\\\
+&= \argmin_{\Rot ∈ SO(3)} \left<\Rot \overline{\X}^\transpose - \overline{\P}^\transpose , \Rot \overline{\X}^\transpose - \overline{\P}^\transpose \right>_F\\\\
+&= \argmin_{\Rot ∈ SO(3)} \left\| \overline{\X} \right\|_F^2 + \left\| \overline{\P} \right\|_F^2 - 2 \left<\Rot \overline{\X}^\transpose , \overline{\P}^\transpose \right>_F\\\\
+&= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\overline{\P}\,\overline{\X}^\transpose\right>_F\\\\
 \end{align}
 \\]
 
-Minimizing a quantity is equivalent to maximizing its negation. Further, one of
-the
-[properties](https://en.wikipedia.org/wiki/Trace_(linear_algebra)#Properties)
-of the trace operator is that it is invariant to cyclic permutations of
-products in its operand: e.g., $\tr{\A\B\C\D} = \tr{\B\C\D\A} = \tr{\C\D\A\B} =
-\tr{\D\A\B\C}$. We may rewrite our minimization problem as a maximization
-problem of the trace of the rotated [covariance
-matrix](https://en.wikipedia.org/wiki/Covariance_matrix)
-$\hat{\X}^\transpose\hat{\P} =: \C ∈ \R^{3 × 3}$ between $\X$ and $\Y$:
-
-\\[
-\mathop{\text{maximize}}_{\Rot ∈ SO(3)} \tr{\Rot \C}.
-\\]
-
-The constraint that $\Rot$ is a rotation matrix is equivalent to requiring that
-it is an [orthonormal matrix](https://en.wikipedia.org/wiki/Orthogonal_matrix)
-with [determinant](https://en.wikipedia.org/wiki/Determinant) 1. To enforce
-this constraint during maximumization, we will take advantage of the [singular
-value
+We now take advantage of the [singular value
 decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) of
-$C$ as $\U Σ \V^\transpose$:
-
-
-\\[
-\mathop{\text{maximize}}_{\Rot ∈ SO(3)} \tr{\Rot \U Σ \V^\transpose}.
-\\]
-
-Again taking advantage of the properties of the trace operator we can rearrange
-these terms:
+$\overline{\X}^\transpose \overline{P} = \U Σ \V^\transpose$, where $\U, \V ∈
+\R^{3×3}$ are orthonormal matrices and $Σ∈\R^{3×3}$ is a diagonal matrix:
 
 \\[
-\mathop{\text{maximize}}_{\Rot ∈ SO(3)} \tr{Σ \underbrace{\V^\transpose \Rot
-\U}_\M},
+\begin{align}
+\Rot^*  
+  &= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\V Σ \U^\transpose \right>_F \\\\
+  &= \argmax_{\Rot ∈ SO(3)} \left<\V^\transpose \Rot \U, Σ \right>_F \\\\
+  &= \U \left( \argmax_{Ω ∈ O(3),\ \det{Ω} = \det{\U\V^\transpose}} \left<Ω, Σ \right>_F \right) \V^\transpose,\\\\
+\end{align}
 \\]
-
-and introduce a matrix $\V^\transpose \Rot \U =: \M ∈ \R{3×3}$. Because $\U$,
-$\V$ and $\Rot$ are all orthonormal, this matrix $\M$ must also be orthonormal.
-This means that every entry in $\M$ is less than or equal to 1 in magnitude:
-$|m_{ij}| ≤ 1$.
-
-Further, since the determinant of $\Rot$ must be 1 ($\det{\Rot}
-= 1$) and the determinant of $\V\U^\transpose$ must be 1 or -1 (being
-orthonormal matrices) _and_ 
-the determinant operator [associates with matrix
-multiplication](https://en.wikipedia.org/wiki/Determinant#Multiplicativity_and_matrix_groups),
-we know that the determinant of $M$ should be equal to the determinant of
-$\V\U^\transpose$: $\det{\M} = \det{\V\U^\transpose}$.
-
-The trace just sums the diagonal entries our
-maximimization problem may be expanded as:
+where the optimization argument $Ω ∈ O(3)$ is an orthogonal matrix, but may be
+either a reflection ($\det{Ω} = -1$) or a rotation (($\det{Ω} = 1$) depending
+on the SVD on $\overline{\X}^\transpose \overline{P}$. This ensures that as a
+result $\R^*$ will have determinant 1. The optimal choice of $Ω$ is to set all
+values to zero except on the diagonal, where we place all 1s except the bottom
+right corner (corresponding to the smallest singular value in $Σ$) which is set
+to $\det{\U\V^\transpose}$:
 
 \\[
-\mathop{\text{maximize}}_{m_{ij}|≥1,\ \det{\M} = \det{\V\U^\transpose }} σ_{11} m_{11} + σ_{22} m_{22} + σ_{33} m_{33}.
+Ω_{ij} = \begin{cases}
+1 & \text{ if $i=j\lt3$} \\\\
+\det{\U\V^\transpose} & \text{ if $i=j=3$} \\\\
+0 & \text{ otherwise.}
+\end{cases}
 \\]
 
-This is maximized if all $\M$ is a diagonal matrix with ones along the diagonal
--->
+Finally, we have a formula for our optimal rotation:
+
+\\[
+\Rot = \U Ω \V^\transpose.
+\\]
 
 <!--
 ### Pseudocode of Rigid ICP algorithm
