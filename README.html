@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8"/>
+	<link type="text/css" rel="stylesheet" href="shared/css/style.css"/>
+<script type="text/javascript" src="shared/js/MathJax/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+
+<div style="display:none">
+$$\newcommand{\mat}[1]{\mathbf{#1}}$$
+$$\newcommand{\vec}[1]{\mathbf{#1}}$$
+$$\newcommand{\A}{\mat{A}}$$
+$$\newcommand{\B}{\mat{B}}$$
+$$\newcommand{\C}{\mat{C}}$$
+$$\newcommand{\D}{\mat{D}}$$
+$$\newcommand{\I}{\mat{I}}$$
+$$\newcommand{\G}{\mat{G}}$$
+$$\newcommand{\N}{\mat{N}}$$
+$$\newcommand{\P}{\mat{P}}$$
+$$\newcommand{\Rot}{\mat{R}}$$
+$$\newcommand{\R}{\mathbb{R}}$$
+$$\newcommand{\One}{\mathbf{1}}$$
+$$\newcommand{\S}{\mathcal{S}}$$
+$$\newcommand{\M}{\mat{M}}$$
+$$\newcommand{\U}{\mat{U}}$$
+$$\newcommand{\V}{\mat{V}}$$
+$$\newcommand{\W}{\mat{W}}$$ 
+$$\newcommand{\X}{\mat{X}}$$
+$$\newcommand{\Y}{\mat{Y}}$$
+$$\newcommand{\c}{\vec{c}}$$
+$$\newcommand{\f}{\vec{f}}$$
+$$\newcommand{\g}{\vec{g}}$$
+$$\newcommand{\n}{\vec{n}}$$
+$$\newcommand{\p}{\vec{p}}$$
+$$\newcommand{\tr}[1]{\mathop{\text{tr}}{\left(#1\right)}}$$
+$$\newcommand{\t}{\vec{t}}$$
+$$\newcommand{\x}{\vec{x}}$$
+$$\newcommand{\y}{\vec{y}}$$
+$$\newcommand{\z}{\vec{z}}$$
+$$\renewcommand{\v}{\vec{v}}$$
+$$\newcommand{\transpose}{{\mathsf T}}$$
+$$\newcommand{\argmin}{\mathop{\text{argmin}}}$$
+$$\newcommand{\argmax}{\mathop{\text{argmax}}}$$
+</div>
+
+<h1 id="geometryprocessing–registration">Geometry Processing – Registration</h1>
+
+<blockquote>
+<p><strong>To get started:</strong> Fork this repository then issue</p>
+
+<pre><code>git clone --recursive http://github.com/[username]/geometry-processing-registration.git
+</code></pre>
+</blockquote>
+
+<h2 id="installationlayoutandcompilation">Installation, Layout, and Compilation</h2>
+
+<p>See
+<a href="http://github.com/alecjacobson/geometry-processing-introduction">introduction</a>.</p>
+
+<h2 id="execution">Execution</h2>
+
+<p>Once built, you can execute the assignment from inside the <code>build/</code> using </p>
+
+<pre><code>./mesh-reconstruction [path to mesh1.obj] [path to mesh2.obj] ...
+</code></pre>
+
+<h2 id="background">Background</h2>
+
+<p>In this assignment, we will be implementing a version of the <a href="https://en.wikipedia.org/wiki/Iterative_closest_point">iterative closest
+point (ICP)</a>, not to be
+confused with <a href="https://en.wikipedia.org/wiki/Insane_Clown_Posse">Insane Clown Posse</a>.</p>
+
+<p>Rather than <a href="https://en.wikipedia.org/wiki/Point_set_registration">registering multiple point
+clouds</a>, we will register
+multiple triangle mesh surfaces. </p>
+
+<p>This <em>algorithm</em> and its many variants has been use for quite some time to
+align discrete shapes. One of the first descriptions is given in &#8220;A Method for
+Registration of 3-D Shapes&#8221; by Besl &amp; McKay 1992. However, the award-winning
+PhD thesis of Sofien Bouaziz (&#8220;Realtime Face Tracking and Animation&#8221; 2015,
+section 3.2&#8211;3.3) contains a more modern view that unifies many of the variants
+with respect to how they impact the same core optimization problem. </p>
+
+<p>Our goal is to <em>align</em> shape <span class="math">\(Z\)</span> to shape <span class="math">\(Y\)</span>. For now, let&#8217;s assume that <span class="math">\(Z\)</span>
+and <span class="math">\(Y\)</span> are smooth surfaces. We will revisit this assumption later, and
+investigate how things change if <span class="math">\(Z\)</span> and <span class="math">\(Y\)</span> are actually point clouds or
+triangle meshes.</p>
+
+<p>There are various ways to measure how well aligned two surfaces are. </p>
+
+<h3 id="matchingsurfacesthatshareaparameterization">Matching surfaces that share a parameterization</h3>
+
+<p>For example, consider if a surface <span class="math">\(X\)</span> is given with a parameterization so that
+each point on <span class="math">\(X\)</span> can be written as a function of parameters <span class="math">\(u\)</span> and <span class="math">\(v\)</span>,
+<span class="math">\(\x(u,v) ∈ X\)</span>. If <span class="math">\(Y\)</span> is another surface produced by the same parameterization
+(<span class="math">\(\y(u,v) ∈ Y\)</span>), then we can think of <span class="math">\(Y\)</span> as a <em>deformation</em> of <span class="math">\(X\)</span> (or
+vice-versa). Each point <span class="math">\(\y(u,v)\)</span> on the surface <span class="math">\(Y\)</span> has a natural
+corresponding point <span class="math">\(\x(u,v)\)</span> on <span class="math">\(X\)</span> via the parameters <span class="math">\(u\)</span> and <span class="math">\(v\)</span>.</p>
+
+<figure>
+<img src="images/beetle-deformation.png" alt="The surface of a Beetle is deformed into a new surface. The
+parameterization of the original surface allows us to identify the
+corresponding points on the deformed surface.
+image source" />
+<figcaption>The surface of a Beetle is <em>deformed</em> into a new surface. The
+parameterization of the original surface allows us to identify the
+corresponding points on the deformed surface.
+<a href="http://www.cs.cmu.edu/~kmcrane/">image source</a></figcaption>
+</figure>
+
+<p>A very natural way to <em>measure</em> the difference between these two surfaces
+<em>aggregate</em> the distance between each pair of corresponding points. For
+example, we could <a href="https://en.wikipedia.org/wiki/Integral">integrate</a> this
+distance over the parametric domain
+(<a href="https://en.wikipedia.org/wiki/Without_loss_of_generality">w.l.o.g.</a> let&#8217;s say
+valid values are <span class="math">\(u,v ∈ (0,1)\)</span>):</p>
+
+<p><span class="math">\[
+D_2(X,Y) = \sqrt{ ∫_0^1∫_0^1 ‖\x(u,v) - \y(u,v)‖² \;du\;dv }
+\]</span></p>
+
+<p>This measure will be zero if the surfaces are the same for any choice of
+parameters <span class="math">\(u\)</span> and <span class="math">\(v\)</span>. The measure <span class="math">\(D_2(X,Y)\)</span> could large if every point on
+<span class="math">\(Y\)</span> is <em>slightly</em> deformed or if a few bad points are deformed a lot. This
+distance is the <a href="https://en.wikipedia.org/wiki/Norm_(mathematics)#Infinite-dimensional_case">L²
+norm</a>
+of the magnitude of the <em>displacement</em> from <span class="math">\(X\)</span> to <span class="math">\(Y\)</span> (or vice-versa):</p>
+
+<p><span class="math">\[
+D_2(X,Y) = \sqrt{ ∫_0^1∫_0^1 d(u,v)² \;du\;dv }, \quad \text{ and } \quad d(u,v) = ‖\x(u,v) -
+\y(u,v)‖
+\]</span></p>
+
+<p>We can directly measure the <em>maximum</em> distance between corresponding
+points, the <span class="math">\(L^∞\)</span> norm:</p>
+
+<p><span class="math">\[
+D_∞(X,Y) = \lim_{p→∞} \sqrt[p]{∫_0^1∫_0^1 d(u,v)^p \;du\;dv } = \sup\limits_{u,v ∈
+(0,1)} ‖\x(u,v) - \y(u,v)‖,
+\]</span></p>
+
+<p>where <span class="math">\(\sup\)</span> takes the
+<a href="https://en.wikipedia.org/wiki/Infimum_and_supremum">supremum</a> (roughly the continuous math
+analog of the <a href="https://en.wikipedia.org/wiki/Maxima_and_minima">maximum</a>).</p>
+
+<p>The measure <span class="math">\(D_∞\)</span> will also be exactly zero if the surfaces are the same.</p>
+
+<h4 id="trianglemeshes">Triangle meshes</h4>
+
+<p>On the computer, we can store an explicit surface as a triangle mesh. Triangle
+meshes have an <em>implicit</em> parameterization: each triangle can be trivially
+and independently mapped to the unit triangle, via its <a href="https://en.wikipedia.org/wiki/Barycentric_coordinate_system#Barycentric_coordinates_on_triangles">barycentric
+coordinates</a>.</p>
+
+<p>Triangle meshes also afford an immediate analog of deformation: moving each
+vertex of the mesh (without change the mesh combinatorics/topology).</p>
+
+<p>So if <span class="math">\(\V_X ∈ \R^{n × 3}\)</span> represents the vertices of our surface <span class="math">\(X\)</span> with a set
+<span class="math">\(F\)</span> of <span class="math">\(m\)</span>
+triangular faces and <span class="math">\(\V_Y ∈ \R^{n × 3}\)</span> the vertices of deformed surface <span class="math">\(Y\)</span>,
+then we can rewrite our measure <span class="math">\(D_2\)</span> above as a sum of integrals over each
+triangle:</p>
+
+<p><span class="math">\[
+∑\limits_{\{i,j,k\} ∈ T}  \sqrt{ ∫_0^{1-u} ∫_0^1 
+\left\|
+\underbrace{\left(u \v_x^i + v \v_x^j + (1-u-v) \v_x^k\right)}_\x
+-
+\underbrace{\left(u \v_y^i + v \v_y^j + (1-u-v) \v_y^k\right)}_\y
+\right\|^2 \;du\;dv }
+\]</span></p>
+
+<blockquote>
+<p><strong>Note:</strong> The <em>areas</em> of the triangles in our mesh may be different. So this
+measure may be thrown off by a very large triangle with a small difference
+and may fail to measure a very small triangle with a large difference. We&#8217;ll
+learn how to account for this, later.</p>
+</blockquote>
+
+<p>Unfortunately, in many scenarios we do not have two co-parameterized surface or
+a simple per-vertex mesh deformation. Instead, we may have two arbitrary
+surfaces discretized with different meshes of different
+topologies. We will need a measure of difference or distance between two
+surfaces that does not assume a shared parameterization.</p>
+
+<h2 id="hausdorffdistance">Hausdorff distance</h2>
+
+<p>We can build a distance measure between two surfaces out of two ingredients:</p>
+
+<ol>
+<li>the distance between a single point to a surface, and</li>
+<li>the supremum we used in <span class="math">\(D_∞\)</span> above.</li>
+</ol>
+
+<h4 id="point-to-pointdistance">Point-to-point distance</h4>
+
+<p>The usually Euclidean distance between <em>two points</em> <span class="math">\(\x\)</span> and <span class="math">\(\y\)</span> is the <span class="math">\(L²\)</span>
+norm of their difference :</p>
+
+<p><span class="math">\[
+d(\x,\y) = ‖\x - \y‖.
+\]</span></p>
+
+<h4 id="point-to-projectiondistance">Point-to-projection distance</h4>
+
+<p>When we consider the distance between a point <span class="math">\(\x\)</span> and some <em>larger</em> object <span class="math">\(Y\)</span> (a line,
+a circle, a surface), the natural extension is to take the distance to the
+closest point <span class="math">\(\y\)</span> on <span class="math">\(Y\)</span>:</p>
+
+<p><span class="math">\[
+d(\x,Y) = \inf_{\y ∈ Y} d(\x,\y).
+\]</span></p>
+
+<p>written in this way the
+<a href="https://en.wikipedia.org/wiki/Infimum_and_supremum">infimum</a> considers all
+possible points <span class="math">\(\y\)</span> and keeps the minimum distance. We may equivalently write
+this distance instead as simply the point-to-point distance between <span class="math">\(\x\)</span> and
+the <em>closest-point projection</em> <span class="math">\(P_Y(\x)\)</span>:</p>
+
+<p><span class="math">\[
+d(\x,Y) = d((\x,P_Y(\x)) = ‖\x - P_Y(\x)‖.
+\]</span></p>
+
+<p>If <span class="math">\(Y\)</span> is a smooth surface, this projection will also be an <a href="https://en.wikipedia.org/wiki/Projection_(linear_algebra)#Orthogonal_projections">orthogonal
+projection</a>.</p>
+
+<h3 id="directedhausdorffdistance">Directed Hausdorff distance</h3>
+
+<p>We might be tempted to define the distance from surface <span class="math">\(X\)</span> to <span class="math">\(Y\)</span> as the
+<em>infimum</em> of <em>point-to-projection</em> distances over all points <span class="math">\(\x\)</span> on <span class="math">\(X\)</span>:</p>
+
+<p><span class="math">\[
+D_\text{inf}(X,Y) = \inf_{\x ∈ X} ‖\x - P_Y(\x)‖,
+\]</span></p>
+
+<p>but this will not be useful for registering two surfaces: it will measure zero
+if even just a single point of <span class="math">\(\x\)</span> happens to lie on <span class="math">\(Y\)</span>. Imagine the noses of
+two faces touching at their tips.</p>
+
+<p>Instead, we should take the <em>supremum</em> of <em>point-to-projection</em> distances over
+all points <span class="math">\(\x\)</span> on <span class="math">\(X\)</span>:</p>
+
+<p><span class="math">\[
+D_{\overrightarrow{H}}(X,Y) = \sup_{\x ∈ X} ‖\x - P_Y(\x)‖.
+\]</span></p>
+
+<p>This surface-to-surface distance measure is called the <em>directed</em> <a href="https://en.wikipedia.org/wiki/Hausdorff_distance">Hausdorff
+distance</a>. We may interpret
+this as taking the worst of the best: we
+let each point <span class="math">\(\x\)</span> on <span class="math">\(X\)</span> declare its shortest distance to <span class="math">\(Y\)</span> and then keep
+the longest of those.</p>
+
+<p>It is easy to verify that <span class="math">\(D_{\overrightarrow{H}}\)</span> will only equal zero if all
+points on <span class="math">\(X\)</span> also lie exactly on <span class="math">\(Y\)</span>. </p>
+
+<p>The converse is not true: if <span class="math">\(D_{\overrightarrow{H}}=0\)</span> there may still be
+points on <span class="math">\(Y\)</span> that do not lie on <span class="math">\(X\)</span>. In other words, <em>in general</em> the directed
+Hausdorff distance from surface <span class="math">\(X\)</span> to surface <span class="math">\(Y\)</span> will not equal the Hausdorff
+distance from surface <span class="math">\(Y\)</span> to surface <span class="math">\(X\)</span>:</p>
+
+<p><span class="math">\[
+D_{\overrightarrow{H}}(X,Y) ≠ D_{\overrightarrow{H}}(Y,X).
+\]</span></p>
+
+<h3 id="undirectedhausdorffdistance">(undirected) Hausdorff distance</h3>
+
+<p>To form a <a href="https://en.wikipedia.org/wiki/Metric_(mathematics)">metric</a> in the
+mathematical sense, a distance measure should be symmetric: distance from <span class="math">\(X\)</span>
+to <span class="math">\(Y\)</span> equals distance from <span class="math">\(Y\)</span> to <span class="math">\(X\)</span>. Hausdorff distance is defined as the
+maximum of directed Haurdorff distances:</p>
+
+<p><span class="math">\[
+D_{H}(X,Y) = \max \left[ D_{\overrightarrow{H}}(X,Y)\ , \ D_{\overrightarrow{H}}(Y,X) \right].
+\]</span></p>
+
+<p>Unlike each individual directed distance, the (undirected) Hausdorff distance
+will measure zero <a href="https://en.wikipedia.org/wiki/If_and_only_if">if and only
+if</a> the <a href="https://en.wikipedia.org/wiki/Euclidean_space#Balls.2C_spheres.2C_and_hypersurfaces">point
+sets</a>
+of the surface <span class="math">\(X\)</span> is identical to that of <span class="math">\(Y\)</span>.</p>
+
+<figure>
+<img src="images/hausdorff-distance-2d.png" alt="" />
+</figure>
+
+<h4 id="trianglemeshes">Triangle meshes</h4>
+
+<p>On the computer, surfaces represented with triangle meshes (like any point set)
+admit a well-defined Hausdorff distance between one-another. Unfortunately,
+computing <em>exact</em> Hausdorff distance between two triangle meshes remains a
+difficult task: known exact algorithm are prohibitively inefficient.</p>
+
+<p>We do not know <a href="https://en.wikipedia.org/wiki/A_priori_and_a_posteriori"><em>a
+priori</em></a> which
+point(s) of each triangle mesh will end up determining the maximum value. It is
+tempting, optimistic, but ultimately incorrect to assume that the <em>generator</em>
+points will be one of the vertices of the triangle mesh. Consider if a triangle
+<span class="math">\(t\)</span> connected corners at <span class="math">\((1,1,0)\)</span>, <span class="math">\((1,0,1)\)</span> and <span class="math">\((0,1,1)\)</span> and <span class="math">\(B\)</span> was a mesh
+with two triangles, the first connecting <span class="math">\((0,0,0)\)</span>, <span class="math">\((1,0,1)\)</span> and <span class="math">\((1,1,0)\)</span> and
+the second connecting <span class="math">\((0,0,0)\)</span>, <span class="math">\((0,1,1)\)</span> and <span class="math">\((1,1,0)\)</span>. The corners of <span class="math">\(t\)</span>
+also appear as vertices of <span class="math">\(B\)</span>, so clearly their respective vertex-to-mesh
+distances are zero, yet the maximum minimum distance from <span class="math">\(t\)</span> to <span class="math">\(B\)</span> is clearly
+non-zero (it is <span class="math">\(\sqrt{3}/3\)</span>).</p>
+
+<figure>
+<img src="images/hausdorff-counterexample-3d.jpg" alt="The directed Hausdorff distance from the orange triangle $A$ to
+the blue, two-triangle mesh $B$ is non-zero (generated by red segment), but the
+distance from each corner of $A$ to $B$ is
+zero." />
+<figcaption>The directed Hausdorff distance from the orange triangle <span class="math">\(A\)</span> to
+the blue, two-triangle mesh <span class="math">\(B\)</span> is non-zero (generated by red segment), but the
+distance from each corner of <span class="math">\(A\)</span> to <span class="math">\(B\)</span> is
+zero.</figcaption>
+</figure>
+
+<p>One might also optimistically, but erroneously hope that by considering the
+symmetric Hausdorff distance one of the <em>generator</em> points must lie on a vertex
+of <span class="math">\(A\)</span> or of <span class="math">\(B\)</span>. Unfortunately, this only follows for convex shapes.</p>
+
+<figure>
+<img src="images/hausdorff-non-convex-2d.svg" alt="The directed Hausdorff distance to the blue alligator shape
+in 2D from its orange convex hull is generated by non-vertex points. Since
+the symmetric Hausdorff distance is the maximum of this and the smaller
+distance from the blue shape to the orange shape, it is also generated by these
+non-vertex points." />
+<figcaption>The directed Hausdorff distance <em>to</em> the blue &#8220;alligator&#8221; shape
+in 2D <em>from</em> its orange convex hull is generated by non-vertex points. Since
+the symmetric Hausdorff distance is the maximum of this and the smaller
+distance from the blue shape to the orange shape, it is also generated by these
+non-vertex points.</figcaption>
+</figure>
+
+<p>We can approximate a <em>lower bound</em> on the Hausdorff distance between two meshes
+by densely sampling surfaces <span class="math">\(X\)</span> and <span class="math">\(Y\)</span>. We will discuss sampling methods,
+later. For now consider that we have chosen a set <span class="math">\(\P_X\)</span> of <span class="math">\(k\)</span> points on <span class="math">\(X\)</span>
+(each point might lie at a vertex, along an edge, or inside a triangle). The
+directed Hausdorff distance from <span class="math">\(X\)</span> to another triangle mesh <span class="math">\(Y\)</span> must be
+<em>greater</em> than the directed Hausdorff distance from this <a href="https://en.wikipedia.org/wiki/Point_cloud">point
+cloud</a> <span class="math">\(\P_X\)</span> to <span class="math">\(Y\)</span>:</p>
+
+<p><span class="math">\[
+D_{\overrightarrow{H}}(X,Y) ≥ 
+D_{\overrightarrow{H}}(\P_X,Y) = \max_{i=1}^k ‖\p_i - P_Y(\p_i)‖,
+\]</span></p>
+
+<p>where we should be careful to ensure that the projection <span class="math">\(P_Y(\p_i)\)</span> of the
+point <span class="math">\(\p_i\)</span> onto the triangle mesh <span class="math">\(Y\)</span> might lie at a vertex, along an edge or
+inside a triangle. </p>
+
+<p>As our sampling <span class="math">\(\P_X\)</span> becomes denser and denser on <span class="math">\(X\)</span> this lower bound will
+approach the true directed Hausdorff distance. Unfortunately, an efficient
+<em>upper bound</em> is significantly more difficult to design.</p>
+
+<h4 id="hausdorffdistanceforalignmentoptimization">Hausdorff distance for alignment optimization</h4>
+
+<p>Even if it <em>were</em> cheap to compute, Hausdorff distance is difficult to
+<em>optimize</em> when aligning two surfaces. If we treat the Hausdorff distance
+between surfaces <span class="math">\(X\)</span> and <span class="math">\(Y\)</span> as an energy to be minimized, then only change to
+the surfaces that will decrease the energy will be moving the (in general)
+isolated point on <span class="math">\(X\)</span> and isolated point on <span class="math">\(Y\)</span> generating the maximum-minimum
+distance. In effect, the rest of the surface does not even matter or effect the
+Hausdorff distance. This, or any type of <span class="math">\(L^∞\)</span> norm, will be much more
+difficult to optimize.</p>
+
+<p>Hausdorff distance can serve as a validation measure, while we turn to <span class="math">\(L²\)</span>
+norms for optimization.</p>
+
+<h2 id="integratedclosest-pointdistance">Integrated closest-point distance</h2>
+
+<p>We would like a distance measure between two surfaces that&#8212;like Hausdorff
+distance&#8212;does not require a shared parameterization. Unlike Hausdorff
+distance, we would like this distance to <em>diffuse</em> the measurement over the
+entire surfaces rather than generate it from the sole <em>worst offender</em>. We can
+accomplish this by replacing the <em>supremum</em> in the Hausdorff distance (<span class="math">\(L^∞\)</span>)
+with a integral of squared distances (<span class="math">\(L²\)</span>). Let us first define a directed
+<em>closest-point distance</em> from a surface <span class="math">\(X\)</span> to another surface <span class="math">\(Y\)</span>, as the
+integral of the squared distance from every point <span class="math">\(\x\)</span> on <span class="math">\(X\)</span> to its
+closest-point projection <span class="math">\(P_Y(\x)\)</span> on the surfaces <span class="math">\(Y\)</span>:</p>
+
+<p><span class="math">\[
+D_{\overrightarrow{C}}(X,Y) = \sqrt{\ ∫\limits_{\x∈X} ‖\x - P_Y(\x) ‖² \;dA }.
+\]</span></p>
+
+<p>This is similar to the <span class="math">\(D_2\)</span> measure above, but we are <em>not</em> assuming that <span class="math">\(X\)</span>
+and <span class="math">\(Y\)</span> already have a matching parameterization. </p>
+
+<p>This distance will only be zero if all points on <span class="math">\(X\)</span> also lie on <span class="math">\(Y\)</span>, but when
+it is non-zero it is summing/averaging/diffusing the distance measures of all
+of the points.</p>
+
+<!--
+We can similarly define a symmetric distance by _summing_ the two directed
+distances:
+
+\\[
+D_{C}(X,Y) = 
+D_{\overrightarrow{C}}(X,Y) +
+D_{\overrightarrow{C}}(Y,X) = 
+\sqrt{\ ∫\limits_{\x∈X} ‖\x - P_Y(\x) ‖² \;dA }+
+\sqrt{\ ∫\limits_{\y∈Y} ‖\y - P_X(\y) ‖² \;dA }.
+\\]
+-->
+
+<p>This distance is suitable to define a matching energy, but is not necessarily
+welcoming for optimization: the function inside the square is non-linear. Let&#8217;s
+dig into it a bit. We&#8217;ll define a directed <em>matching energy</em>
+<span class="math">\(E_{\overrightarrow{C}}(Z,Y)\)</span> from <span class="math">\(Z\)</span> to <span class="math">\(Y\)</span> to be the squared directed
+closest point distance from <span class="math">\(X\)</span> to <span class="math">\(Y\)</span>:</p>
+
+<p><span class="math">\[
+E_{\overrightarrow{C}}(Z,Y) = ∫\limits_{\z∈Z} ‖\z - P_Y(\z) ‖² \;dA =
+∫\limits_{\z∈Z} ‖f_Y(\z) ‖² \;dA
+\]</span></p>
+
+<p>where we introduce the proximity function <span class="math">\(\f_Y:\R³→\R³\)</span> defined simply as the
+vector from a point <span class="math">\(\z\)</span> to its closest-point projection onto <span class="math">\(Y\)</span>:</p>
+
+<p><span class="math">\[
+\f(\z) = \z - P_Y(\z).
+\]</span></p>
+
+<p>Suppose <span class="math">\(Y\)</span> was not a surface, but just a single point <span class="math">\(Y = \{\y\}\)</span>. In this
+case, <span class="math">\(\f(\z) = \z - \y\)</span> is clearly linear in <span class="math">\(\z\)</span>.</p>
+
+<p>Similarly, suppose <span class="math">\(Y\)</span> was an <a href="https://en.wikipedia.org/wiki/Plane_(geometry)">infinite
+plane</a> <span class="math">\(Y = \{\y | (\y-\p)⋅\n =
+0\}\)</span> defined by some point <span class="math">\(\p\)</span> on the plane and the plane&#8217;s unit normal vector
+<span class="math">\(\n\)</span>. Then <span class="math">\(\f(\z) = ((\z-\p)⋅\n)\n)\)</span> is also linear in <span class="math">\(\z\)</span>.</p>
+
+<p>But in general, if <span class="math">\(Y\)</span> is an interesting surface <span class="math">\(\f(\z)\)</span> will be non-linear; it
+might not even be a continuous function.</p>
+
+<figure>
+<img src="images/closest-point-discontinuous.png" alt="" />
+</figure>
+
+<p>In optimization, a common successful strategy to minimize energies composed of
+squaring a non-linear functions <span class="math">\(\f\)</span> is to
+<a href="https://en.wikipedia.org/wiki/Linearization">linearize</a> the function about a
+current input value (i.e., a current guess <span class="math">\(\z₀\)</span>), minimize the energy built
+from this linearization, then re-linearize around that solution, and then
+repeat. </p>
+
+<p>This is the core idea behind <a href="https://en.wikipedia.org/wiki/Gradient_descent">gradient
+descent</a> and the
+<a href="https://en.wikipedia.org/wiki/Gauss–Newton_algorithm">Gauss-Newton</a> methods:</p>
+
+<pre><code>minimize f(z)²
+  z₀ ← initial guess
+  repeat until convergence
+    f₀ ← linearize f(z) around z₀
+    z₀ ← minimize f₀(z)²
+</code></pre>
+
+<p>Since our <span class="math">\(\f\)</span> is a geometric function, we can derive its linearizations
+<em>geometrically</em>.</p>
+
+<h3 id="constantfunctionapproximation">Constant function approximation</h3>
+
+<p>If we make the convenient&#8212;however unrealistic&#8212;assumption that in the
+neighborhood of the closest-point projection <span class="math">\(P_Y(\z₀)\)</span> of the current guess
+<span class="math">\(\z₀\)</span> the surface <span class="math">\(Y\)</span> is simply the point <span class="math">\(P_Y(\z₀)\)</span> (perhaps imagine that <span class="math">\(Y\)</span>
+is makes a sharp needle-like point at <span class="math">\(P_Y(\z₀)\)</span> or that <span class="math">\(Y\)</span> is very far away
+from <span class="math">\(\x\)</span>), then we can approximate <span class="math">\(\f(\z)\)</span> in the proximity of our current
+guess <span class="math">\(\z₀\)</span> as the vector between the input point <span class="math">\(\z\)</span> and <span class="math">\(P_Y(\z₀)\)</span>:</p>
+
+<p><span class="math">\[
+\f(\z) \approx \f_\text{point}(\z) = \z-P_Y(\z₀)
+\]</span></p>
+
+<p>In effect, we are assuming that the surface <span class="math">\(Y\)</span> is <em>constant</em> function of its
+parameterization: <span class="math">\(\y(u,v) = P_Y(\z₀)\)</span>.</p>
+
+<p>Minimizing <span class="math">\(E_{\overrightarrow{C}}\)</span> iteratively using this linearization (or
+rather <em>constantization</em>) of <span class="math">\(\f\)</span> is equivalent to the <a href="https://en.wikipedia.org/wiki/Gradient_descent">gradient
+descent</a>. We have simply
+derived our gradients geometrically.</p>
+
+<h3 id="linearfunctionapproximation">Linear function approximation</h3>
+
+<p>If we make make a slightly more appropriate assuming that in the neighborhood
+of the <span class="math">\(P_Y(\z₀)\)</span> the surface <span class="math">\(Y\)</span> is a plane, then we can improve this
+approximation while keeping <span class="math">\(\f\)</span> linear in <span class="math">\(\z\)</span>:</p>
+
+<p><span class="math">\[
+\f(\z) \approx \f_\text{plane}(\z) = ((\z-P_Y(\z₀))⋅\n) \n.
+\]</span></p>
+
+<p>where the plane that <em>best</em> approximates <span class="math">\(Y\)</span> locally near <span class="math">\(P_Y(\z₀)\)</span> is the
+<a href="https://en.wikipedia.org/wiki/Tangent_space">tangent plane</a> defined by the
+<a href="https://en.wikipedia.org/wiki/Normal_(geometry)">normal vector</a> <span class="math">\(\n\)</span> at
+<span class="math">\(P_Y(\z₀)\)</span>.</p>
+
+<p>Minimizing <span class="math">\(E_{\overrightarrow{C}}\)</span> iteratively using this linearization of
+<span class="math">\(\f\)</span> is equivalent to the
+<a href="https://en.wikipedia.org/wiki/Gauss–Newton_algorithm">Gauss-Newton</a> method. We
+have simply derived our linear approximation geometrically.</p>
+
+<p>Equipped with these linearizations, we may now describe an <a href="https://en.wikipedia.org/wiki/Mathematical_optimization#Optimization_algorithms">optimization
+algorithm</a>
+for minimizing the matching energy between a surface <span class="math">\(Z\)</span> and another surface
+<span class="math">\(Y\)</span>.</p>
+
+<h2 id="iterativeclosestpointalgorithm">Iterative closest point algorithm</h2>
+
+<p>So far we have derived distances between a surface <span class="math">\(X\)</span> and another surface <span class="math">\(Y\)</span>.
+In the alignment and registration problem, we would like to
+<a href="https://en.wikipedia.org/wiki/Transformation_(function)">transform</a> one surface
+<span class="math">\(X\)</span> into a new surface <span class="math">\(T(X) = Z\)</span> so that it best aligns with/matches the other
+surface <span class="math">\(Y\)</span>.</p>
+
+<p>Our matching problem can be written as an optimization problem to find the best
+possible transformation <span class="math">\(T\)</span> so that <span class="math">\(T(X)\)</span> best matches <span class="math">\(Y\)</span>:</p>
+
+<p><span class="math">\[
+\mathop{\text{minimize}}_T ∫\limits_{\x∈X} ‖T(\x) - P_Y(T(\x)) ‖² \;dA
+\]</span></p>
+
+<p>Even if <span class="math">\(X\)</span> is a triangle mesh, it is difficult to <em>integrate</em> over <em>all</em> points
+on the surface of <span class="math">\(X\)</span>. We can approximate this energy by <em>summing</em> over a
+dense point-sampling <span class="math">\(X\)</span>:</p>
+
+<p><span class="math">\[
+\mathop{\text{minimize}}_T ∑_{i=1}^k ‖T(\x_i) - P_Y(T(\x_i)) ‖²,
+\]</span></p>
+
+<p>where <span class="math">\(\X ∈ ℝ^{k×3}\)</span> is a set of <span class="math">\(k\)</span> points on <span class="math">\(X\)</span> so that each point <span class="math">\(\x_i\)</span> might lie at
+a vertex, along an edge, or inside a triangle. We defer discussion of <em>how</em> to
+sample a triangle mesh surface.</p>
+
+<p>As the name implies, the iterative closest point method will proceed by
+iteratively finding the closest point on <span class="math">\(Y\)</span> to the current transformation
+<span class="math">\(T(\x)\)</span> of each sample point <span class="math">\(\x\)</span> in <span class="math">\(\X\)</span> and then minimizing the linearized
+energy to update <span class="math">\(T\)</span>. So if <span class="math">\(V_X\)</span> and <span class="math">\(F_X\)</span> are the vertices and faces of a
+triangle mesh surface <span class="math">\(X\)</span> (and correspondingly for <span class="math">\(Y\)</span>), then we can summarize
+a generic ICP algorithm in pseudocode:</p>
+
+<pre><code>icp V_X, F_X, V_Y, F_Y
+  T ← initialize (e.g., set to identity transformation)
+  X ← uniformly sample (V_X,F_X)
+  repeat until convergence
+    Z0 ← T(X)
+    P0 ← project all transformed points Z0 onto (V_Y,F_Y)
+    f₀ ← linearize f(z) = z - P_Y(z) around each z0
+    T ← minimize ∑ f₀(T(x))²
+</code></pre>
+
+<p>where <code>linearize f(z) = z - P_Y(z)</code> could be accomplished by using the simple
+point-to-point distance or by utilizing normal information via point-to-plane
+distance. For now, let&#8217;s a assume that we use the point-to-point distance. The
+<em>inner</em> minimization problem is then:</p>
+
+<p><span class="math">\[
+\mathop{\text{minimize}}_T ∑_{i=1}^k ‖T(\x_i) - \p_i ‖²,
+\]</span></p>
+
+<p>where <span class="math">\(\p_i\)</span> is the closest-point projection of <span class="math">\(\z_i = T(\x_i)\)</span> using the
+current guess of the transformation <span class="math">\(T\)</span>.</p>
+
+<p>If we place no restrictions or
+<a href="https://en.wikipedia.org/wiki/Constrained_optimization">constraints</a> on the
+transformation <span class="math">\(T: \R³ → \R³\)</span>, then there are many <a href="https://en.wikipedia.org/wiki/Triviality_(mathematics)">trivial
+solutions</a> to
+minimizing <span class="math">\(E_{\overrightarrow{C}}(T(X),Y)\)</span>. For example, we could simply
+define <span class="math">\(T\)</span> so that every point <span class="math">\(\x\)</span> gets mapped to its closest point on <span class="math">\(Y\)</span>:
+<span class="math">\(T(\x) := P_Y(\x)\)</span>. This would clearly induce <span class="math">\(E_{\overrightarrow{C}}=0\)</span>.
+Actually, we could get zero energy even if we define <span class="math">\(T\)</span> to map <em>all</em> points on
+<span class="math">\(X\)</span> to the same <em>arbitrary</em> point on <span class="math">\(Y\)</span>: <span class="math">\(T(\x) := \y\)</span>.</p>
+
+<!--
+> ### Symmetric energy for complete matches
+> 
+> If $X$ and $Y$ are _complete_ matches, then one way to remove these trivial
+> solutions is to minimize the symmetric energy summing energies from $X$ to $Y$
+> and from $Y$ to $X$:
+> 
+> \\[
+> E_C(T(X),Y) = E_{\overrightarrow{C}}(T(X),Y) + E_{\overrightarrow{C}}(Y,T(X)).
+> \\]
+> 
+> Appending the energy $E_{\overrightarrow{C}}(Y,T(X))$ measure the distance
+> from all points on $Y$ to the transformed surface $T(X)$ ensures that we will
+> not get zero energy if some part of $Y$ does not get matched to some part of
+> $X$.
+-->
+
+<h3 id="rigidregularizationforpartialscans">Rigid regularization for partial scans</h3>
+
+<!--
+In the context of scanning, we usually have surfaces that only partially match.
+For example, suppose we have a complete surface $Y$ and we would like to align
+a new scan of some smaller part of this surface $X$. We know that all points on
+$X$ should have a corresponding match on $Y$, but not vice-versa. In this case,
+only the directed energy $E_{\overrightarrow{C}}(T(X),Y)$ is appropriate. 
+
+> We will assume (for now) that there are not also parts on $X$ without a match
+> on $Y$.
+-->
+
+<p>We can avoid the trivial solutions by constraining <span class="math">\(T\)</span> to be a specific type of
+transformation. If <span class="math">\(X\)</span> and <span class="math">\(Y\)</span> are both from trustworthy scans of the same
+<a href="https://en.wikipedia.org/wiki/Rigid_body">rigid object</a>, then the
+transformation <span class="math">\(T\)</span> aligning <span class="math">\(X\)</span> to <span class="math">\(Y\)</span> should be a <em>rigid</em> transformation:
+<span class="math">\(T(\x) = \Rot \x + \t\)</span> where <span class="math">\(\Rot ∈ SO(3) ⊂ \R^{3×3}\)</span> is a rotation matrix
+(i.e., an <a href="https://en.wikipedia.org/wiki/Rotation_group_SO(3)">orthogonal matrix with determinant
+1</a>) and <span class="math">\(\t ∈ \R^3\)</span> is a
+translation vector:</p>
+
+<p><span class="math">\[
+\mathop{\text{minimize}}_{\t∈\R³,\ \Rot ∈ SO(3)} ∑_{i=1}^k ‖\Rot \x_i + \t -
+\p_i‖².
+\]</span></p>
+
+<blockquote>
+<p>It is worth pausing to notice that we have significantly reduced the problem
+to finding a single translation <span class="math">\(\t\)</span> and a single rotation matrix <span class="math">\(\R\)</span> to
+align all <span class="math">\(k\)</span> sample points on <span class="math">\(X\)</span> to <span class="math">\(Y\)</span>.</p>
+</blockquote>
+
+<p>This is a variant of what&#8217;s known as a <a href="https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem">Procrustes
+problem</a>, named
+after a <a href="https://en.wikipedia.org/wiki/Procrustes">mythical psychopath</a> who
+would kidnap people and force them to fit in his bed by stretching them or
+cutting off their legs. In our case, we are forcing <span class="math">\(\Rot\)</span> to be perfectly
+orthogonal (no &#8220;longer&#8221;, no &quot;shorter).</p>
+
+<p>Solving this kind of problem relies on some linear algebra kung fu, but the
+solution will be beautifully simple.</p>
+
+<p>This energy is <em>quadratic</em> in <span class="math">\(\t\)</span> and there are no other constraints on
+<span class="math">\(\t\)</span>. We can immediately solve for the optimal <span class="math">\(\t^*\)</span>&#8212;leaving <span class="math">\(\Rot\)</span> as an unknown&#8212;by
+setting all derivatives with respect to unknowns in <span class="math">\(\t\)</span> to zero:</p>
+
+<p><span class="math">\[
+\begin{align}
+\t^*
+  &= \argmin_{\t} ∑_{i=1}^k ‖\Rot \x_i + \t - \p_i‖²  \\\\
+  &= \argmin_\t \left\|\Rot \X^\transpose + \t \One^\transpose - \P^\transpose\right\|^2_F,
+\end{align}
+\]</span>
+where <span class="math">\(\One ∈ \R^{k}\)</span> is a vector ones. Setting the partial derivative with
+respect to <span class="math">\(\t\)</span> of this
+quadratic energy to zero finds the minimum:
+<span class="math">\[
+\begin{align}
+0 
+  &= \frac{∂}{∂\t} \left\|\Rot \X^\transpose + \t \One^\transpose - \P^\transpose\right\|^2_F \\\\
+  &= \One^\transpose \One \t + \Rot \X^\transpose \One - \P^\transpose \One,
+\end{align}
+\]</span></p>
+
+<p>Rearranging terms above reveals that the optimal <span class="math">\(\t\)</span> is the vector aligning
+the <a href="https://en.wikipedia.org/wiki/Centroid">centroids</a> of the points in <span class="math">\(\P\)</span>
+and the points in <span class="math">\(\X\)</span> rotated by the&#8212;yet-unknown&#8212;<span class="math">\(\Rot\)</span>. Introducing
+variables for the respective centroids <span class="math">\(\hat{\p} = \tfrac{1}{k} ∑_{i=1}^k
+\p_i\)</span> and <span class="math">\(\hat{\x} = \tfrac{1}{k} ∑_{i=1}^k \x_i\)</span>, we can write the
+formula for the optimal <span class="math">\(\t\)</span>:</p>
+
+<p><span class="math">\[
+\begin{align}
+\t 
+  &= \frac{\P^\transpose \One - \Rot \X^\transpose \One}{ \One^\transpose \One} \\\\
+  &= \hat{\p} - \Rot \hat{\x}.
+\end{align}
+\]</span></p>
+
+<p>Now we have a formula for the optimal translation vector <span class="math">\(\t\)</span> in terms of the
+unknown rotation <span class="math">\(\R\)</span>. Let us
+<a href="https://en.wikipedia.org/wiki/Substitution_(algebra)">substitute</a> this formula
+for all occurrences of <span class="math">\(\t\)</span> in our energy written in its original summation
+form:</p>
+
+<p><span class="math">\[
+\mathop{\text{minimize}}_{\Rot ∈ SO(3)}  ∑\limits_{i=1}^k \left\| \Rot \x_i + ( \hat{\p} - \Rot\hat{\x}) - \p_i \right\|^2 \\\
+\mathop{\text{minimize}}_{\Rot ∈ SO(3)}  ∑\limits_{i=1}^k \left\| \Rot (\x_i - \hat{\x}) - (\p_i - \hat{\p}) \right\|^2 \\\\
+\mathop{\text{minimize}}_{\Rot ∈ SO(3)}  ∑\limits_{i=1}^k \left\| \Rot \overline{\x}_i - \overline{\p}_i \right\|^2 \\\\
+\mathop{\text{minimize}}_{\Rot ∈ SO(3)}  \left\| \Rot \overline{\X}^\transpose - \overline{\P}^\transpose \right\|_F^2,
+\]</span></p>
+
+<p>where we introduce <span class="math">\(\overline{\X} ∈ \R^{k × 3}\)</span> where the ith row contains the
+<em>relative position</em> of the ith point to the centroid <span class="math">\(\hat{\x}\)</span>: i.e.,
+<span class="math">\(\overline{\x}_i = (\x_i - \hat{\x})\)</span> (and analagously for <span class="math">\(\overline{\P}\)</span>).</p>
+
+<p>Now we have the canonical form of the <a href="https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem">orthogonal procrustes
+problem</a>. To
+find the optimal rotation matrix <span class="math">\(\Rot^*\)</span> we will massage the terms in the
+<em>minimization</em> until we have a <em>maximization</em> problem involving the <a href="https://en.wikipedia.org/wiki/Frobenius_inner_product">Frobenius
+inner-product</a> of the
+unknown rotation <span class="math">\(\Rot\)</span> and <a href="https://en.wikipedia.org/wiki/Covariance_matrix">covariance
+matrix</a> of <span class="math">\(\X\)</span> and <span class="math">\(\P\)</span>:</p>
+
+<p><span class="math">\[
+\begin{align}
+\Rot^* 
+&= \argmin_{\Rot ∈ SO(3)} \left\| \Rot \overline{\X}^\transpose - \overline{\P}^\transpose \right\|_F^2 \\\\
+&= \argmin_{\Rot ∈ SO(3)} \left<\Rot \overline{\X}^\transpose - \overline{\P}^\transpose , \Rot \overline{\X}^\transpose - \overline{\P}^\transpose \right>_F\\\\
+&= \argmin_{\Rot ∈ SO(3)} \left\| \overline{\X} \right\|_F^2 + \left\| \overline{\P} \right\|_F^2 - 2 \left<\Rot \overline{\X}^\transpose , \overline{\P}^\transpose \right>_F\\\\
+&= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\overline{\P}\,\overline{\X}^\transpose\right>_F\\\\
+\end{align}
+\]</span></p>
+
+<p>We now take advantage of the <a href="https://en.wikipedia.org/wiki/Singular_value_decomposition">singular value
+decomposition</a> of
+<span class="math">\(\overline{\X}^\transpose \overline{P} = \U Σ \V^\transpose\)</span>, where <span class="math">\(\U, \V ∈
+\R^{3×3}\)</span> are orthonormal matrices and <span class="math">\(Σ∈\R^{3×3}\)</span> is a diagonal matrix:</p>
+
+<p><span class="math">\[
+\begin{align}
+\Rot^*  
+  &= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\V Σ \U^\transpose \right>_F \\\\
+  &= \argmax_{\Rot ∈ SO(3)} \left<\V^\transpose \Rot \U, Σ \right>_F \\\\
+  &= \U \left( \argmax_{Ω ∈ O(3),\ \det{Ω} = \det{\U\V^\transpose}} \left<Ω, Σ \right>_F \right) \V^\transpose,\\\\
+\end{align}
+\]</span>
+where the optimization argument <span class="math">\(Ω ∈ O(3)\)</span> is an orthogonal matrix, but may be
+either a reflection (<span class="math">\(\det{Ω} = -1\)</span>) or a rotation ((<span class="math">\(\det{Ω} = 1\)</span>) depending
+on the SVD on <span class="math">\(\overline{\X}^\transpose \overline{P}\)</span>. This ensures that as a
+result <span class="math">\(\R^*\)</span> will have determinant 1. The optimal choice of <span class="math">\(Ω\)</span> is to set all
+values to zero except on the diagonal, where we place all 1s except the bottom
+right corner (corresponding to the smallest singular value in <span class="math">\(Σ\)</span>) which is set
+to <span class="math">\(\det{\U\V^\transpose}\)</span>:</p>
+
+<p><span class="math">\[
+Ω_{ij} = \begin{cases}
+1 & \text{ if $i=j\lt3$} \\\\
+\det{\U\V^\transpose} & \text{ if $i=j=3$} \\\\
+0 & \text{ otherwise.}
+\end{cases}
+\]</span></p>
+
+<p>Finally, we have a formula for our optimal rotation:</p>
+
+<p><span class="math">\[
+\Rot = \U Ω \V^\transpose.
+\]</span></p>
+
+<h3 id="uniformrandomsamplingofatrianglemesh">Uniform random sampling of a triangle mesh</h3>
+
+<p>Our last missing piece is to sample the surface of a triangle mesh <span class="math">\(X\)</span> with <span class="math">\(m\)</span>
+faces uniformly randomly. This allows us to approximate <em>continuous</em> integrals
+over the surface <span class="math">\(X\)</span> with a summation of the integrand evaluated at a finite
+number of randomly selected points. This type of <a href="https://en.wikipedia.org/wiki/Numerical_integration">numerical
+integration</a> is called the
+<a href="https://en.wikipedia.org/wiki/Monte_Carlo_method">Monte Carlo method</a>.</p>
+
+<p>We would like our <a href="https://en.wikipedia.org/wiki/Random_variable">random
+variable</a> <span class="math">\(\x ∈ X\)</span> to have a
+uniform <a href="https://en.wikipedia.org/wiki/Probability_density_function">probability density
+function</a> <span class="math">\(f(\x) =
+1/A_X\)</span>, where <span class="math">\(A_X\)</span> is the <a href="https://en.wikipedia.org/wiki/Surface_area">surface
+area</a> of the triangle mesh <span class="math">\(X\)</span>. We
+can achieve this by breaking the problem into two steps: uniformly sampling in
+a single triangle and sampling triangles non-uniformly according to their
+area.</p>
+
+<p>Suppose we have a way to evaluate a continuous random point <span class="math">\(\x\)</span> in a triangle
+<span class="math">\(T\)</span> with uniform probability density function <span class="math">\(g_T(\x) = 1/A_T\)</span> <em>and</em> we have a
+away to evaluate a discrete random triangle index <span class="math">\(T ∈ \{1,2,‥,m\}\)</span> with <a href="https://en.wikipedia.org/wiki/Probability_distribution#Discrete_probability_distribution">discrete
+probability
+distribution</a>
+<span class="math">\(h(T) = A_T/A_X\)</span>, then the joint probability of evaluating a certain triangle
+index <span class="math">\(T\)</span> and then uniformly random point in that triangle <span class="math">\(\x\)</span> is indeed
+uniform over the surface:</p>
+
+<p><span class="math">\[
+h(T) g_T(\x) = \frac{A_T}{A_X} \frac{1}{A_T} = \frac{1}{A_T} = f(\x).
+\]</span></p>
+
+<h3 id="uniformrandomsamplingofasingletriangle">Uniform random sampling of a single triangle</h3>
+
+<p>In order to pick a point uniformly randomly in a triangle with corners <span class="math">\(\v_1,
+\v_2, \v_3 ∈ \R^3\)</span> we will <em>first</em> pick a point uniformly randomly in the
+<a href="https://en.wikipedia.org/wiki/Parallelogram">parallelogram</a> formed by
+reflecting <span class="math">\(\v_1\)</span> across the line <span class="math">\(\overline{\v_2\v_3}\)</span>:</p>
+
+<p><span class="math">\[
+\x = \v_1 + α (\v_2-\v_1) + β (\v_3 - \v_1)
+\]</span></p>
+
+<p>where <span class="math">\(α,β\)</span> are uniformly sampled from the unit interval <span class="math">\([0,1]\)</span>. If <span class="math">\(α+β > 1\)</span>
+then the point <span class="math">\(\x\)</span> above will lie in the reflected triangle rather than the
+original one. In this case, preprocess <span class="math">\(α\)</span> and <span class="math">\(β\)</span> by setting <span class="math">\(α←1-α\)</span> and
+<span class="math">\(β←1-β\)</span> to reflect the point <span class="math">\(\x\)</span> back into the original triangle.</p>
+
+<h3 id="area-weightedrandomsamplingoftriangles">Area-weighted random sampling of triangles</h3>
+
+<p>Assuming we know how to draw a <em>continuous</em> uniform random variable <span class="math">\(γ\)</span> from
+the unit interval <span class="math">\([0,1]\)</span>, we would now like to draw a <em>discrete</em> random
+triangle index <span class="math">\(T\)</span> from the sequence <span class="math">\({1,‥,m}\)</span> with likelihood proportional to
+the relative area of each triangle in the mesh.</p>
+
+<p>We can achieve this by first computing the <a href="https://en.wikipedia.org/wiki/Running_total">cumulative
+sum</a> <span class="math">\(\C ∈ \R^{m}\)</span> of the relative
+areas:</p>
+
+<p><span class="math">\[
+C_i = ∑_{j=1}^m \frac{A_j}{A_X},
+\]</span></p>
+
+<p>Then our random index is found by identifying the first entry in <span class="math">\(\C\)</span> whose
+value is greater than a uniform random variable <span class="math">\(γ\)</span>. Since <span class="math">\(\C\)</span> is sorted,
+locating this entry can be done in <span class="math">\(O(\log m)\)</span>
+<a href="https://en.wikipedia.org/wiki/Big_O_notation">time</a>.</p>
+
+<h3 id="whyismycodesoslow">Why is my code so slow?</h3>
+
+<p>Try profiling your code. Where is most of the computation time spent?</p>
+
+<p>If you have done things right, the majority of time is spent computing
+point-to-mesh distances. For each query point, the <a href="https://en.wikipedia.org/wiki/Computational_complexity_theory">computational
+complexity</a> of
+computing its distance to a mesh with <span class="math">\(m\)</span> faces is <span class="math">\(O(m)\)</span>.</p>
+
+<p>This can be <em>dramatically</em> improved (e.g., to <span class="math">\(O(\log m)\)</span> on average) using an
+<a href="https://en.wikipedia.org/wiki/Space_partitioning">space partitioning</a> data
+structure such as a <a href="https://en.wikipedia.org/wiki/K-d_tree">kd tree</a>, a
+<a href="https://en.wikipedia.org/wiki/Bounding_volume_hierarchy">bounding volume
+hierarchy</a>, or
+<a href="https://en.wikipedia.org/wiki/Bin_(computational_geometry)">spatial hash</a>.</p>
+
+<h2 id="tasks">Tasks</h2>
+
+<h3 id="readbouaziz2015">Read [Bouaziz 2015]</h3>
+
+<p>This reading task is not directly graded, but it&#8217;s expected that you read and
+understand sections 3.2&#8211;3.3 of Sofien Bouaziz&#8217;s PhD thesis &#8220;Realtime Face
+Tracking and Animation&#8221; 2015. <em>Understanding</em> this may require digging into
+wikipedia, other online resources or other papers.</p>
+
+<h3 id="derivationofoptimalrigidmotionforpoint-to-planelinearization">Derivation of optimal rigid motion for point-to-plane linearization</h3>
+
+<p>This mathematical derivation task is not directly graded but it will reveal to
+you how to code the <code>src/point_to_plane_rigid_matching.cpp</code> task below.</p>
+
+<p>In the <a href="#background">Background</a> material above, we have derived the optimal
+rigid motion (rotation <span class="math">\(\Rot\)</span> and translation <span class="math">\(\t\)</span>) assuming the
+&#8220;point-to-point&#8221; linearization of the ICP matching energy.</p>
+
+<p>Derive an analogous optimal rigid motion assuming the &#8220;point-to-plane&#8221;
+linearization of the ICP matching energy. The steps will follow very closely to
+the derivation above.</p>
+
+<h3 id="blacklist">Blacklist</h3>
+
+<p>You may not use the following libigl functions:</p>
+
+<ul>
+<li><code>igl::random_points_on_mesh</code></li>
+<li><code>igl::point_simplex_squared_distance</code></li>
+<li><code>igl::point_mesh_squared_distance</code></li>
+<li><code>igl::hausdorff</code></li>
+<li><code>igl::AABB</code></li>
+</ul>
+
+<h3 id="whitelist">Whitelist</h3>
+
+<p>You are encouraged to use the following libigl functions:</p>
+
+<ul>
+<li><code>igl::doublearea</code> computes triangle areas</li>
+<li><code>igl::cumsum</code> computes cumulative sum</li>
+</ul>
+
+<h3 id="srcrandom_points_on_mesh.cpp"><code>src/random_points_on_mesh.cpp</code></h3>
+
+<p>Inputs VX,FX outputs X</p>
+
+<h3 id="srcpoint_triangle_distance.cpp"><code>src/point_triangle_distance.cpp</code></h3>
+
+<p>Inputs x,va,vb,vc outputs p and d</p>
+
+<h3 id="srcpoint_mesh_distance.cpp"><code>src/point_mesh_distance.cpp</code></h3>
+
+<p>Inputs X,VY,FY outputs P and D</p>
+
+<h3 id="srclower_bound_hausdorff.cpp"><code>src/lower_bound_hausdorff.cpp</code></h3>
+
+<p>Inputs VX,FX,VY,FY outputs d</p>
+
+<h3 id="srcpoint_to_point_rigid_matching.cpp"><code>src/point_to_point_rigid_matching.cpp</code></h3>
+
+<p>Inputs X,P. Outputs R,t</p>
+
+<h3 id="srcpoint_to_plane_rigid_matching.cpp"><code>src/point_to_plane_rigid_matching.cpp</code></h3>
+
+<p>Inputs X,P,N. Outputs R,t</p>
+
+<h3 id="srcicp.cpp"><code>src/icp.cpp</code></h3>
+
+<p>Inputs VX,FX,VY,FY, enum POINT_TO_*</p>
+
+<p>outputs R,t </p>
+
+</body>
+</html>

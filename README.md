@@ -22,6 +22,10 @@ In this assignment, we will be implementing a version of the [iterative closest
 point (ICP)](https://en.wikipedia.org/wiki/Iterative_closest_point), not to be
 confused with [Insane Clown Posse](https://en.wikipedia.org/wiki/Insane_Clown_Posse).
 
+Rather than [registering multiple point
+clouds](https://en.wikipedia.org/wiki/Point_set_registration), we will register
+multiple triangle mesh surfaces. 
+
 This _algorithm_ and its many variants has been use for quite some time to
 align discrete shapes. One of the first descriptions is given in "A Method for
 Registration of 3-D Shapes" by Besl & McKay 1992. However, the award-winning
@@ -660,66 +664,149 @@ Finally, we have a formula for our optimal rotation:
 \Rot = \U Ω \V^\transpose.
 \\]
 
-<!--
-### Pseudocode of Rigid ICP algorithm
+### Uniform random sampling of a triangle mesh
 
-We are now prepared to describe an algorithm for finding the best rigid
-transformation that matches a triangle mesh $X$ representing a partial scan to
-a triangle mesh $Y$ representing a complete scan.
+Our last missing piece is to sample the surface of a triangle mesh $X$ with $m$
+faces uniformly randomly. This allows us to approximate _continuous_ integrals
+over the surface $X$ with a summation of the integrand evaluated at a finite
+number of randomly selected points. This type of [numerical
+integration](https://en.wikipedia.org/wiki/Numerical_integration) is called the
+[Monte Carlo method](https://en.wikipedia.org/wiki/Monte_Carlo_method).
 
+We would like our [random
+variable](https://en.wikipedia.org/wiki/Random_variable) $\x ∈ X$ to have a
+uniform [probability density
+function](https://en.wikipedia.org/wiki/Probability_density_function) $f(\x) =
+1/A_X$, where $A_X$ is the [surface
+area](https://en.wikipedia.org/wiki/Surface_area) of the triangle mesh $X$. We
+can achieve this by breaking the problem into two steps: uniformly sampling in
+a single triangle and sampling triangles non-uniformly according to their
+area.
 
-### point to plane
+Suppose we have a way to evaluate a continuous random point $\x$ in a triangle
+$T$ with uniform probability density function $g_T(\x) = 1/A_T$ _and_ we have a
+away to evaluate a discrete random triangle index $T ∈ \{1,2,‥,m\}$ with [discrete
+probability
+distribution](https://en.wikipedia.org/wiki/Probability_distribution#Discrete_probability_distribution)
+$h(T) = A_T/A_X$, then the joint probability of evaluating a certain triangle
+index $T$ and then uniformly random point in that triangle $\x$ is indeed
+uniform over the surface:
 
-### point to plane
+\\[
+h(T) g_T(\x) = \frac{A_T}{A_X} \frac{1}{A_T} = \frac{1}{A_T} = f(\x).
+\\]
 
-## Best fitting transformation
+### Uniform random sampling of a single triangle
 
-### Translation
+In order to pick a point uniformly randomly in a triangle with corners $\v_1,
+\v_2, \v_3 ∈ \R^3$ we will _first_ pick a point uniformly randomly in the
+[parallelogram](https://en.wikipedia.org/wiki/Parallelogram) formed by
+reflecting $\v_1$ across the line $\overline{\v_2\v_3}$:
 
-### Affine
+\\[
+\x = \v_1 + α (\v_2-\v_1) + β (\v_3 - \v_1)
+\\]
 
-### Rigid
--->
+where $α,β$ are uniformly sampled from the unit interval $[0,1]$. If $α+β > 1$
+then the point $\x$ above will lie in the reflected triangle rather than the
+original one. In this case, preprocess $α$ and $β$ by setting $α←1-α$ and
+$β←1-β$ to reflect the point $\x$ back into the original triangle.
 
+### Area-weighted random sampling of triangles
 
-## Sampling meshes
+Assuming we know how to draw a _continuous_ uniform random variable $γ$ from
+the unit interval $[0,1]$, we would now like to draw a _discrete_ random
+triangle index $T$ from the sequence ${1,‥,m}$ with likelihood proportional to
+the relative area of each triangle in the mesh.
 
-### `Uniform random sampling on a triangle mesh`
-### `point to triangle distance`
-### `point to mesh distance`
-### `Lower bound on Hausdorff distance between two meshes`
+We can achieve this by first computing the [cumulative
+sum](https://en.wikipedia.org/wiki/Running_total) $\C ∈ \R^{m}$ of the relative
+areas:
 
+\\[
+C_i = ∑_{j=1}^m \frac{A_j}{A_X},
+\\]
 
-Rather
-than [registering multiple point
-clouds](https://en.wikipedia.org/wiki/Point_set_registration), we will register
-multiple triangle mesh surfaces. 
+Then our random index is found by identifying the first entry in $\C$ whose
+value is greater than a uniform random variable $γ$. Since $\C$ is sorted,
+locating this entry can be done in $O(\log m)$
+[time](https://en.wikipedia.org/wiki/Big_O_notation).
 
+### Why is my code so slow?
 
-- how well does _this_ surface match _that_ surface?
-  - for partially overlapping surfaces, use this measure as "score" for
-    alignment/registration
-- abstract distance
-  - distance between points 
-  - difference between "rest shape" S and "deformed shape" f(S)
-    - l2 norm
-    - l1 norm
-  - implicitly assumes matching parameterization
-    - can write as integral over same (u,v)
-- Hausdorff distance
-  - mathematically elegant measure but infeasible matching energy?
-    - Difficult to fool: hard to get very small Hausdorff while being poorly
-      aligned
-  - perhaps too idealized
-    - not robust to outliers/noise
-    - hard to use for partial overlaps
-- Integrated projection matching energy 
-  - closest point projection onto triangle mesh
-  - point to point error metric
-  - point to plane error metric
-- Rigid transformations: Procrustes
-- uniform random sampling
-- bounding volume hierarchies
-  - give this for free?
-- In practice life is not so rigid
-  - allow non-rigid, need to regularize to tame subspace
+Try profiling your code. Where is most of the computation time spent?
+
+If you have done things right, the majority of time is spent computing
+point-to-mesh distances. For each query point, the [computational
+complexity](https://en.wikipedia.org/wiki/Computational_complexity_theory) of
+computing its distance to a mesh with $m$ faces is $O(m)$.
+
+This can be _dramatically_ improved (e.g., to $O(\log m)$ on average) using an
+[space partitioning](https://en.wikipedia.org/wiki/Space_partitioning) data
+structure such as a [kd tree](https://en.wikipedia.org/wiki/K-d_tree), a
+[bounding volume
+hierarchy](https://en.wikipedia.org/wiki/Bounding_volume_hierarchy), or
+[spatial hash](https://en.wikipedia.org/wiki/Bin_(computational_geometry)).
+
+## Tasks
+
+### Read \[Bouaziz 2015\]
+
+This reading task is not directly graded, but it's expected that you read and
+understand sections 3.2-3.3 of Sofien Bouaziz's PhD thesis "Realtime Face
+Tracking and Animation" 2015. _Understanding_ this may require digging into
+wikipedia, other online resources or other papers.
+
+### Derivation of optimal rigid motion for point-to-plane linearization
+
+This mathematical derivation task is not directly graded but it will reveal to
+you how to code the `src/point_to_plane_rigid_matching.cpp` task below.
+
+In the [Background](#background) material above, we have derived the optimal
+rigid motion (rotation $\Rot$ and translation $\t$) assuming the
+"point-to-point" linearization of the ICP matching energy.
+
+Derive an analogous optimal rigid motion assuming the "point-to-plane"
+linearization of the ICP matching energy. The steps will follow very closely to
+the derivation above.
+
+### Blacklist
+
+You may not use the following libigl functions:
+
+- `igl::random_points_on_mesh`
+- `igl::point_simplex_squared_distance`
+- `igl::point_mesh_squared_distance`
+- `igl::hausdorff`
+- `igl::AABB`
+
+### Whitelist
+
+You are encouraged to use the following libigl functions:
+
+- `igl::doublearea` computes triangle areas
+- `igl::cumsum` computes cumulative sum
+
+### `src/random_points_on_mesh.cpp`
+Inputs VX,FX outputs X
+
+### `src/point_triangle_distance.cpp`
+Inputs x,va,vb,vc outputs p and d
+
+### `src/point_mesh_distance.cpp`
+Inputs X,VY,FY outputs P and D
+
+### `src/lower_bound_hausdorff.cpp`
+Inputs VX,FX,VY,FY outputs d
+
+### `src/point_to_point_rigid_matching.cpp`
+Inputs X,P. Outputs R,t
+
+### `src/point_to_plane_rigid_matching.cpp`
+Inputs X,P,N. Outputs R,t
+
+### `src/icp.cpp`
+Inputs VX,FX,VY,FY, enum POINT_TO_*
+
+outputs R,t 
+
