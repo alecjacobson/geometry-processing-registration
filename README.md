@@ -14,7 +14,7 @@ See
 
 Once built, you can execute the assignment from inside the `build/` using 
 
-    ./mesh-reconstruction [path to mesh1.obj] [path to mesh2.obj] ...
+    ./registration [path to mesh1.obj] [path to mesh2.obj]
 
 ## Background
 
@@ -33,12 +33,8 @@ PhD thesis of Sofien Bouaziz ("Realtime Face Tracking and Animation" 2015,
 section 3.2-3.3) contains a more modern view that unifies many of the variants
 with respect to how they impact the same core optimization problem. 
 
-Our goal is to _align_ shape $Z$ to shape $Y$. For now, let's assume that $Z$
-and $Y$ are smooth surfaces. We will revisit this assumption later, and
-investigate how things change if $Z$ and $Y$ are actually point clouds or
-triangle meshes.
-
-There are various ways to measure how well aligned two surfaces are. 
+Our goal is to _align_ shape $X$ to shape $Y$. There are various ways to
+measure how well aligned two surfaces are. 
 
 ### Matching surfaces that share a parameterization
 
@@ -788,10 +784,16 @@ You are encouraged to use the following libigl functions:
 - `igl::cumsum` computes cumulative sum
 
 ### `src/random_points_on_mesh.cpp`
-Inputs VX,FX outputs X
+
+Generate `n` random points uniformly sampled _on_ a given triangle mesh with
+vertex positions `VX` and face indices `FX`. The output random points should be
+returned as pairs of [barycentric
+coordinates](https://en.wikipedia.org/wiki/Barycentric_coordinate_system#Barycentric_coordinates_on_triangles)
+(rows in `B`) and a face index (corresponding entry in `FI`).
 
 ### `src/point_triangle_distance.cpp`
-Inputs x,va,vb,vc outputs p and d
+Compute the distance `d` between a given point `x` and the closest point `p` on
+a given triangle with corners `a`, `b`, and `c`.
 
 ### `src/point_mesh_distance.cpp`
 Inputs X,VY,FY outputs P and D
