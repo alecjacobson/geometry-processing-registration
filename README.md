@@ -775,17 +775,18 @@ You may not use the following libigl functions:
 - `igl::hausdorff`
 - `igl::point_mesh_squared_distance`
 - `igl::point_simplex_squared_distance`
-- `igl::polar_svd`
-- `igl::polar_svd3x3`
 - `igl::polar_dec`
+- `igl::polar_svd3x3`
+- `igl::polar_svd`
 - `igl::random_points_on_mesh`
 
 ### Whitelist
 
 You are encouraged to use the following libigl functions:
 
-- `igl::doublearea` computes triangle areas
 - `igl::cumsum` computes cumulative sum
+- `igl::doublearea` computes triangle areas
+- `igl::per_face_normals` computes normal vectors for each triangle face
 
 ### `src/random_points_on_mesh.cpp`
 
@@ -821,7 +822,13 @@ matching energy:
 Inputs X,P,N. Outputs R,t
 
 ### `src/icp.cpp`
-Inputs VX,FX,VY,FY, enum POINT_TO_*
+Using the iterative closest point method align (`VX`,`FX`) to (`VY`,`FY`) by
+finding the rigid transformation (`R`,`t`) minimizing the matching energy:
 
-outputs R,t 
+\\[
+   ∫_X ‖ Rx+t - P_Y( Rx +t ) ‖² dA
+\\]
 
+The caller can specify the number of samples `num_samples` used to approximate
+the integral over $X$ and the number of iterations `num_iters` to run (mostly
+useful to set `num_iters=1` so we can visualize the progress).

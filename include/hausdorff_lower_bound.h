@@ -6,16 +6,16 @@
 //
 //
 // Inputs:
-//   n  number of random samples to use (larger --> more accurate)
 //   VX  #VX by 3 list of mesh vertex positions
 //   FX  #FX by 3 list of triangle mesh indices into VX
 //   VY  #VY by 3 list of mesh vertex positions
 //   FY  #FY by 3 list of triangle mesh indices into VY
+//   n  number of random samples to use (larger --> more accurate)
 // Returns lower bound 
 double hausdorff_lower_bound(
-  const int n,
   const Eigen::MatrixXd & VX,
   const Eigen::MatrixXi & FX,
   const Eigen::MatrixXd & VY,
-  const Eigen::MatrixXi & FY);
+  const Eigen::MatrixXi & FY,
+  const int n);
 #endif
