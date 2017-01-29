@@ -627,7 +627,7 @@ matrix](https://en.wikipedia.org/wiki/Covariance_matrix) of $\X$ and $\P$:
 
 We now take advantage of the [singular value
 decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) of
-$\overline{\X}^\transpose \overline{P} = \U Σ \V^\transpose$, where $\U, \V ∈
+$\overline{\X}^\transpose \overline{\P} = \U Σ \V^\transpose$, where $\U, \V ∈
 \R^{3×3}$ are orthonormal matrices and $Σ∈\R^{3×3}$ is a diagonal matrix:
 
 \\[
@@ -770,11 +770,15 @@ the derivation above.
 
 You may not use the following libigl functions:
 
-- `igl::random_points_on_mesh`
-- `igl::point_simplex_squared_distance`
-- `igl::point_mesh_squared_distance`
-- `igl::hausdorff`
 - `igl::AABB`
+- `igl::fit_rotations`
+- `igl::hausdorff`
+- `igl::point_mesh_squared_distance`
+- `igl::point_simplex_squared_distance`
+- `igl::polar_svd`
+- `igl::polar_svd3x3`
+- `igl::polar_dec`
+- `igl::random_points_on_mesh`
 
 ### Whitelist
 
@@ -796,13 +800,22 @@ Compute the distance `d` between a given point `x` and the closest point `p` on
 a given triangle with corners `a`, `b`, and `c`.
 
 ### `src/point_mesh_distance.cpp`
-Inputs X,VY,FY outputs P and D
+Compute the distances `D` between a set of given points `X` and their closest
+points `P` on a given mesh with vertex positions `VY` and face indices `FY`.
 
-### `src/lower_bound_hausdorff.cpp`
-Inputs VX,FX,VY,FY outputs d
+### `src/hausdorff_lower_bound.cpp`
+Compute a lower bound on the _directed_ Hausdorff distance from a given mesh
+(`VX`,`FX`) to another mesh (`VY`,`FY`). This function should be implemented by
+randomly sampling the $X$ mesh.
 
 ### `src/point_to_point_rigid_matching.cpp`
-Inputs X,P. Outputs R,t
+Given a set of source points X and corresponding target points P, find the
+optimal rigid transformation (R,t) that aligns X to P, minimizing the
+matching energy:
+
+\\[
+‖ R X' - t' 1' - P' ‖²
+\\]
 
 ### `src/point_to_plane_rigid_matching.cpp`
 Inputs X,P,N. Outputs R,t

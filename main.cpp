@@ -1,3 +1,7 @@
+#include "random_points_on_mesh.h"
+#include "hausdorff_lower_bound.h"
+#include "point_to_point_rigid_matching.h"
+#include "point_mesh_distance.h"
 #include <igl/read_triangle_mesh.h>
 #include <igl/viewer/Viewer.h>
 #include <Eigen/Core>
@@ -13,8 +17,35 @@ int main(int argc, char *argv[])
   Eigen::MatrixXi FX,FY;
   igl::read_triangle_mesh((argc>1?argv[1]:"../shared/data/"),VX,FX);
   igl::read_triangle_mesh((argc>2?argv[2]:"../shared/data/"),VY,FY);
-  Eigen::MatrixXd X = VX;
-  Eigen::MatrixXd P = VY;
+
+  Eigen::MatrixXd B;
+  Eigen::VectorXi FI;
+  const int n = 100;
+  random_points_on_mesh(n,VX,FX,B,FI);
+  Eigen::MatrixXd X(B.rows(),3);
+  for(int x = 0;x<X.rows();x++)
+  {
+    X.row(x) = 
+      B(x,0)*VX.row(FX(FI(x),0))+
+      B(x,1)*VX.row(FX(FI(x),1))+
+      B(x,2)*VX.row(FX(FI(x),2));
+  }
+
+  Eigen::MatrixXd P;
+  for(int iter = 0;iter < 20;iter++)
+  {
+    Eigen::VectorXd D;
+    point_mesh_distance(X,VY,FY,D,P);
+
+    Eigen::Matrix3d R;
+    Eigen::RowVector3d t;
+    point_to_point_rigid_matching(X,P,R,t);
+    VX = ((VX*R).rowwise() + t).eval();
+    X = ((X*R).rowwise() + t).eval();
+  }
+
+  std::cout<<"Hausdorff from X to Y >= "<<
+    hausdorff_lower_bound(n,VX,FX,VY,FY)<<std::endl;
 
   // Create a libigl Viewer object to toggle between point cloud and mesh
   igl::viewer::Viewer viewer;
