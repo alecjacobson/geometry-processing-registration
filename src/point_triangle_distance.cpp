@@ -12,8 +12,39 @@ void point_triangle_distance(
   Eigen::RowVector3d & p)
 {
   // Replace with your code
+  /*
   d = 0;
   p = x;
+
+  auto u = b-a;
+  auto v = c-a;
+
+  Eigen::RowVector3d n = u.cross(v).normalized();
+  Eigen::RowVector3d xp = x - a;
+  xp = xp - xp.dot(n) * n;
+  */
+
+  Eigen::Matrix4d A = Eigen::Matrix4d::Constant(-1);
+  auto X = A.topLeftCorner<3,3>();
+  X.col(0) = a.transpose();
+  X.col(1) = b.transpose();
+  X.col(2) = c.transpose();
+  A(3,3) = 0;
+  A.row(3) *= -1;
+
+
+  Eigen::Vector4d bary;
+  bary = A.inverse() * x.transpose().homogeneous();
+  bary = bary.array().max(0);
+  bary(3) = 0;
+  bary /= bary.array().sum();
+  p = bary(0) * a + bary(1) * b + bary(2) * c;
+  
+  d = (x - p).norm();
+
+  return;
+    /*
+
 
   auto u = b-a;
   auto v = c-a;
@@ -67,4 +98,5 @@ void point_triangle_distance(
 
   
   d = (x-p).norm();
+  */
 }
