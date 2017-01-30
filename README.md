@@ -577,7 +577,7 @@ Finally, we have a formula for our optimal rotation:
 > \\]
 > 
 > Now we have a formula for the optimal translation vector $\t$ in terms of the
-> unknown rotation $\R$. Let us
+> unknown rotation $\Rot$. Let us
 > [substitute](https://en.wikipedia.org/wiki/Substitution_(algebra)) this formula
 > for all occurrences of $\t$ in our energy written in its original summation
 > form:
