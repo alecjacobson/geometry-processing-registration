@@ -33,103 +33,24 @@ PhD thesis of Sofien Bouaziz ("Realtime Face Tracking and Animation" 2015,
 section 3.2-3.3) contains a more modern view that unifies many of the variants
 with respect to how they impact the same core optimization problem. 
 
-Our goal is to _align_ shape $X$ to shape $Y$. There are various ways to
-measure how well aligned two surfaces are. 
+For our assignment, we will assume that we have a triangle mesh representing a
+complete scan of the surface $Y$ of some [rigid
+object](https://en.wikipedia.org/wiki/Rigid_body) and a new partial scan of
+that surface $X$.
 
-### Matching surfaces that share a parameterization
+![Example input: a partial scan mesh surface $X$ is misaligned with the 
+mesh of the complete surface $Y$](images/max-inputs.jpg)
 
-For example, consider if a surface $X$ is given with a parameterization so that
-each point on $X$ can be written as a function of parameters $u$ and $v$,
-$\x(u,v) ∈ X$. If $Y$ is another surface produced by the same parameterization
-($\y(u,v) ∈ Y$), then we can think of $Y$ as a _deformation_ of $X$ (or
-vice-versa). Each point $\y(u,v)$ on the surface $Y$ has a natural
-corresponding point $\x(u,v)$ on $X$ via the parameters $u$ and $v$.
-
-![The surface of a Beetle is _deformed_ into a new surface. The
-parameterization of the original surface allows us to identify the
-corresponding points on the deformed surface.
-[image source](http://www.cs.cmu.edu/~kmcrane/)
-](images/beetle-deformation.png)
-
-A very natural way to _measure_ the difference between these two surfaces
-_aggregate_ the distance between each pair of corresponding points. For
-example, we could [integrate](https://en.wikipedia.org/wiki/Integral) this
-distance over the parametric domain
-([w.l.o.g.](https://en.wikipedia.org/wiki/Without_loss_of_generality) let's say
-valid values are $u,v ∈ (0,1)$):
-
-\\[
-D_2(X,Y) = \sqrt{ ∫_0^1∫_0^1 ‖\x(u,v) - \y(u,v)‖² \;du\;dv }
-\\]
-
-This measure will be zero if the surfaces are the same for any choice of
-parameters $u$ and $v$. The measure $D_2(X,Y)$ could large if every point on
-$Y$ is _slightly_ deformed or if a few bad points are deformed a lot. This
-distance is the [L²
-norm](https://en.wikipedia.org/wiki/Norm_(mathematics)#Infinite-dimensional_case)
-of the magnitude of the _displacement_ from $X$ to $Y$ (or vice-versa):
-
-\\[
-D_2(X,Y) = \sqrt{ ∫_0^1∫_0^1 d(u,v)² \;du\;dv }, \quad \text{ and } \quad d(u,v) = ‖\x(u,v) -
-\y(u,v)‖
-\\]
-
-We can directly measure the _maximum_ distance between corresponding
-points, the $L^∞$ norm:
-
-\\[
-D_∞(X,Y) = \lim_{p→∞} \sqrt[p]{∫_0^1∫_0^1 d(u,v)^p \;du\;dv } = \sup\limits_{u,v ∈
-(0,1)} ‖\x(u,v) - \y(u,v)‖,
-\\]
-
-where $\sup$ takes the
-[supremum](https://en.wikipedia.org/wiki/Infimum_and_supremum) (roughly the continuous math
-analog of the [maximum](https://en.wikipedia.org/wiki/Maxima_and_minima)).
-
-The measure $D_∞$ will also be exactly zero if the surfaces are the same.
-
-#### Triangle meshes
-
-On the computer, we can store an explicit surface as a triangle mesh. Triangle
-meshes have an _implicit_ parameterization: each triangle can be trivially
-and independently mapped to the unit triangle, via its [barycentric
-coordinates](https://en.wikipedia.org/wiki/Barycentric_coordinate_system#Barycentric_coordinates_on_triangles).
-
-Triangle meshes also afford an immediate analog of deformation: moving each
-vertex of the mesh (without change the mesh combinatorics/topology).
-
-So if $\V_X ∈ \R^{n × 3}$ represents the vertices of our surface $X$ with a set
-$F$ of $m$
-triangular faces and  $\V_Y ∈ \R^{n × 3}$ the vertices of deformed surface $Y$,
-then we can rewrite our measure $D_2$ above as a sum of integrals over each
-triangle:
-
-\\[
-∑\limits_{\{i,j,k\} ∈ T}  \sqrt{ ∫_0^{1-u} ∫_0^1 
-\left\|
-\underbrace{\left(u \v_x^i + v \v_x^j + (1-u-v) \v_x^k\right)}_\x
--
-\underbrace{\left(u \v_y^i + v \v_y^j + (1-u-v) \v_y^k\right)}_\y
-\right\|^2 \;du\;dv }
-\\]
-
-> **Note:** The _areas_ of the triangles in our mesh may be different. So this
-> measure may be thrown off by a very large triangle with a small difference
-> and may fail to measure a very small triangle with a large difference. We'll
-> learn how to account for this, later.
-
-Unfortunately, in many scenarios we do not have two co-parameterized surface or
-a simple per-vertex mesh deformation. Instead, we may have two arbitrary
-surfaces discretized with different meshes of different
-topologies. We will need a measure of difference or distance between two
-surfaces that does not assume a shared parameterization.
+These meshes will not have the same number of vertices or the even the same
+topology. We will first explore different ways to _measure_ how well aligned
+two surfaces are and then how to optimize the _rigid_ alignment of the partial
+surface $X$ to the complete surface $Y$.
 
 ## Hausdorff distance
 
-We can build a distance measure between two surfaces out of two ingredients:
-
- 1. the distance between a single point to a surface, and 
- 2. the supremum we used in $D_∞$ above.
+We would like to compute a single scalar number that measures how poorly two
+surfaces are matched. In other words, we would like to measure the _distance_
+between two surfaces. Let's start by reviewing more familiar distances:
 
 #### Point-to-point distance
 The usually Euclidean distance between _two points_ $\x$ and $\y$ is the $L²$
@@ -138,7 +59,6 @@ norm of their difference :
 \\[
 d(\x,\y) = ‖\x - \y‖.
 \\]
-
 
 #### Point-to-projection distance
 
@@ -162,6 +82,10 @@ d(\x,Y) = d((\x,P_Y(\x)) = ‖\x - P_Y(\x)‖.
 
 If $Y$ is a smooth surface, this projection will also be an [orthogonal
 projection](https://en.wikipedia.org/wiki/Projection_(linear_algebra)#Orthogonal_projections).
+
+
+![The distance between a surface $Y$ (light blue) and a point $\x$ (orange) is
+determined by the closest point $P_Y(\x)$ (blue)](images/max-point-mesh.gif)
 
 ### Directed Hausdorff distance
 
@@ -189,6 +113,11 @@ this as taking the worst of the best: we
 let each point $\x$ on $X$ declare its shortest distance to $Y$ and then keep
 the longest of those.
 
+![The directed Hausdorff distance between from surface $X$ (light orange) to
+another surface $Y$ (light blue) is determined by the point on $X$ (orange)
+whose closest point on $Y$ (blue) is the farthest
+away.](images/max-point-mesh-farthest.jpg)
+
 It is easy to verify that $D_{\overrightarrow{H}}$ will only equal zero if all
 points on $X$ also lie exactly on $Y$. 
 
@@ -201,58 +130,7 @@ distance from surface $Y$ to surface $X$:
 D_{\overrightarrow{H}}(X,Y) ≠ D_{\overrightarrow{H}}(Y,X).
 \\]
 
-### (undirected) Hausdorff distance
-
-To form a [metric](https://en.wikipedia.org/wiki/Metric_(mathematics)) in the
-mathematical sense, a distance measure should be symmetric: distance from $X$
-to $Y$ equals distance from $Y$ to $X$. Hausdorff distance is defined as the
-maximum of directed Haurdorff distances:
-
-\\[
-D_{H}(X,Y) = \max \left[ D_{\overrightarrow{H}}(X,Y)\ , \ D_{\overrightarrow{H}}(Y,X) \right].
-\\]
-
-Unlike each individual directed distance, the (undirected) Hausdorff distance
-will measure zero [if and only
-if](https://en.wikipedia.org/wiki/If_and_only_if) the [point
-sets](https://en.wikipedia.org/wiki/Euclidean_space#Balls.2C_spheres.2C_and_hypersurfaces)
-of the surface $X$ is identical to that of $Y$.
-
-![](images/hausdorff-distance-2d.png)
-
-#### Triangle meshes
-
-On the computer, surfaces represented with triangle meshes (like any point set)
-admit a well-defined Hausdorff distance between one-another. Unfortunately,
-computing _exact_ Hausdorff distance between two triangle meshes remains a
-difficult task: known exact algorithm are prohibitively inefficient.
-
-We do not know [_a
-priori_](https://en.wikipedia.org/wiki/A_priori_and_a_posteriori) which
-point(s) of each triangle mesh will end up determining the maximum value. It is
-tempting, optimistic, but ultimately incorrect to assume that the _generator_
-points will be one of the vertices of the triangle mesh. Consider if a triangle
-$t$ connected corners at $(1,1,0)$, $(1,0,1)$ and $(0,1,1)$ and $B$ was a mesh
-with two triangles, the first connecting $(0,0,0)$, $(1,0,1)$ and $(1,1,0)$ and
-the second connecting $(0,0,0)$, $(0,1,1)$ and $(1,1,0)$. The corners of $t$
-also appear as vertices of $B$, so clearly their respective vertex-to-mesh
-distances are zero, yet the maximum minimum distance from $t$ to $B$ is clearly
-non-zero (it is $\sqrt{3}/3$).
-
-![The directed Hausdorff distance from the orange triangle $A$ to
-the blue, two-triangle mesh $B$ is non-zero (generated by red segment), but the
-distance from each corner of $A$ to $B$ is
-zero.](images/hausdorff-counterexample-3d.jpg)
-
-One might also optimistically, but erroneously hope that by considering the
-symmetric Hausdorff distance one of the _generator_ points must lie on a vertex
-of $A$ or of $B$. Unfortunately, this only follows for convex shapes.
-
-![The directed Hausdorff distance _to_ the blue "alligator" shape
-in 2D _from_ its orange convex hull is generated by non-vertex points. Since
-the symmetric Hausdorff distance is the maximum of this and the smaller
-distance from the blue shape to the orange shape, it is also generated by these
-non-vertex points.](images/hausdorff-non-convex-2d.svg)
+#### directed Hausdorff distance between triangle meshes
 
 We can approximate a _lower bound_ on the Hausdorff distance between two meshes
 by densely sampling surfaces $X$ and $Y$. We will discuss sampling methods,
@@ -305,25 +183,9 @@ closest-point projection $P_Y(\x)$ on the surfaces $Y$:
 D_{\overrightarrow{C}}(X,Y) = \sqrt{\ ∫\limits_{\x∈X} ‖\x - P_Y(\x) ‖² \;dA }.
 \\]
 
-This is similar to the $D_2$ measure above, but we are _not_ assuming that $X$
-and $Y$ already have a matching parameterization. 
-
 This distance will only be zero if all points on $X$ also lie on $Y$, but when
 it is non-zero it is summing/averaging/diffusing the distance measures of all
 of the points.
-
-<!--
-We can similarly define a symmetric distance by _summing_ the two directed
-distances:
-
-\\[
-D_{C}(X,Y) = 
-D_{\overrightarrow{C}}(X,Y) +
-D_{\overrightarrow{C}}(Y,X) = 
-\sqrt{\ ∫\limits_{\x∈X} ‖\x - P_Y(\x) ‖² \;dA }+
-\sqrt{\ ∫\limits_{\y∈Y} ‖\y - P_X(\y) ‖² \;dA }.
-\\]
--->
 
 This distance is suitable to define a matching energy, but is not necessarily
 welcoming for optimization: the function inside the square is non-linear. Let's
@@ -426,208 +288,200 @@ for minimizing the matching energy between a surface $Z$ and another surface
 $Y$.
 
 ## Iterative closest point algorithm
-So far we have derived distances between a surface $X$ and another surface $Y$.
-In the alignment and registration problem, we would like to
-[transform](https://en.wikipedia.org/wiki/Transformation_(function)) one surface
-$X$ into a new surface $T(X) = Z$ so that it best aligns with/matches the other
-surface $Y$.
+
+So far we have derived distances between a surface $Z$ and another surface $Y$.
+In our _rigid_ alignment and registration problem, we would like to
+[transform](https://en.wikipedia.org/wiki/Transformation_(function)) one
+surface $X$ into a new surface $T(X) = Z$ so that it best aligns with/matches
+the other surface $Y$. Further we require that $T$ is a rigid transformation:
+$T(\x) = \Rot \x + \t$ for some rotation matrix $\Rot ∈ SO(3) ⊂ \R^{3×3}$
+(i.e., an [orthogonal matrix with determinant
+1](https://en.wikipedia.org/wiki/Rotation_group_SO(3))) and translation vector
+$\t∈\R³$.
 
 Our matching problem can be written as an optimization problem to find the best
-possible transformation $T$ so that $T(X)$ best matches $Y$:
+possible rotation $\Rot$ and translation $\t$ that match surface $X$ to surface
+$Y$:
 
 \\[
-\mathop{\text{minimize}}_T ∫\limits_{\x∈X} ‖T(\x) - P_Y(T(\x)) ‖² \;dA
+\mathop{\text{minimize}}_{\t∈\R³,\ \Rot ∈ SO(3)} 
+  ∫\limits_{\x∈X} ‖\Rot \x + \t - P_Y(T(\x)) ‖² \;dA
 \\]
 
-Even if $X$ is a triangle mesh, it is difficult to _integrate_ over _all_ points
-on the surface of $X$. We can approximate this energy by _summing_ over a
-dense point-sampling $X$:
-
-
+Even if $X$ is a triangle mesh, it is difficult to _integrate_ over _all_
+points on the surface of $X$. _At any point_, we can approximate this energy by
+_summing_ over a point-sampling of $X$:
 
 \\[
-\mathop{\text{minimize}}_T ∑_{i=1}^k ‖T(\x_i) - P_Y(T(\x_i)) ‖²,
+\mathop{\text{minimize}}_{\t∈\R³,\ \Rot ∈ SO(3)} 
+  ∑_{i=1}^k ‖\Rot \x_i + \t - P_Y(T(\x_i)) ‖²,
 \\]
 
-where $\X ∈ ℝ^{k×3}$ is a set of $k$ points on $X$ so that each point $\x_i$ might lie at
-a vertex, along an edge, or inside a triangle. We defer discussion of _how_ to
-sample a triangle mesh surface.
+where $\X ∈ \R^{k×3}$ is a set of $k$ points on $X$ so that each point $\x_i$
+might lie at a vertex, along an edge, or inside a triangle. We defer discussion
+of _how_ to sample a triangle mesh surface.
 
-As the name implies, the iterative closest point method will proceed by
-iteratively finding the closest point on $Y$ to the current transformation
-$T(\x)$ of each sample point $\x$ in $\X$ and then minimizing the linearized
-energy to update $T$. So if $V_X$ and $F_X$ are the vertices and faces of a
-triangle mesh surface $X$ (and correspondingly for $Y$), then we can summarize
-a generic ICP algorithm in pseudocode:
+### Pseudocode
+
+As the name implies, the method proceeds by iteratively finding the closest
+point on $Y$ to the current rigid transformation $\Rot \x + \t$ of each sample
+point $\x$ in $\X$ and then minimizing the _linearized_ energy to update the
+rotation $\Rot$ and translation $\t$. 
+
+If $V_X$ and $F_X$ are the vertices and faces of a triangle mesh surface $X$
+(and correspondingly for $Y$), then we can summarize a generic ICP algorithm in
+pseudocode:
 
 ```
 icp V_X, F_X, V_Y, F_Y
-  T ← initialize (e.g., set to identity transformation)
-  X ← uniformly sample (V_X,F_X)
+  R,t ← initialize (e.g., set to identity transformation)
   repeat until convergence
-    Z0 ← T(X)
-    P0 ← project all transformed points Z0 onto (V_Y,F_Y)
-    f₀ ← linearize f(z) = z - P_Y(z) around each z0
-    T ← minimize ∑ f₀(T(x))²
+    X ← sample source mesh (V_X,F_X)
+    P0 ← project all X onto target mesh (V_Y,F_Y)
+    R,t ← update rigid transform to best match X and P0
+    V_X ← rigidly transform original source mesh by R and t
 ```
 
-where `linearize f(z) = z - P_Y(z)` could be accomplished by using the simple
-point-to-point distance or by utilizing normal information via point-to-plane
-distance. For now, let's a assume that we use the point-to-point distance. The
-_inner_ minimization problem is then:
+### Updating the rigid transformation
+
+We would like to find the rotation matrix $\Rot ∈ SO(3) ⊂ \R^{3×3}$ and
+translation vector $\t∈\R³$ that _best_ aligns a given a set of points $\X ∈
+\R^{k×3}$ on the source mesh and their current closest points $\P ∈ \P^{k×3}$
+on the target mesh. We have two choices for _linearizing_ our matching energy:
+point-to-point (gradient descent) and point-to-plane (Gauss-Newton).
+
+In either case, this is still a non-linear optimization problem. This time due
+to the [constraints](https://en.wikipedia.org/wiki/Constrained_optimization)
+rather than the energy term. 
+
+We require that $\Rot$ is not just any 3×3 matrix, but a rotation matrix. We
+can _linearize_ this constraint, by assuming that the rotation in $\Rot$ will
+be very small and thus well approximated by the identity matrix $\I$ plus a
+skew-symmetric matrix:
 
 \\[
-\mathop{\text{minimize}}_T ∑_{i=1}^k ‖T(\x_i) - \p_i ‖²,
+\Rot \approx \I + 
+  \left(\begin{array}{ccc}
+   0 & -γ &  β \\
+   γ &  0 & -α \\
+  -β &  α &  0 \\
+  \end{array}\right)
 \\]
 
-where $\p_i$ is the closest-point projection of $\z_i = T(\x_i)$ using the
-current guess of the transformation $T$.
+where we can now work directly with the three scalar unknowns $α$, $β$ and $γ$.
 
+### Approximate point-to-point minimizer
 
-If we place no restrictions or
-[constraints](https://en.wikipedia.org/wiki/Constrained_optimization) on the
-transformation $T: \R³ → \R³$, then there are many [trivial
-solutions](https://en.wikipedia.org/wiki/Triviality_(mathematics)) to
-minimizing $E_{\overrightarrow{C}}(T(X),Y)$. For example, we could simply
-define $T$ so that every point $\x$ gets mapped to its closest point on $Y$:
-$T(\x) := P_Y(\x)$. This would clearly induce $E_{\overrightarrow{C}}=0$.
-Actually, we could get zero energy even if we define $T$ to map _all_ points on
-$X$ to the same _arbitrary_ point on $Y$: $T(\x) := \y$.
-
-<!--
-> ### Symmetric energy for complete matches
-> 
-> If $X$ and $Y$ are _complete_ matches, then one way to remove these trivial
-> solutions is to minimize the symmetric energy summing energies from $X$ to $Y$
-> and from $Y$ to $X$:
-> 
-> \\[
-> E_C(T(X),Y) = E_{\overrightarrow{C}}(T(X),Y) + E_{\overrightarrow{C}}(Y,T(X)).
-> \\]
-> 
-> Appending the energy $E_{\overrightarrow{C}}(Y,T(X))$ measure the distance
-> from all points on $Y$ to the transformed surface $T(X)$ ensures that we will
-> not get zero energy if some part of $Y$ does not get matched to some part of
-> $X$.
--->
-
-### Rigid regularization for partial scans
-
-<!--
-In the context of scanning, we usually have surfaces that only partially match.
-For example, suppose we have a complete surface $Y$ and we would like to align
-a new scan of some smaller part of this surface $X$. We know that all points on
-$X$ should have a corresponding match on $Y$, but not vice-versa. In this case,
-only the directed energy $E_{\overrightarrow{C}}(T(X),Y)$ is appropriate. 
-
-> We will assume (for now) that there are not also parts on $X$ without a match
-> on $Y$.
--->
-
-We can avoid the trivial solutions by constraining $T$ to be a specific type of
-transformation. If $X$ and $Y$ are both from trustworthy scans of the same
-[rigid object](https://en.wikipedia.org/wiki/Rigid_body), then the
-transformation $T$ aligning $X$ to $Y$ should be a _rigid_ transformation:
-$T(\x) = \Rot \x + \t$ where $\Rot ∈ SO(3) ⊂ \R^{3×3}$ is a rotation matrix
-(i.e., an [orthogonal matrix with determinant
-1](https://en.wikipedia.org/wiki/Rotation_group_SO(3))) and $\t ∈ \R^3$ is a
-translation vector:
-
+If we apply our linearization of $\Rot$ to the **point-to-point** distance
+linearization of the matching energy, our minimization becomes:
 
 \\[
-\mathop{\text{minimize}}_{\t∈\R³,\ \Rot ∈ SO(3)} ∑_{i=1}^k ‖\Rot \x_i + \t -
-\p_i‖².
+\mathop{\text{minimize}}_{\t∈\R³, α, β, γ} 
+  ∑_{i=1}^k \left\|
+  \left(\begin{array}{ccc}
+   0 & -γ &  β \\
+   γ &  0 & -α \\
+  -β &  α &  0 \\
+  \end{array}\right)
+  \x_i + \t - \p_i \right\|^2.
 \\]
 
-> It is worth pausing to notice that we have significantly reduced the problem
-> to finding a single translation $\t$ and a single rotation matrix $\R$ to
-> align all $k$ sample points on $X$ to $Y$.
-
-This is a variant of what's known as a [Procrustes
-problem](https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem), named
-after a [mythical psychopath](https://en.wikipedia.org/wiki/Procrustes) who
-would kidnap people and force them to fit in his bed by stretching them or
-cutting off their legs. In our case, we are forcing $\Rot$ to be perfectly
-orthogonal (no "longer", no "shorter).
-
-Solving this kind of problem relies on some linear algebra kung fu, but the
-solution will be beautifully simple.
-
-This energy is _quadratic_ in $\t$ and there are no other constraints on
-$\t$. We can immediately solve for the optimal $\t^*$---leaving $\Rot$ as an unknown---by
-setting all derivatives with respect to unknowns in $\t$ to zero:
+This energy is quadratic in the translation vector $\t$ and the linearized
+rotation angles $α$, $β$ and $γ$. Let's gather these degrees of freedom into a
+vector of unknowns: $\u = [α β γ \t^\transpose] ∈ \R⁶$. Then we can write our
+problem in summation form as:
 
 \\[
-\begin{align}
-\t^*
-  &= \argmin_{\t} ∑_{i=1}^k ‖\Rot \x_i + \t - \p_i‖²  \\\\
-  &= \argmin_\t \left\|\Rot \X^\transpose + \t \One^\transpose - \P^\transpose\right\|^2_F,
-\end{align}
-\\]
-where $\One ∈ \R^{k}$ is a vector ones. Setting the partial derivative with
-respect to $\t$ of this
-quadratic energy to zero finds the minimum:
-\\[
-\begin{align}
-0 
-  &= \frac{∂}{∂\t} \left\|\Rot \X^\transpose + \t \One^\transpose - \P^\transpose\right\|^2_F \\\\
-  &= \One^\transpose \One \t + \Rot \X^\transpose \One - \P^\transpose \One,
-\end{align}
+\mathop{\text{minimize}}_{\u∈\R⁶}
+  ∑_{i=1}^k \left\| 
+  \left(\begin{array}{cccccc}
+         0 &  x_{i,3} & -x_{i,2} & 1 & 0 & 0 \\
+  -x_{i,3} &        0 &  x_{i,1} & 0 & 1 & 0 \\
+   x_{i,2} & -x_{i,1} &        0 & 0 & 0 & 1
+  \end{array}\right) \u +
+  \x_i - \p_i \right\|^2.
 \\]
 
-Rearranging terms above reveals that the optimal $\t$ is the vector aligning
-the [centroids](https://en.wikipedia.org/wiki/Centroid) of the points in $\P$
-and the points in $\X$ rotated by the---yet-unknown---$\Rot$. Introducing
-variables for the respective centroids $\hat{\p} = \tfrac{1}{k} ∑_{i=1}^k
-\p_i$ and $\hat{\x} = \tfrac{1}{k} ∑_{i=1}^k \x_i$, we can write the
-formula for the optimal  $\t$:
+This can be written compactly in matrix form as:
+
+\\[
+\mathop{\text{minimize}}_{\u∈\R⁶}
+  \left\|
+  \underbrace{
+  \left(\begin{array}{cccccc}
+      0 &  \X_3 & -\X_2 & \One & 0    & 0 \\
+  -\X_3 &     0 &  \X_1 & 0    & \One & 0 \\
+   \X_2 & -\X_1 &     0 & 0    & 0    & \One
+  \end{array}\right)
+  }_{\A}
+  \u +
+\left[\begin{array}{c}
+  \X_1-\P_1 \\
+  \X_2-\P_2 \\
+  \X_3-\P_3
+\end{array}\right]
+  \right\|_F^2,
+\\]
+where we introduce the matrix $\A ∈ \R^{3k × 6}$ that gathers the columns
+$\X_i$ of $\X$ and columns of ones $\One ∈ \R^k$.
+
+This quadratic energy is minimized with its partial derivatives with respect to
+entries in $\u$ are all zero:
 
 \\[
 \begin{align}
-\t 
-  &= \frac{\P^\transpose \One - \Rot \X^\transpose \One}{ \One^\transpose \One} \\\\
-  &= \hat{\p} - \Rot \hat{\x}.
+\A^\transpose \A \u & = -\A^\transpose 
+\left[\begin{array}{c}
+  \X_1-\P_1 \\
+  \X_2-\P_2 \\
+  \X_3-\P_3
+\end{array}\right]
+, \\
+\u & = \left(\A^\transpose \A\right)^{-1} \left(-\A^\transpose
+\left[\begin{array}{c}
+  \X_1-\P_1 \\
+  \X_2-\P_2 \\
+  \X_3-\P_3
+\end{array}\right]
+\right),
 \end{align}
 \\]
 
-Now we have a formula for the optimal translation vector $\t$ in terms of the
-unknown rotation $\R$. Let us
-[substitute](https://en.wikipedia.org/wiki/Substitution_(algebra)) this formula
-for all occurrences of $\t$ in our energy written in its original summation
-form:
+Solving this small 6×6 system gives us our translation vector $\t$ and the
+linearized rotation angles $α$, $β$ and $γ$. If we simply assign 
 
 \\[
-\mathop{\text{minimize}}_{\Rot ∈ SO(3)}  ∑\limits_{i=1}^k \left\| \Rot \x_i + ( \hat{\p} - \Rot\hat{\x}) - \p_i \right\|^2 \\\
-\mathop{\text{minimize}}_{\Rot ∈ SO(3)}  ∑\limits_{i=1}^k \left\| \Rot (\x_i - \hat{\x}) - (\p_i - \hat{\p}) \right\|^2 \\\\
-\mathop{\text{minimize}}_{\Rot ∈ SO(3)}  ∑\limits_{i=1}^k \left\| \Rot \overline{\x}_i - \overline{\p}_i \right\|^2 \\\\
-\mathop{\text{minimize}}_{\Rot ∈ SO(3)}  \left\| \Rot \overline{\X}^\transpose - \overline{\P}^\transpose \right\|_F^2,
+\Rot ←  \M := \I + 
+  \left(\begin{array}{ccc}
+   0 & -γ &  β \\
+   γ &  0 & -α \\
+  -β &  α &  0 \\
+  \end{array}\right)
 \\]
 
-where we introduce $\overline{\X} ∈ \R^{k × 3}$ where the ith row contains the
-_relative position_ of the ith point to the centroid $\hat{\x}$: i.e.,
-$\overline{\x}_i = (\x_i - \hat{\x})$ (and analagously for $\overline{\P}$).
+then our transformation will _not_ be rigid. Instead, we should project $\M$
+onto the space of rotation matrices.
 
-Now we have the canonical form of the [orthogonal procrustes
-problem](https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem). To
-find the optimal rotation matrix $\Rot^*$ we will massage the terms in the
-_minimization_ until we have a _maximization_ problem involving the [Frobenius
-inner-product](https://en.wikipedia.org/wiki/Frobenius_inner_product) of the
-unknown rotation $\Rot$ and [covariance
-matrix](https://en.wikipedia.org/wiki/Covariance_matrix) of $\X$ and $\P$:
+#### Recovering a pure rotation from its linearization
+
+If $α$, $β$ and $γ$ are all small, then it may be safe to _interpret_ these
+values as rotation angles about the $x$, $y$, and $z$ axes respectively.
+
+In general, it is better to find the closest rotation matrix to $\M$. In other
+words, we'd like to solve the small optimization problem:
 
 \\[
 \begin{align}
 \Rot^* 
-&= \argmin_{\Rot ∈ SO(3)} \left\| \Rot \overline{\X}^\transpose - \overline{\P}^\transpose \right\|_F^2 \\\\
-&= \argmin_{\Rot ∈ SO(3)} \left<\Rot \overline{\X}^\transpose - \overline{\P}^\transpose , \Rot \overline{\X}^\transpose - \overline{\P}^\transpose \right>_F\\\\
-&= \argmin_{\Rot ∈ SO(3)} \left\| \overline{\X} \right\|_F^2 + \left\| \overline{\P} \right\|_F^2 - 2 \left<\Rot \overline{\X}^\transpose , \overline{\P}^\transpose \right>_F\\\\
-&= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\overline{\P}\,\overline{\X}^\transpose\right>_F\\\\
+&= \argmin_{\Rot ∈ SO(3)} \left\| \Rot - \M \right\|_F^2 \\\\
+&= \argmin_{\Rot ∈ SO(3)} \left\| \M \right\|_F^2 + \left\| \Rot \right\|_F^2 - 2 \left<\Rot^\transpose, \M \right>_F\\\\
+&= \argmax_{\Rot ∈ SO(3)} \left<\Rot^\transpose, \M \right>_F
 \end{align}
 \\]
 
 We now take advantage of the [singular value
 decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) of
-$\overline{\X}^\transpose \overline{\P} = \U Σ \V^\transpose$, where $\U, \V ∈
+$\M = \U Σ \V^\transpose$, where $\U, \V ∈
 \R^{3×3}$ are orthonormal matrices and $Σ∈\R^{3×3}$ is a diagonal matrix:
 
 \\[
@@ -638,13 +492,13 @@ $\overline{\X}^\transpose \overline{\P} = \U Σ \V^\transpose$, where $\U, \V �
   &= \U \left( \argmax_{Ω ∈ O(3),\ \det{Ω} = \det{\U\V^\transpose}} \left<Ω, Σ \right>_F \right) \V^\transpose,\\\\
 \end{align}
 \\]
+
 where the optimization argument $Ω ∈ O(3)$ is an orthogonal matrix, but may be
 either a reflection ($\det{Ω} = -1$) or a rotation (($\det{Ω} = 1$) depending
-on the SVD on $\overline{\X}^\transpose \overline{P}$. This ensures that as a
-result $\R^*$ will have determinant 1. The optimal choice of $Ω$ is to set all
-values to zero except on the diagonal, where we place all 1s except the bottom
-right corner (corresponding to the smallest singular value in $Σ$) which is set
-to $\det{\U\V^\transpose}$:
+on the SVD on $\M$. This ensures that as a result $\R^*$ will have determinant
+1. The optimal choice of $Ω$ is to set all values to zero except on the
+diagonal, where we place all 1s except the bottom right corner (corresponding
+to the smallest singular value in $Σ$) which is set to $\det{\U\V^\transpose}$:
 
 \\[
 Ω_{ij} = \begin{cases}
@@ -660,7 +514,170 @@ Finally, we have a formula for our optimal rotation:
 \Rot = \U Ω \V^\transpose.
 \\]
 
-### Uniform random sampling of a triangle mesh
+> ### Closed-form point-to-point minimizer
+>
+> 
+> _Interestingly_, despite the non-linear constraint on $\Rot$ there is actually
+> a closed-form solution to the point-to-point matching problem:
+> 
+> \\[
+> \mathop{\text{minimize}}_{\t∈\R³,\ \Rot ∈ SO(3)} ∑_{i=1}^k ‖\Rot \x_i + \t - \p_i‖²,
+> \\]
+> 
+> This is a variant of what's known as a [Procrustes
+> problem](https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem), named
+> after a [mythical psychopath](https://en.wikipedia.org/wiki/Procrustes) who
+> would kidnap people and force them to fit in his bed by stretching them or
+> cutting off their legs. In our case, we are forcing $\Rot$ to be perfectly
+> orthogonal (no "longer", no "shorter).
+> 
+> #### Substituting out the translation terms
+> 
+> This energy is _quadratic_ in $\t$ and there are no other constraints on
+> $\t$. We can immediately solve for the optimal $\t^*$---leaving $\Rot$ as an unknown---by
+> setting all derivatives with respect to unknowns in $\t$ to zero:
+> 
+> \\[
+> \begin{align}
+> \t^*
+>   &= \argmin_{\t} ∑_{i=1}^k ‖\Rot \x_i + \t - \p_i‖²  \\\\
+>   &= \argmin_\t \left\|\Rot \X^\transpose + \t \One^\transpose - \P^\transpose\right\|^2_F,
+> \end{align}
+> \\]
+> where $\One ∈ \R^{k}$ is a vector ones. Setting the partial derivative with
+> respect to $\t$ of this
+> quadratic energy to zero finds the minimum:
+> \\[
+> \begin{align}
+> 0 
+>   &= \frac{∂}{∂\t} \left\|\Rot \X^\transpose + \t \One^\transpose - \P^\transpose\right\|^2_F \\\\
+>   &= \One^\transpose \One \t + \Rot \X^\transpose \One - \P^\transpose \One,
+> \end{align}
+> \\]
+> 
+> Rearranging terms above reveals that the optimal $\t$ is the vector aligning
+> the [centroids](https://en.wikipedia.org/wiki/Centroid) of the points in $\P$
+> and the points in $\X$ rotated by the---yet-unknown---$\Rot$. Introducing
+> variables for the respective centroids $\hat{\p} = \tfrac{1}{k} ∑_{i=1}^k
+> \p_i$ and $\hat{\x} = \tfrac{1}{k} ∑_{i=1}^k \x_i$, we can write the
+> formula for the optimal  $\t$:
+> 
+> \\[
+> \begin{align}
+> \t 
+>   &= \frac{\P^\transpose \One - \Rot \X^\transpose \One}{ \One^\transpose \One} \\\\
+>   &= \hat{\p} - \Rot \hat{\x}.
+> \end{align}
+> \\]
+> 
+> Now we have a formula for the optimal translation vector $\t$ in terms of the
+> unknown rotation $\R$. Let us
+> [substitute](https://en.wikipedia.org/wiki/Substitution_(algebra)) this formula
+> for all occurrences of $\t$ in our energy written in its original summation
+> form:
+> 
+> \\[
+> \mathop{\text{minimize}}_{\Rot ∈ SO(3)}  ∑\limits_{i=1}^k \left\| \Rot \x_i + ( \hat{\p} - \Rot\hat{\x}) - \p_i \right\|^2 \\\
+> \mathop{\text{minimize}}_{\Rot ∈ SO(3)}  ∑\limits_{i=1}^k \left\| \Rot (\x_i - \hat{\x}) - (\p_i - \hat{\p}) \right\|^2 \\\\
+> \mathop{\text{minimize}}_{\Rot ∈ SO(3)}  ∑\limits_{i=1}^k \left\| \Rot \overline{\x}_i - \overline{\p}_i \right\|^2 \\\\
+> \mathop{\text{minimize}}_{\Rot ∈ SO(3)}  \left\| \Rot \overline{\X}^\transpose - \overline{\P}^\transpose \right\|_F^2,
+> \\]
+> 
+> where we introduce $\overline{\X} ∈ \R^{k × 3}$ where the ith row contains the
+> _relative position_ of the ith point to the centroid $\hat{\x}$: i.e.,
+> $\overline{\x}_i = (\x_i - \hat{\x})$ (and analagously for $\overline{\P}$).
+> 
+> Now we have the canonical form of the [orthogonal procrustes
+> problem](https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem). To
+> find the optimal rotation matrix $\Rot^*$ we will massage the terms in the
+> _minimization_ until we have a _maximization_ problem involving the [Frobenius
+> inner-product](https://en.wikipedia.org/wiki/Frobenius_inner_product) of the
+> unknown rotation $\Rot$ and [covariance
+> matrix](https://en.wikipedia.org/wiki/Covariance_matrix) of $\X$ and $\P$:
+> 
+> \\[
+> \begin{align}
+> \Rot^* 
+> &= \argmin_{\Rot ∈ SO(3)} \left\| \Rot \overline{\X}^\transpose - \overline{\P}^\transpose \right\|_F^2 \\\\
+> &= \argmin_{\Rot ∈ SO(3)} \left<\Rot \overline{\X}^\transpose - \overline{\P}^\transpose , \Rot \overline{\X}^\transpose - \overline{\P}^\transpose \right>_F\\\\
+> &= \argmin_{\Rot ∈ SO(3)} \left\| \overline{\X} \right\|_F^2 + \left\| \overline{\P} \right\|_F^2 - 2 \left<\Rot \overline{\X}^\transpose , \overline{\P}^\transpose \right>_F\\\\
+> &= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\overline{\P}\,\overline{\X}^\transpose\right>_F\\\\
+> &= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\M\right>_F\\\\
+> \end{align}
+> \\]
+> 
+> Letting $\M = \overline{\P}\,\overline{\X}^\transpose$ we can now follow the
+> steps above using [singular value
+> decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) to
+> find the optimal $\Rot$.
+
+### Approximate point-to-plane minimizer
+
+If we apply our linearization of $\Rot$ to the **point-to-plane** distance
+linearization of the matching energy, our minimization is:
+
+\\[
+\mathop{\text{minimize}}_{\t∈\R³, α, β, γ} 
+  ∑_{i=1}^k 
+  \left( 
+  \left(
+  \left(\begin{array}{ccc}
+   0 & -γ &  β \\
+   γ &  0 & -α \\
+  -β &  α &  0 \\
+  \end{array}\right)\x_i +
+  \x_i + \t - \p_i 
+  \right)⋅\n_i
+  \right)^2.
+\\]
+
+We can follow similar steps as above. Let's gather a vector of unknowns: $\u =
+[α β γ \t^\transpose] ∈ \R⁶$. Then we can write our problem in summation form
+as:
+
+\\[
+\mathop{\text{minimize}}_{\u∈\R⁶}
+  ∑_{i=1}^k \left(\n_i^\transpose 
+  \left(\begin{array}{cccccc}
+         0 &  x_{i,3} & -x_{i,2} & 1 & 0 & 0 \\
+  -x_{i,3} &        0 &  x_{i,1} & 0 & 1 & 0 \\
+   x_{i,2} & -x_{i,1} &        0 & 0 & 0 & 1
+  \end{array}\right) \u +
+  \n_i^\transpose(\x_i - \p_i) \right)^2.
+\\]
+
+This can be written compactly in matrix form as:
+
+\\[
+\mathop{\text{minimize}}_{\u∈\R⁶}
+  \left(
+  \left[\begin{array}{ccc} \text{diag}(\N_1) & \text{diag}(\N_2) & \text{diag}(\N_2)\end{array}\right]
+  \left( 
+  \A
+  \u +
+\left[\begin{array}{c}
+  \X_1-\P_1 \\
+  \X_2-\P_2 \\
+  \X_3-\P_3
+\end{array}\right]\right)
+  \right)^2,
+\\]
+
+where $\N_i$ is the ith column from the matrix of normals $\N ∈ \R^{k × 3}$,
+$\text{diag}(\v)$ [creates a diagonal
+matrix](https://en.wikipedia.org/wiki/Diagonal_matrix#Matrix_operations) from a
+vector, and $\A ∈ \R^{3k × 6}$ is the same as above.
+
+This energy is quadratic in $\u$ and can be solve by setting all partial
+derivatives with respect to $\u$ to zero.
+
+> ### Closed-form point-to-point minimizer
+>
+> To the best of my knowledge, no known closed-form solution exists. I am not
+> sure whether it **_can not_** exist or just whether no one has figured it out
+> (or they did and I just do not know about it).
+
+## Uniform random sampling of a triangle mesh
 
 Our last missing piece is to sample the surface of a triangle mesh $X$ with $m$
 faces uniformly randomly. This allows us to approximate _continuous_ integrals
@@ -753,19 +770,6 @@ understand sections 3.2-3.3 of Sofien Bouaziz's PhD thesis "Realtime Face
 Tracking and Animation" 2015. _Understanding_ this may require digging into
 wikipedia, other online resources or other papers.
 
-### Derivation of optimal rigid motion for point-to-plane linearization
-
-This mathematical derivation task is not directly graded but it will reveal to
-you how to code the `src/point_to_plane_rigid_matching.cpp` task below.
-
-In the [Background](#background) material above, we have derived the optimal
-rigid motion (rotation $\Rot$ and translation $\t$) assuming the
-"point-to-point" linearization of the ICP matching energy.
-
-Derive an analogous optimal rigid motion assuming the "point-to-plane"
-linearization of the ICP matching energy. The steps will follow very closely to
-the derivation above.
-
 ### Blacklist
 
 You may not use the following libigl functions:
@@ -809,17 +813,22 @@ Compute a lower bound on the _directed_ Hausdorff distance from a given mesh
 (`VX`,`FX`) to another mesh (`VY`,`FY`). This function should be implemented by
 randomly sampling the $X$ mesh.
 
+### `src/closest_rotation.cpp`
+Given a 3×3 matrix `M`, find the closest rotation matrix `R`.
+
 ### `src/point_to_point_rigid_matching.cpp`
 Given a set of source points X and corresponding target points P, find the
 optimal rigid transformation (R,t) that aligns X to P, minimizing the
-matching energy:
+point-to-point matching energy.
 
-\\[
-‖ R X' - t' 1' - P' ‖²
-\\]
+You may implement either that "Approximate" solution via linearizing the
+rotation matrix or the "closed form" solution
 
 ### `src/point_to_plane_rigid_matching.cpp`
-Inputs X,P,N. Outputs R,t
+Given a set of source points `X` and corresponding target points `P` and their
+normals `N`, find the optimal rigid transformation (`R`,`t`) that aligns `X` to
+planes passing through `P` orthogonal to `N`, minimizing the point-to-point
+matching energy.
 
 ### `src/icp.cpp`
 Using the iterative closest point method align (`VX`,`FX`) to (`VY`,`FY`) by

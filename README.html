@@ -8,40 +8,41 @@
 <body>
 
 <div style="display:none">
-$$\newcommand{\mat}[1]{\mathbf{#1}}$$
-$$\newcommand{\vec}[1]{\mathbf{#1}}$$
-$$\newcommand{\A}{\mat{A}}$$
-$$\newcommand{\B}{\mat{B}}$$
-$$\newcommand{\C}{\mat{C}}$$
-$$\newcommand{\D}{\mat{D}}$$
-$$\newcommand{\I}{\mat{I}}$$
-$$\newcommand{\G}{\mat{G}}$$
-$$\newcommand{\N}{\mat{N}}$$
-$$\newcommand{\P}{\mat{P}}$$
-$$\newcommand{\Rot}{\mat{R}}$$
-$$\newcommand{\R}{\mathbb{R}}$$
-$$\newcommand{\One}{\mathbf{1}}$$
-$$\newcommand{\S}{\mathcal{S}}$$
-$$\newcommand{\M}{\mat{M}}$$
-$$\newcommand{\U}{\mat{U}}$$
-$$\newcommand{\V}{\mat{V}}$$
-$$\newcommand{\W}{\mat{W}}$$ 
-$$\newcommand{\X}{\mat{X}}$$
-$$\newcommand{\Y}{\mat{Y}}$$
-$$\newcommand{\c}{\vec{c}}$$
-$$\newcommand{\f}{\vec{f}}$$
-$$\newcommand{\g}{\vec{g}}$$
-$$\newcommand{\n}{\vec{n}}$$
-$$\newcommand{\p}{\vec{p}}$$
-$$\newcommand{\tr}[1]{\mathop{\text{tr}}{\left(#1\right)}}$$
-$$\newcommand{\t}{\vec{t}}$$
-$$\newcommand{\x}{\vec{x}}$$
-$$\newcommand{\y}{\vec{y}}$$
-$$\newcommand{\z}{\vec{z}}$$
-$$\renewcommand{\v}{\vec{v}}$$
-$$\newcommand{\transpose}{{\mathsf T}}$$
-$$\newcommand{\argmin}{\mathop{\text{argmin}}}$$
-$$\newcommand{\argmax}{\mathop{\text{argmax}}}$$
+<span class="math">\[\newcommand{\mat}[1]{\mathbf{#1}}\]</span>
+<span class="math">\[\newcommand{\vec}[1]{\mathbf{#1}}\]</span>
+<span class="math">\[\newcommand{\A}{\mat{A}}\]</span>
+<span class="math">\[\newcommand{\B}{\mat{B}}\]</span>
+<span class="math">\[\newcommand{\C}{\mat{C}}\]</span>
+<span class="math">\[\newcommand{\D}{\mat{D}}\]</span>
+<span class="math">\[\newcommand{\I}{\mat{I}}\]</span>
+<span class="math">\[\newcommand{\G}{\mat{G}}\]</span>
+<span class="math">\[\newcommand{\N}{\mat{N}}\]</span>
+<span class="math">\[\newcommand{\P}{\mat{P}}\]</span>
+<span class="math">\[\newcommand{\Rot}{\mat{R}}\]</span>
+<span class="math">\[\newcommand{\R}{\mathbb{R}}\]</span>
+<span class="math">\[\newcommand{\One}{\mathbf{1}}\]</span>
+<span class="math">\[\newcommand{\S}{\mathcal{S}}\]</span>
+<span class="math">\[\newcommand{\M}{\mat{M}}\]</span>
+<span class="math">\[\newcommand{\U}{\mat{U}}\]</span>
+<span class="math">\[\newcommand{\V}{\mat{V}}\]</span>
+<span class="math">\[\newcommand{\W}{\mat{W}}\]</span>
+<span class="math">\[\newcommand{\X}{\mat{X}}\]</span>
+<span class="math">\[\newcommand{\Y}{\mat{Y}}\]</span>
+<span class="math">\[\newcommand{\c}{\vec{c}}\]</span>
+<span class="math">\[\newcommand{\f}{\vec{f}}\]</span>
+<span class="math">\[\newcommand{\g}{\vec{g}}\]</span>
+<span class="math">\[\newcommand{\n}{\vec{n}}\]</span>
+<span class="math">\[\newcommand{\p}{\vec{p}}\]</span>
+<span class="math">\[\newcommand{\tr}[1]{\mathop{\text{tr}}{\left(#1\right)}}\]</span>
+<span class="math">\[\newcommand{\t}{\vec{t}}\]</span>
+<span class="math">\[\newcommand{\x}{\vec{x}}\]</span>
+<span class="math">\[\newcommand{\y}{\vec{y}}\]</span>
+<span class="math">\[\newcommand{\u}{\vec{u}}\]</span>
+<span class="math">\[\newcommand{\z}{\vec{z}}\]</span>
+<span class="math">\[\renewcommand{\v}{\vec{v}}\]</span>
+<span class="math">\[\newcommand{\transpose}{{\mathsf T}}\]</span>
+<span class="math">\[\newcommand{\argmin}{\mathop{\text{argmin}}}\]</span>
+<span class="math">\[\newcommand{\argmax}{\mathop{\text{argmax}}}\]</span>
 </div>
 
 <h1 id="geometryprocessing–registration">Geometry Processing – Registration</h1>
@@ -62,7 +63,7 @@ $$\newcommand{\argmax}{\mathop{\text{argmax}}}$$
 
 <p>Once built, you can execute the assignment from inside the <code>build/</code> using </p>
 
-<pre><code>./mesh-reconstruction [path to mesh1.obj] [path to mesh2.obj] ...
+<pre><code>./registration [path to mesh1.obj] [path to mesh2.obj]
 </code></pre>
 
 <h2 id="background">Background</h2>
@@ -82,116 +83,28 @@ PhD thesis of Sofien Bouaziz (&#8220;Realtime Face Tracking and Animation&#8221;
 section 3.2&#8211;3.3) contains a more modern view that unifies many of the variants
 with respect to how they impact the same core optimization problem. </p>
 
-<p>Our goal is to <em>align</em> shape <span class="math">\(Z\)</span> to shape <span class="math">\(Y\)</span>. For now, let&#8217;s assume that <span class="math">\(Z\)</span>
-and <span class="math">\(Y\)</span> are smooth surfaces. We will revisit this assumption later, and
-investigate how things change if <span class="math">\(Z\)</span> and <span class="math">\(Y\)</span> are actually point clouds or
-triangle meshes.</p>
-
-<p>There are various ways to measure how well aligned two surfaces are. </p>
-
-<h3 id="matchingsurfacesthatshareaparameterization">Matching surfaces that share a parameterization</h3>
-
-<p>For example, consider if a surface <span class="math">\(X\)</span> is given with a parameterization so that
-each point on <span class="math">\(X\)</span> can be written as a function of parameters <span class="math">\(u\)</span> and <span class="math">\(v\)</span>,
-<span class="math">\(\x(u,v) ∈ X\)</span>. If <span class="math">\(Y\)</span> is another surface produced by the same parameterization
-(<span class="math">\(\y(u,v) ∈ Y\)</span>), then we can think of <span class="math">\(Y\)</span> as a <em>deformation</em> of <span class="math">\(X\)</span> (or
-vice-versa). Each point <span class="math">\(\y(u,v)\)</span> on the surface <span class="math">\(Y\)</span> has a natural
-corresponding point <span class="math">\(\x(u,v)\)</span> on <span class="math">\(X\)</span> via the parameters <span class="math">\(u\)</span> and <span class="math">\(v\)</span>.</p>
+<p>For our assignment, we will assume that we have a triangle mesh representing a
+complete scan of the surface <span class="math">\(Y\)</span> of some <a href="https://en.wikipedia.org/wiki/Rigid_body">rigid
+object</a> and a new partial scan of
+that surface <span class="math">\(X\)</span>.</p>
 
 <figure>
-<img src="images/beetle-deformation.png" alt="The surface of a Beetle is deformed into a new surface. The
-parameterization of the original surface allows us to identify the
-corresponding points on the deformed surface.
-image source" />
-<figcaption>The surface of a Beetle is <em>deformed</em> into a new surface. The
-parameterization of the original surface allows us to identify the
-corresponding points on the deformed surface.
-<a href="http://www.cs.cmu.edu/~kmcrane/">image source</a></figcaption>
+<img src="images/max-inputs.jpg" alt="Example input" />
+<figcaption>	<meta name="Example input" content="a partial scan mesh surface $X$ is misaligned with the 
+mesh of the complete surface $Y$"/>
+</figcaption>
 </figure>
 
-<p>A very natural way to <em>measure</em> the difference between these two surfaces
-<em>aggregate</em> the distance between each pair of corresponding points. For
-example, we could <a href="https://en.wikipedia.org/wiki/Integral">integrate</a> this
-distance over the parametric domain
-(<a href="https://en.wikipedia.org/wiki/Without_loss_of_generality">w.l.o.g.</a> let&#8217;s say
-valid values are <span class="math">\(u,v ∈ (0,1)\)</span>):</p>
-
-<p><span class="math">\[
-D_2(X,Y) = \sqrt{ ∫_0^1∫_0^1 ‖\x(u,v) - \y(u,v)‖² \;du\;dv }
-\]</span></p>
-
-<p>This measure will be zero if the surfaces are the same for any choice of
-parameters <span class="math">\(u\)</span> and <span class="math">\(v\)</span>. The measure <span class="math">\(D_2(X,Y)\)</span> could large if every point on
-<span class="math">\(Y\)</span> is <em>slightly</em> deformed or if a few bad points are deformed a lot. This
-distance is the <a href="https://en.wikipedia.org/wiki/Norm_(mathematics)#Infinite-dimensional_case">L²
-norm</a>
-of the magnitude of the <em>displacement</em> from <span class="math">\(X\)</span> to <span class="math">\(Y\)</span> (or vice-versa):</p>
-
-<p><span class="math">\[
-D_2(X,Y) = \sqrt{ ∫_0^1∫_0^1 d(u,v)² \;du\;dv }, \quad \text{ and } \quad d(u,v) = ‖\x(u,v) -
-\y(u,v)‖
-\]</span></p>
-
-<p>We can directly measure the <em>maximum</em> distance between corresponding
-points, the <span class="math">\(L^∞\)</span> norm:</p>
-
-<p><span class="math">\[
-D_∞(X,Y) = \lim_{p→∞} \sqrt[p]{∫_0^1∫_0^1 d(u,v)^p \;du\;dv } = \sup\limits_{u,v ∈
-(0,1)} ‖\x(u,v) - \y(u,v)‖,
-\]</span></p>
-
-<p>where <span class="math">\(\sup\)</span> takes the
-<a href="https://en.wikipedia.org/wiki/Infimum_and_supremum">supremum</a> (roughly the continuous math
-analog of the <a href="https://en.wikipedia.org/wiki/Maxima_and_minima">maximum</a>).</p>
-
-<p>The measure <span class="math">\(D_∞\)</span> will also be exactly zero if the surfaces are the same.</p>
-
-<h4 id="trianglemeshes">Triangle meshes</h4>
-
-<p>On the computer, we can store an explicit surface as a triangle mesh. Triangle
-meshes have an <em>implicit</em> parameterization: each triangle can be trivially
-and independently mapped to the unit triangle, via its <a href="https://en.wikipedia.org/wiki/Barycentric_coordinate_system#Barycentric_coordinates_on_triangles">barycentric
-coordinates</a>.</p>
-
-<p>Triangle meshes also afford an immediate analog of deformation: moving each
-vertex of the mesh (without change the mesh combinatorics/topology).</p>
-
-<p>So if <span class="math">\(\V_X ∈ \R^{n × 3}\)</span> represents the vertices of our surface <span class="math">\(X\)</span> with a set
-<span class="math">\(F\)</span> of <span class="math">\(m\)</span>
-triangular faces and <span class="math">\(\V_Y ∈ \R^{n × 3}\)</span> the vertices of deformed surface <span class="math">\(Y\)</span>,
-then we can rewrite our measure <span class="math">\(D_2\)</span> above as a sum of integrals over each
-triangle:</p>
-
-<p><span class="math">\[
-∑\limits_{\{i,j,k\} ∈ T}  \sqrt{ ∫_0^{1-u} ∫_0^1 
-\left\|
-\underbrace{\left(u \v_x^i + v \v_x^j + (1-u-v) \v_x^k\right)}_\x
--
-\underbrace{\left(u \v_y^i + v \v_y^j + (1-u-v) \v_y^k\right)}_\y
-\right\|^2 \;du\;dv }
-\]</span></p>
-
-<blockquote>
-<p><strong>Note:</strong> The <em>areas</em> of the triangles in our mesh may be different. So this
-measure may be thrown off by a very large triangle with a small difference
-and may fail to measure a very small triangle with a large difference. We&#8217;ll
-learn how to account for this, later.</p>
-</blockquote>
-
-<p>Unfortunately, in many scenarios we do not have two co-parameterized surface or
-a simple per-vertex mesh deformation. Instead, we may have two arbitrary
-surfaces discretized with different meshes of different
-topologies. We will need a measure of difference or distance between two
-surfaces that does not assume a shared parameterization.</p>
+<p>These meshes will not have the same number of vertices or the even the same
+topology. We will first explore different ways to <em>measure</em> how well aligned
+two surfaces are and then how to optimize the <em>rigid</em> alignment of the partial
+surface <span class="math">\(X\)</span> to the complete surface <span class="math">\(Y\)</span>.</p>
 
 <h2 id="hausdorffdistance">Hausdorff distance</h2>
 
-<p>We can build a distance measure between two surfaces out of two ingredients:</p>
-
-<ol>
-<li>the distance between a single point to a surface, and</li>
-<li>the supremum we used in <span class="math">\(D_∞\)</span> above.</li>
-</ol>
+<p>We would like to compute a single scalar number that measures how poorly two
+surfaces are matched. In other words, we would like to measure the <em>distance</em>
+between two surfaces. Let&#8217;s start by reviewing more familiar distances:</p>
 
 <h4 id="point-to-pointdistance">Point-to-point distance</h4>
 
@@ -225,6 +138,13 @@ d(\x,Y) = d((\x,P_Y(\x)) = ‖\x - P_Y(\x)‖.
 <p>If <span class="math">\(Y\)</span> is a smooth surface, this projection will also be an <a href="https://en.wikipedia.org/wiki/Projection_(linear_algebra)#Orthogonal_projections">orthogonal
 projection</a>.</p>
 
+<figure>
+<img src="images/max-point-mesh.gif" alt="The distance between a surface $Y$ (light blue) and a point $\x$ (orange) is
+determined by the closest point $P_Y(\x)$ (blue)" />
+<figcaption>The distance between a surface <span class="math">\(Y\)</span> (light blue) and a point <span class="math">\(\x\)</span> (orange) is
+determined by the closest point <span class="math">\(P_Y(\x)\)</span> (blue)</figcaption>
+</figure>
+
 <h3 id="directedhausdorffdistance">Directed Hausdorff distance</h3>
 
 <p>We might be tempted to define the distance from surface <span class="math">\(X\)</span> to <span class="math">\(Y\)</span> as the
@@ -251,6 +171,17 @@ this as taking the worst of the best: we
 let each point <span class="math">\(\x\)</span> on <span class="math">\(X\)</span> declare its shortest distance to <span class="math">\(Y\)</span> and then keep
 the longest of those.</p>
 
+<figure>
+<img src="images/max-point-mesh-farthest.jpg" alt="The directed Hausdorff distance between from surface $X$ (light orange) to
+another surface $Y$ (light blue) is determined by the point on $X$ (orange)
+whose closest point on $Y$ (blue) is the farthest
+away." />
+<figcaption>The directed Hausdorff distance between from surface <span class="math">\(X\)</span> (light orange) to
+another surface <span class="math">\(Y\)</span> (light blue) is determined by the point on <span class="math">\(X\)</span> (orange)
+whose closest point on <span class="math">\(Y\)</span> (blue) is the farthest
+away.</figcaption>
+</figure>
+
 <p>It is easy to verify that <span class="math">\(D_{\overrightarrow{H}}\)</span> will only equal zero if all
 points on <span class="math">\(X\)</span> also lie exactly on <span class="math">\(Y\)</span>. </p>
 
@@ -263,73 +194,7 @@ distance from surface <span class="math">\(Y\)</span> to surface <span class="ma
 D_{\overrightarrow{H}}(X,Y) ≠ D_{\overrightarrow{H}}(Y,X).
 \]</span></p>
 
-<h3 id="undirectedhausdorffdistance">(undirected) Hausdorff distance</h3>
-
-<p>To form a <a href="https://en.wikipedia.org/wiki/Metric_(mathematics)">metric</a> in the
-mathematical sense, a distance measure should be symmetric: distance from <span class="math">\(X\)</span>
-to <span class="math">\(Y\)</span> equals distance from <span class="math">\(Y\)</span> to <span class="math">\(X\)</span>. Hausdorff distance is defined as the
-maximum of directed Haurdorff distances:</p>
-
-<p><span class="math">\[
-D_{H}(X,Y) = \max \left[ D_{\overrightarrow{H}}(X,Y)\ , \ D_{\overrightarrow{H}}(Y,X) \right].
-\]</span></p>
-
-<p>Unlike each individual directed distance, the (undirected) Hausdorff distance
-will measure zero <a href="https://en.wikipedia.org/wiki/If_and_only_if">if and only
-if</a> the <a href="https://en.wikipedia.org/wiki/Euclidean_space#Balls.2C_spheres.2C_and_hypersurfaces">point
-sets</a>
-of the surface <span class="math">\(X\)</span> is identical to that of <span class="math">\(Y\)</span>.</p>
-
-<figure>
-<img src="images/hausdorff-distance-2d.png" alt="" />
-</figure>
-
-<h4 id="trianglemeshes">Triangle meshes</h4>
-
-<p>On the computer, surfaces represented with triangle meshes (like any point set)
-admit a well-defined Hausdorff distance between one-another. Unfortunately,
-computing <em>exact</em> Hausdorff distance between two triangle meshes remains a
-difficult task: known exact algorithm are prohibitively inefficient.</p>
-
-<p>We do not know <a href="https://en.wikipedia.org/wiki/A_priori_and_a_posteriori"><em>a
-priori</em></a> which
-point(s) of each triangle mesh will end up determining the maximum value. It is
-tempting, optimistic, but ultimately incorrect to assume that the <em>generator</em>
-points will be one of the vertices of the triangle mesh. Consider if a triangle
-<span class="math">\(t\)</span> connected corners at <span class="math">\((1,1,0)\)</span>, <span class="math">\((1,0,1)\)</span> and <span class="math">\((0,1,1)\)</span> and <span class="math">\(B\)</span> was a mesh
-with two triangles, the first connecting <span class="math">\((0,0,0)\)</span>, <span class="math">\((1,0,1)\)</span> and <span class="math">\((1,1,0)\)</span> and
-the second connecting <span class="math">\((0,0,0)\)</span>, <span class="math">\((0,1,1)\)</span> and <span class="math">\((1,1,0)\)</span>. The corners of <span class="math">\(t\)</span>
-also appear as vertices of <span class="math">\(B\)</span>, so clearly their respective vertex-to-mesh
-distances are zero, yet the maximum minimum distance from <span class="math">\(t\)</span> to <span class="math">\(B\)</span> is clearly
-non-zero (it is <span class="math">\(\sqrt{3}/3\)</span>).</p>
-
-<figure>
-<img src="images/hausdorff-counterexample-3d.jpg" alt="The directed Hausdorff distance from the orange triangle $A$ to
-the blue, two-triangle mesh $B$ is non-zero (generated by red segment), but the
-distance from each corner of $A$ to $B$ is
-zero." />
-<figcaption>The directed Hausdorff distance from the orange triangle <span class="math">\(A\)</span> to
-the blue, two-triangle mesh <span class="math">\(B\)</span> is non-zero (generated by red segment), but the
-distance from each corner of <span class="math">\(A\)</span> to <span class="math">\(B\)</span> is
-zero.</figcaption>
-</figure>
-
-<p>One might also optimistically, but erroneously hope that by considering the
-symmetric Hausdorff distance one of the <em>generator</em> points must lie on a vertex
-of <span class="math">\(A\)</span> or of <span class="math">\(B\)</span>. Unfortunately, this only follows for convex shapes.</p>
-
-<figure>
-<img src="images/hausdorff-non-convex-2d.svg" alt="The directed Hausdorff distance to the blue alligator shape
-in 2D from its orange convex hull is generated by non-vertex points. Since
-the symmetric Hausdorff distance is the maximum of this and the smaller
-distance from the blue shape to the orange shape, it is also generated by these
-non-vertex points." />
-<figcaption>The directed Hausdorff distance <em>to</em> the blue &#8220;alligator&#8221; shape
-in 2D <em>from</em> its orange convex hull is generated by non-vertex points. Since
-the symmetric Hausdorff distance is the maximum of this and the smaller
-distance from the blue shape to the orange shape, it is also generated by these
-non-vertex points.</figcaption>
-</figure>
+<h4 id="directedhausdorffdistancebetweentrianglemeshes">directed Hausdorff distance between triangle meshes</h4>
 
 <p>We can approximate a <em>lower bound</em> on the Hausdorff distance between two meshes
 by densely sampling surfaces <span class="math">\(X\)</span> and <span class="math">\(Y\)</span>. We will discuss sampling methods,
@@ -382,25 +247,9 @@ closest-point projection <span class="math">\(P_Y(\x)\)</span> on the surfaces <
 D_{\overrightarrow{C}}(X,Y) = \sqrt{\ ∫\limits_{\x∈X} ‖\x - P_Y(\x) ‖² \;dA }.
 \]</span></p>
 
-<p>This is similar to the <span class="math">\(D_2\)</span> measure above, but we are <em>not</em> assuming that <span class="math">\(X\)</span>
-and <span class="math">\(Y\)</span> already have a matching parameterization. </p>
-
 <p>This distance will only be zero if all points on <span class="math">\(X\)</span> also lie on <span class="math">\(Y\)</span>, but when
 it is non-zero it is summing/averaging/diffusing the distance measures of all
 of the points.</p>
-
-<!--
-We can similarly define a symmetric distance by _summing_ the two directed
-distances:
-
-\\[
-D_{C}(X,Y) = 
-D_{\overrightarrow{C}}(X,Y) +
-D_{\overrightarrow{C}}(Y,X) = 
-\sqrt{\ ∫\limits_{\x∈X} ‖\x - P_Y(\x) ‖² \;dA }+
-\sqrt{\ ∫\limits_{\y∈Y} ‖\y - P_X(\y) ‖² \;dA }.
-\\]
--->
 
 <p>This distance is suitable to define a matching energy, but is not necessarily
 welcoming for optimization: the function inside the square is non-linear. Let&#8217;s
@@ -504,119 +353,239 @@ for minimizing the matching energy between a surface <span class="math">\(Z\)</s
 
 <h2 id="iterativeclosestpointalgorithm">Iterative closest point algorithm</h2>
 
-<p>So far we have derived distances between a surface <span class="math">\(X\)</span> and another surface <span class="math">\(Y\)</span>.
-In the alignment and registration problem, we would like to
-<a href="https://en.wikipedia.org/wiki/Transformation_(function)">transform</a> one surface
-<span class="math">\(X\)</span> into a new surface <span class="math">\(T(X) = Z\)</span> so that it best aligns with/matches the other
-surface <span class="math">\(Y\)</span>.</p>
+<p>So far we have derived distances between a surface <span class="math">\(Z\)</span> and another surface <span class="math">\(Y\)</span>.
+In our <em>rigid</em> alignment and registration problem, we would like to
+<a href="https://en.wikipedia.org/wiki/Transformation_(function)">transform</a> one
+surface <span class="math">\(X\)</span> into a new surface <span class="math">\(T(X) = Z\)</span> so that it best aligns with/matches
+the other surface <span class="math">\(Y\)</span>. Further we require that <span class="math">\(T\)</span> is a rigid transformation:
+<span class="math">\(T(\x) = \Rot \x + \t\)</span> for some rotation matrix <span class="math">\(\Rot ∈ SO(3) ⊂ \R^{3×3}\)</span>
+(i.e., an <a href="https://en.wikipedia.org/wiki/Rotation_group_SO(3)">orthogonal matrix with determinant
+1</a>) and translation vector
+<span class="math">\(\t∈\R³\)</span>.</p>
 
 <p>Our matching problem can be written as an optimization problem to find the best
-possible transformation <span class="math">\(T\)</span> so that <span class="math">\(T(X)\)</span> best matches <span class="math">\(Y\)</span>:</p>
+possible rotation <span class="math">\(\Rot\)</span> and translation <span class="math">\(\t\)</span> that match surface <span class="math">\(X\)</span> to surface
+<span class="math">\(Y\)</span>:</p>
 
 <p><span class="math">\[
-\mathop{\text{minimize}}_T ∫\limits_{\x∈X} ‖T(\x) - P_Y(T(\x)) ‖² \;dA
+\mathop{\text{minimize}}_{\t∈\R³,\ \Rot ∈ SO(3)} 
+  ∫\limits_{\x∈X} ‖\Rot \x + \t - P_Y(T(\x)) ‖² \;dA
 \]</span></p>
 
-<p>Even if <span class="math">\(X\)</span> is a triangle mesh, it is difficult to <em>integrate</em> over <em>all</em> points
-on the surface of <span class="math">\(X\)</span>. We can approximate this energy by <em>summing</em> over a
-dense point-sampling <span class="math">\(X\)</span>:</p>
+<p>Even if <span class="math">\(X\)</span> is a triangle mesh, it is difficult to <em>integrate</em> over <em>all</em>
+points on the surface of <span class="math">\(X\)</span>. <em>At any point</em>, we can approximate this energy by
+<em>summing</em> over a point-sampling of <span class="math">\(X\)</span>:</p>
 
 <p><span class="math">\[
-\mathop{\text{minimize}}_T ∑_{i=1}^k ‖T(\x_i) - P_Y(T(\x_i)) ‖²,
+\mathop{\text{minimize}}_{\t∈\R³,\ \Rot ∈ SO(3)} 
+  ∑_{i=1}^k ‖\Rot \x_i + \t - P_Y(T(\x_i)) ‖²,
 \]</span></p>
 
-<p>where <span class="math">\(\X ∈ ℝ^{k×3}\)</span> is a set of <span class="math">\(k\)</span> points on <span class="math">\(X\)</span> so that each point <span class="math">\(\x_i\)</span> might lie at
-a vertex, along an edge, or inside a triangle. We defer discussion of <em>how</em> to
-sample a triangle mesh surface.</p>
+<p>where <span class="math">\(\X ∈ \R^{k×3}\)</span> is a set of <span class="math">\(k\)</span> points on <span class="math">\(X\)</span> so that each point <span class="math">\(\x_i\)</span>
+might lie at a vertex, along an edge, or inside a triangle. We defer discussion
+of <em>how</em> to sample a triangle mesh surface.</p>
 
-<p>As the name implies, the iterative closest point method will proceed by
-iteratively finding the closest point on <span class="math">\(Y\)</span> to the current transformation
-<span class="math">\(T(\x)\)</span> of each sample point <span class="math">\(\x\)</span> in <span class="math">\(\X\)</span> and then minimizing the linearized
-energy to update <span class="math">\(T\)</span>. So if <span class="math">\(V_X\)</span> and <span class="math">\(F_X\)</span> are the vertices and faces of a
-triangle mesh surface <span class="math">\(X\)</span> (and correspondingly for <span class="math">\(Y\)</span>), then we can summarize
-a generic ICP algorithm in pseudocode:</p>
+<h3 id="pseudocode">Pseudocode</h3>
+
+<p>As the name implies, the method proceeds by iteratively finding the closest
+point on <span class="math">\(Y\)</span> to the current rigid transformation <span class="math">\(\Rot \x + \t\)</span> of each sample
+point <span class="math">\(\x\)</span> in <span class="math">\(\X\)</span> and then minimizing the <em>linearized</em> energy to update the
+rotation <span class="math">\(\Rot\)</span> and translation <span class="math">\(\t\)</span>. </p>
+
+<p>If <span class="math">\(V_X\)</span> and <span class="math">\(F_X\)</span> are the vertices and faces of a triangle mesh surface <span class="math">\(X\)</span>
+(and correspondingly for <span class="math">\(Y\)</span>), then we can summarize a generic ICP algorithm in
+pseudocode:</p>
 
 <pre><code>icp V_X, F_X, V_Y, F_Y
-  T ← initialize (e.g., set to identity transformation)
-  X ← uniformly sample (V_X,F_X)
+  R,t ← initialize (e.g., set to identity transformation)
   repeat until convergence
-    Z0 ← T(X)
-    P0 ← project all transformed points Z0 onto (V_Y,F_Y)
-    f₀ ← linearize f(z) = z - P_Y(z) around each z0
-    T ← minimize ∑ f₀(T(x))²
+    X ← sample source mesh (V_X,F_X)
+    P0 ← project all X onto target mesh (V_Y,F_Y)
+    R,t ← update rigid transform to best match X and P0
+    V_X ← rigidly transform original source mesh by R and t
 </code></pre>
 
-<p>where <code>linearize f(z) = z - P_Y(z)</code> could be accomplished by using the simple
-point-to-point distance or by utilizing normal information via point-to-plane
-distance. For now, let&#8217;s a assume that we use the point-to-point distance. The
-<em>inner</em> minimization problem is then:</p>
+<h3 id="updatingtherigidtransformation">Updating the rigid transformation</h3>
+
+<p>We would like to find the rotation matrix <span class="math">\(\Rot ∈ SO(3) ⊂ \R^{3×3}\)</span> and
+translation vector <span class="math">\(\t∈\R³\)</span> that <em>best</em> aligns a given a set of points <span class="math">\(\X ∈
+\R^{k×3}\)</span> on the source mesh and their current closest points <span class="math">\(\P ∈ \P^{k×3}\)</span>
+on the target mesh. We have two choices for <em>linearizing</em> our matching energy:
+point-to-point (gradient descent) and point-to-plane (Gauss-Newton).</p>
+
+<p>In either case, this is still a non-linear optimization problem. This time due
+to the <a href="https://en.wikipedia.org/wiki/Constrained_optimization">constraints</a>
+rather than the energy term. </p>
+
+<p>We require that <span class="math">\(\Rot\)</span> is not just any 3×3 matrix, but a rotation matrix. We
+can <em>linearize</em> this constraint, by assuming that the rotation in <span class="math">\(\Rot\)</span> will
+be very small and thus well approximated by the identity matrix <span class="math">\(\I\)</span> plus a
+skew-symmetric matrix:</p>
 
 <p><span class="math">\[
-\mathop{\text{minimize}}_T ∑_{i=1}^k ‖T(\x_i) - \p_i ‖²,
+\Rot \approx \I + 
+  \left(\begin{array}{ccc}
+   0 & -γ &  β \\
+   γ &  0 & -α \\
+  -β &  α &  0 \\
+  \end{array}\right)
 \]</span></p>
 
-<p>where <span class="math">\(\p_i\)</span> is the closest-point projection of <span class="math">\(\z_i = T(\x_i)\)</span> using the
-current guess of the transformation <span class="math">\(T\)</span>.</p>
+<p>where we can now work directly with the three scalar unknowns <span class="math">\(α\)</span>, <span class="math">\(β\)</span> and <span class="math">\(γ\)</span>.</p>
 
-<p>If we place no restrictions or
-<a href="https://en.wikipedia.org/wiki/Constrained_optimization">constraints</a> on the
-transformation <span class="math">\(T: \R³ → \R³\)</span>, then there are many <a href="https://en.wikipedia.org/wiki/Triviality_(mathematics)">trivial
-solutions</a> to
-minimizing <span class="math">\(E_{\overrightarrow{C}}(T(X),Y)\)</span>. For example, we could simply
-define <span class="math">\(T\)</span> so that every point <span class="math">\(\x\)</span> gets mapped to its closest point on <span class="math">\(Y\)</span>:
-<span class="math">\(T(\x) := P_Y(\x)\)</span>. This would clearly induce <span class="math">\(E_{\overrightarrow{C}}=0\)</span>.
-Actually, we could get zero energy even if we define <span class="math">\(T\)</span> to map <em>all</em> points on
-<span class="math">\(X\)</span> to the same <em>arbitrary</em> point on <span class="math">\(Y\)</span>: <span class="math">\(T(\x) := \y\)</span>.</p>
+<h3 id="approximatepoint-to-pointminimizer">Approximate point-to-point minimizer</h3>
 
-<!--
-> ### Symmetric energy for complete matches
-> 
-> If $X$ and $Y$ are _complete_ matches, then one way to remove these trivial
-> solutions is to minimize the symmetric energy summing energies from $X$ to $Y$
-> and from $Y$ to $X$:
-> 
-> \\[
-> E_C(T(X),Y) = E_{\overrightarrow{C}}(T(X),Y) + E_{\overrightarrow{C}}(Y,T(X)).
-> \\]
-> 
-> Appending the energy $E_{\overrightarrow{C}}(Y,T(X))$ measure the distance
-> from all points on $Y$ to the transformed surface $T(X)$ ensures that we will
-> not get zero energy if some part of $Y$ does not get matched to some part of
-> $X$.
--->
-
-<h3 id="rigidregularizationforpartialscans">Rigid regularization for partial scans</h3>
-
-<!--
-In the context of scanning, we usually have surfaces that only partially match.
-For example, suppose we have a complete surface $Y$ and we would like to align
-a new scan of some smaller part of this surface $X$. We know that all points on
-$X$ should have a corresponding match on $Y$, but not vice-versa. In this case,
-only the directed energy $E_{\overrightarrow{C}}(T(X),Y)$ is appropriate. 
-
-> We will assume (for now) that there are not also parts on $X$ without a match
-> on $Y$.
--->
-
-<p>We can avoid the trivial solutions by constraining <span class="math">\(T\)</span> to be a specific type of
-transformation. If <span class="math">\(X\)</span> and <span class="math">\(Y\)</span> are both from trustworthy scans of the same
-<a href="https://en.wikipedia.org/wiki/Rigid_body">rigid object</a>, then the
-transformation <span class="math">\(T\)</span> aligning <span class="math">\(X\)</span> to <span class="math">\(Y\)</span> should be a <em>rigid</em> transformation:
-<span class="math">\(T(\x) = \Rot \x + \t\)</span> where <span class="math">\(\Rot ∈ SO(3) ⊂ \R^{3×3}\)</span> is a rotation matrix
-(i.e., an <a href="https://en.wikipedia.org/wiki/Rotation_group_SO(3)">orthogonal matrix with determinant
-1</a>) and <span class="math">\(\t ∈ \R^3\)</span> is a
-translation vector:</p>
+<p>If we apply our linearization of <span class="math">\(\Rot\)</span> to the <strong>point-to-point</strong> distance
+linearization of the matching energy, our minimization becomes:</p>
 
 <p><span class="math">\[
-\mathop{\text{minimize}}_{\t∈\R³,\ \Rot ∈ SO(3)} ∑_{i=1}^k ‖\Rot \x_i + \t -
-\p_i‖².
+\mathop{\text{minimize}}_{\t∈\R³, α, β, γ} 
+  ∑_{i=1}^k \left\|
+  \left(\begin{array}{ccc}
+   0 & -γ &  β \\
+   γ &  0 & -α \\
+  -β &  α &  0 \\
+  \end{array}\right)
+  \x_i + \t - \p_i \right\|^2.
+\]</span></p>
+
+<p>This energy is quadratic in the translation vector <span class="math">\(\t\)</span> and the linearized
+rotation angles <span class="math">\(α\)</span>, <span class="math">\(β\)</span> and <span class="math">\(γ\)</span>. Let&#8217;s gather these degrees of freedom into a
+vector of unknowns: <span class="math">\(\u = [α β γ \t^\transpose] ∈ \R⁶\)</span>. Then we can write our
+problem in summation form as:</p>
+
+<p><span class="math">\[
+\mathop{\text{minimize}}_{\u∈\R⁶}
+  ∑_{i=1}^k \left\| 
+  \left(\begin{array}{cccccc}
+         0 &  x_{i,3} & -x_{i,2} & 1 & 0 & 0 \\
+  -x_{i,3} &        0 &  x_{i,1} & 0 & 1 & 0 \\
+   x_{i,2} & -x_{i,1} &        0 & 0 & 0 & 1
+  \end{array}\right) \u +
+  \x_i - \p_i \right\|^2.
+\]</span></p>
+
+<p>This can be written compactly in matrix form as:</p>
+
+<p><span class="math">\[
+\mathop{\text{minimize}}_{\u∈\R⁶}
+  \left\|
+  \underbrace{
+  \left(\begin{array}{cccccc}
+      0 &  \X_3 & -\X_2 & \One & 0    & 0 \\
+  -\X_3 &     0 &  \X_1 & 0    & \One & 0 \\
+   \X_2 & -\X_1 &     0 & 0    & 0    & \One
+  \end{array}\right)
+  }_{\A}
+  \u +
+\left[\begin{array}{c}
+  \X_1-\P_1 \\
+  \X_2-\P_2 \\
+  \X_3-\P_3
+\end{array}\right]
+  \right\|_F^2,
+\]</span>
+where we introduce the matrix <span class="math">\(\A ∈ \R^{3k × 6}\)</span> that gathers the columns
+<span class="math">\(\X_i\)</span> of <span class="math">\(\X\)</span> and columns of ones <span class="math">\(\One ∈ \R^k\)</span>.</p>
+
+<p>This quadratic energy is minimized with its partial derivatives with respect to
+entries in <span class="math">\(\u\)</span> are all zero:</p>
+
+<p><span class="math">\[
+\begin{align}
+\A^\transpose \A \u & = -\A^\transpose 
+\left[\begin{array}{c}
+  \X_1-\P_1 \\
+  \X_2-\P_2 \\
+  \X_3-\P_3
+\end{array}\right]
+, \\
+\u & = \left(\A^\transpose \A\right)^{-1} \left(-\A^\transpose
+\left[\begin{array}{c}
+  \X_1-\P_1 \\
+  \X_2-\P_2 \\
+  \X_3-\P_3
+\end{array}\right]
+\right),
+\end{align}
+\]</span></p>
+
+<p>Solving this small 6×6 system gives us our translation vector <span class="math">\(\t\)</span> and the
+linearized rotation angles <span class="math">\(α\)</span>, <span class="math">\(β\)</span> and <span class="math">\(γ\)</span>. If we simply assign </p>
+
+<p><span class="math">\[
+\Rot ←  \M := \I + 
+  \left(\begin{array}{ccc}
+   0 & -γ &  β \\
+   γ &  0 & -α \\
+  -β &  α &  0 \\
+  \end{array}\right)
+\]</span></p>
+
+<p>then our transformation will <em>not</em> be rigid. Instead, we should project <span class="math">\(\M\)</span>
+onto the space of rotation matrices.</p>
+
+<h4 id="recoveringapurerotationfromitslinearization">Recovering a pure rotation from its linearization</h4>
+
+<p>If <span class="math">\(α\)</span>, <span class="math">\(β\)</span> and <span class="math">\(γ\)</span> are all small, then it may be safe to <em>interpret</em> these
+values as rotation angles about the <span class="math">\(x\)</span>, <span class="math">\(y\)</span>, and <span class="math">\(z\)</span> axes respectively.</p>
+
+<p>In general, it is better to find the closest rotation matrix to <span class="math">\(\M\)</span>. In other
+words, we&#8217;d like to solve the small optimization problem:</p>
+
+<p><span class="math">\[
+\begin{align}
+\Rot^* 
+&= \argmin_{\Rot ∈ SO(3)} \left\| \Rot - \M \right\|_F^2 \\\\
+&= \argmin_{\Rot ∈ SO(3)} \left\| \M \right\|_F^2 + \left\| \Rot \right\|_F^2 - 2 \left<\Rot^\transpose, \M \right>_F\\\\
+&= \argmax_{\Rot ∈ SO(3)} \left<\Rot^\transpose, \M \right>_F
+\end{align}
+\]</span></p>
+
+<p>We now take advantage of the <a href="https://en.wikipedia.org/wiki/Singular_value_decomposition">singular value
+decomposition</a> of
+<span class="math">\(\M = \U Σ \V^\transpose\)</span>, where <span class="math">\(\U, \V ∈
+\R^{3×3}\)</span> are orthonormal matrices and <span class="math">\(Σ∈\R^{3×3}\)</span> is a diagonal matrix:</p>
+
+<p><span class="math">\[
+\begin{align}
+\Rot^*  
+  &= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\V Σ \U^\transpose \right>_F \\\\
+  &= \argmax_{\Rot ∈ SO(3)} \left<\V^\transpose \Rot \U, Σ \right>_F \\\\
+  &= \U \left( \argmax_{Ω ∈ O(3),\ \det{Ω} = \det{\U\V^\transpose}} \left<Ω, Σ \right>_F \right) \V^\transpose,\\\\
+\end{align}
+\]</span></p>
+
+<p>where the optimization argument <span class="math">\(Ω ∈ O(3)\)</span> is an orthogonal matrix, but may be
+either a reflection (<span class="math">\(\det{Ω} = -1\)</span>) or a rotation ((<span class="math">\(\det{Ω} = 1\)</span>) depending
+on the SVD on <span class="math">\(\M\)</span>. This ensures that as a result <span class="math">\(\R^*\)</span> will have determinant
+1. The optimal choice of <span class="math">\(Ω\)</span> is to set all values to zero except on the
+diagonal, where we place all 1s except the bottom right corner (corresponding
+to the smallest singular value in <span class="math">\(Σ\)</span>) which is set to <span class="math">\(\det{\U\V^\transpose}\)</span>:</p>
+
+<p><span class="math">\[
+Ω_{ij} = \begin{cases}
+1 & \text{ if $i=j\lt3$} \\\\
+\det{\U\V^\transpose} & \text{ if $i=j=3$} \\\\
+0 & \text{ otherwise.}
+\end{cases}
+\]</span></p>
+
+<p>Finally, we have a formula for our optimal rotation:</p>
+
+<p><span class="math">\[
+\Rot = \U Ω \V^\transpose.
 \]</span></p>
 
 <blockquote>
-<p>It is worth pausing to notice that we have significantly reduced the problem
-to finding a single translation <span class="math">\(\t\)</span> and a single rotation matrix <span class="math">\(\R\)</span> to
-align all <span class="math">\(k\)</span> sample points on <span class="math">\(X\)</span> to <span class="math">\(Y\)</span>.</p>
-</blockquote>
+<h3 id="closed-formpoint-to-pointminimizer">Closed-form point-to-point minimizer</h3>
+
+<p><em>Interestingly</em>, despite the non-linear constraint on <span class="math">\(\Rot\)</span> there is actually
+a closed-form solution to the point-to-point matching problem:</p>
+
+<p><span class="math">\[
+\mathop{\text{minimize}}_{\t∈\R³,\ \Rot ∈ SO(3)} ∑_{i=1}^k ‖\Rot \x_i + \t - \p_i‖²,
+\]</span></p>
 
 <p>This is a variant of what&#8217;s known as a <a href="https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem">Procrustes
 problem</a>, named
@@ -625,8 +594,7 @@ would kidnap people and force them to fit in his bed by stretching them or
 cutting off their legs. In our case, we are forcing <span class="math">\(\Rot\)</span> to be perfectly
 orthogonal (no &#8220;longer&#8221;, no &quot;shorter).</p>
 
-<p>Solving this kind of problem relies on some linear algebra kung fu, but the
-solution will be beautifully simple.</p>
+<h4 id="substitutingoutthetranslationterms">Substituting out the translation terms</h4>
 
 <p>This energy is <em>quadratic</em> in <span class="math">\(\t\)</span> and there are no other constraints on
 <span class="math">\(\t\)</span>. We can immediately solve for the optimal <span class="math">\(\t^*\)</span>&#8212;leaving <span class="math">\(\Rot\)</span> as an unknown&#8212;by
@@ -697,45 +665,77 @@ matrix</a> of <span class="math">\(\X\)</span> and <span class="math">\(\P\)</sp
 &= \argmin_{\Rot ∈ SO(3)} \left<\Rot \overline{\X}^\transpose - \overline{\P}^\transpose , \Rot \overline{\X}^\transpose - \overline{\P}^\transpose \right>_F\\\\
 &= \argmin_{\Rot ∈ SO(3)} \left\| \overline{\X} \right\|_F^2 + \left\| \overline{\P} \right\|_F^2 - 2 \left<\Rot \overline{\X}^\transpose , \overline{\P}^\transpose \right>_F\\\\
 &= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\overline{\P}\,\overline{\X}^\transpose\right>_F\\\\
+&= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\M\right>_F\\\\
 \end{align}
 \]</span></p>
 
-<p>We now take advantage of the <a href="https://en.wikipedia.org/wiki/Singular_value_decomposition">singular value
-decomposition</a> of
-<span class="math">\(\overline{\X}^\transpose \overline{P} = \U Σ \V^\transpose\)</span>, where <span class="math">\(\U, \V ∈
-\R^{3×3}\)</span> are orthonormal matrices and <span class="math">\(Σ∈\R^{3×3}\)</span> is a diagonal matrix:</p>
+<p>Letting <span class="math">\(\M = \overline{\P}\,\overline{\X}^\transpose\)</span> we can now follow the
+steps above using <a href="https://en.wikipedia.org/wiki/Singular_value_decomposition">singular value
+decomposition</a> to
+find the optimal <span class="math">\(\Rot\)</span>.</p>
+</blockquote>
+
+<h3 id="approximatepoint-to-planeminimizer">Approximate point-to-plane minimizer</h3>
+
+<p>If we apply our linearization of <span class="math">\(\Rot\)</span> to the <strong>point-to-plane</strong> distance
+linearization of the matching energy, our minimization is:</p>
 
 <p><span class="math">\[
-\begin{align}
-\Rot^*  
-  &= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\V Σ \U^\transpose \right>_F \\\\
-  &= \argmax_{\Rot ∈ SO(3)} \left<\V^\transpose \Rot \U, Σ \right>_F \\\\
-  &= \U \left( \argmax_{Ω ∈ O(3),\ \det{Ω} = \det{\U\V^\transpose}} \left<Ω, Σ \right>_F \right) \V^\transpose,\\\\
-\end{align}
-\]</span>
-where the optimization argument <span class="math">\(Ω ∈ O(3)\)</span> is an orthogonal matrix, but may be
-either a reflection (<span class="math">\(\det{Ω} = -1\)</span>) or a rotation ((<span class="math">\(\det{Ω} = 1\)</span>) depending
-on the SVD on <span class="math">\(\overline{\X}^\transpose \overline{P}\)</span>. This ensures that as a
-result <span class="math">\(\R^*\)</span> will have determinant 1. The optimal choice of <span class="math">\(Ω\)</span> is to set all
-values to zero except on the diagonal, where we place all 1s except the bottom
-right corner (corresponding to the smallest singular value in <span class="math">\(Σ\)</span>) which is set
-to <span class="math">\(\det{\U\V^\transpose}\)</span>:</p>
-
-<p><span class="math">\[
-Ω_{ij} = \begin{cases}
-1 & \text{ if $i=j\lt3$} \\\\
-\det{\U\V^\transpose} & \text{ if $i=j=3$} \\\\
-0 & \text{ otherwise.}
-\end{cases}
+\mathop{\text{minimize}}_{\t∈\R³, α, β, γ} 
+  ∑_{i=1}^k 
+  \left( 
+  \left(
+  \left(\begin{array}{ccc}
+   0 & -γ &  β \\
+   γ &  0 & -α \\
+  -β &  α &  0 \\
+  \end{array}\right)\x_i +
+  \x_i + \t - \p_i 
+  \right)⋅\n_i
+  \right)^2.
 \]</span></p>
 
-<p>Finally, we have a formula for our optimal rotation:</p>
+<p>We can follow similar steps as above. Let&#8217;s gather a vector of unknowns: <span class="math">\(\u =
+[α β γ \t^\transpose] ∈ \R⁶\)</span>. Then we can write our problem in summation form
+as:</p>
 
 <p><span class="math">\[
-\Rot = \U Ω \V^\transpose.
+\mathop{\text{minimize}}_{\u∈\R⁶}
+  ∑_{i=1}^k \left(\n_i^\transpose 
+  \left(\begin{array}{cccccc}
+         0 &  x_{i,3} & -x_{i,2} & 1 & 0 & 0 \\
+  -x_{i,3} &        0 &  x_{i,1} & 0 & 1 & 0 \\
+   x_{i,2} & -x_{i,1} &        0 & 0 & 0 & 1
+  \end{array}\right) \u +
+  \n_i^\transpose(\x_i - \p_i) \right)^2.
 \]</span></p>
 
-<h3 id="uniformrandomsamplingofatrianglemesh">Uniform random sampling of a triangle mesh</h3>
+<p>This can be written compactly in matrix form as:</p>
+
+<p><span class="math">\[
+\mathop{\text{minimize}}_{\u∈\R⁶}
+  \left(
+  \left[\begin{array}{ccc} \text{diag}(\N_1) & \text{diag}(\N_2) & \text{diag}(\N_2)\end{array}\right]
+  \left( 
+  \A
+  \u +
+\left[\begin{array}{c}
+  \X_1-\P_1 \\
+  \X_2-\P_2 \\
+  \X_3-\P_3
+\end{array}\right]\right)
+  \right)^2,
+\]</span></p>
+
+<p>where <span class="math">\(\N_i\)</span> is the ith column from the matrix of normals <span class="math">\(\N ∈ \R^{k × 3}\)</span>,
+<span class="math">\(\text{diag}(\v)\)</span> <a href="https://en.wikipedia.org/wiki/Diagonal_matrix#Matrix_operations">creates a diagonal
+matrix</a> from a
+vector, and <span class="math">\(\A ∈ \R^{3k × 6}\)</span> is the same as above.</p>
+
+<p>This energy is quadratic in <span class="math">\(\u\)</span> and can be solve by setting all partial
+derivatives with respect to <span class="math">\(\u\)</span> to zero.</p>
+
+<h2 id="uniformrandomsamplingofatrianglemesh">Uniform random sampling of a triangle mesh</h2>
 
 <p>Our last missing piece is to sample the surface of a triangle mesh <span class="math">\(X\)</span> with <span class="math">\(m\)</span>
 faces uniformly randomly. This allows us to approximate <em>continuous</em> integrals
@@ -846,11 +846,15 @@ the derivation above.</p>
 <p>You may not use the following libigl functions:</p>
 
 <ul>
-<li><code>igl::random_points_on_mesh</code></li>
-<li><code>igl::point_simplex_squared_distance</code></li>
-<li><code>igl::point_mesh_squared_distance</code></li>
-<li><code>igl::hausdorff</code></li>
 <li><code>igl::AABB</code></li>
+<li><code>igl::fit_rotations</code></li>
+<li><code>igl::hausdorff</code></li>
+<li><code>igl::point_mesh_squared_distance</code></li>
+<li><code>igl::point_simplex_squared_distance</code></li>
+<li><code>igl::polar_dec</code></li>
+<li><code>igl::polar_svd3x3</code></li>
+<li><code>igl::polar_svd</code></li>
+<li><code>igl::random_points_on_mesh</code></li>
 </ul>
 
 <h3 id="whitelist">Whitelist</h3>
@@ -858,29 +862,44 @@ the derivation above.</p>
 <p>You are encouraged to use the following libigl functions:</p>
 
 <ul>
-<li><code>igl::doublearea</code> computes triangle areas</li>
 <li><code>igl::cumsum</code> computes cumulative sum</li>
+<li><code>igl::doublearea</code> computes triangle areas</li>
+<li><code>igl::per_face_normals</code> computes normal vectors for each triangle face</li>
 </ul>
 
 <h3 id="srcrandom_points_on_mesh.cpp"><code>src/random_points_on_mesh.cpp</code></h3>
 
-<p>Inputs VX,FX outputs X</p>
+<p>Generate <code>n</code> random points uniformly sampled <em>on</em> a given triangle mesh with
+vertex positions <code>VX</code> and face indices <code>FX</code>. The output random points should be
+returned as pairs of <a href="https://en.wikipedia.org/wiki/Barycentric_coordinate_system#Barycentric_coordinates_on_triangles">barycentric
+coordinates</a>
+(rows in <code>B</code>) and a face index (corresponding entry in <code>FI</code>).</p>
 
 <h3 id="srcpoint_triangle_distance.cpp"><code>src/point_triangle_distance.cpp</code></h3>
 
-<p>Inputs x,va,vb,vc outputs p and d</p>
+<p>Compute the distance <code>d</code> between a given point <code>x</code> and the closest point <code>p</code> on
+a given triangle with corners <code>a</code>, <code>b</code>, and <code>c</code>.</p>
 
 <h3 id="srcpoint_mesh_distance.cpp"><code>src/point_mesh_distance.cpp</code></h3>
 
-<p>Inputs X,VY,FY outputs P and D</p>
+<p>Compute the distances <code>D</code> between a set of given points <code>X</code> and their closest
+points <code>P</code> on a given mesh with vertex positions <code>VY</code> and face indices <code>FY</code>.</p>
 
-<h3 id="srclower_bound_hausdorff.cpp"><code>src/lower_bound_hausdorff.cpp</code></h3>
+<h3 id="srchausdorff_lower_bound.cpp"><code>src/hausdorff_lower_bound.cpp</code></h3>
 
-<p>Inputs VX,FX,VY,FY outputs d</p>
+<p>Compute a lower bound on the <em>directed</em> Hausdorff distance from a given mesh
+(<code>VX</code>,<code>FX</code>) to another mesh (<code>VY</code>,<code>FY</code>). This function should be implemented by
+randomly sampling the <span class="math">\(X\)</span> mesh.</p>
 
 <h3 id="srcpoint_to_point_rigid_matching.cpp"><code>src/point_to_point_rigid_matching.cpp</code></h3>
 
-<p>Inputs X,P. Outputs R,t</p>
+<p>Given a set of source points X and corresponding target points P, find the
+optimal rigid transformation (R,t) that aligns X to P, minimizing the
+matching energy:</p>
+
+<p><span class="math">\[
+‖ R X' - t' 1' - P' ‖²
+\]</span></p>
 
 <h3 id="srcpoint_to_plane_rigid_matching.cpp"><code>src/point_to_plane_rigid_matching.cpp</code></h3>
 
@@ -888,9 +907,16 @@ the derivation above.</p>
 
 <h3 id="srcicp.cpp"><code>src/icp.cpp</code></h3>
 
-<p>Inputs VX,FX,VY,FY, enum POINT_TO_*</p>
+<p>Using the iterative closest point method align (<code>VX</code>,<code>FX</code>) to (<code>VY</code>,<code>FY</code>) by
+finding the rigid transformation (<code>R</code>,<code>t</code>) minimizing the matching energy:</p>
 
-<p>outputs R,t </p>
+<p><span class="math">\[
+   ∫_X ‖ Rx+t - P_Y( Rx +t ) ‖² dA
+\]</span></p>
+
+<p>The caller can specify the number of samples <code>num_samples</code> used to approximate
+the integral over <span class="math">\(X\)</span> and the number of iterations <code>num_iters</code> to run (mostly
+useful to set <code>num_iters=1</code> so we can visualize the progress).</p>
 
 </body>
 </html>
