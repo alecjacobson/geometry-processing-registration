@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 
   int num_samples = 100;
   bool show_samples = true;
-  ICPMethod method = ICP_METHOD_POINT_TO_PLANE;
+  ICPMethod method = ICP_METHOD_POINT_TO_POINT;
 
   // Create a libigl Viewer object to toggle between point cloud and mesh
   igl::viewer::Viewer viewer;
