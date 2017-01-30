@@ -501,7 +501,7 @@ $\M = \U Σ \V^\transpose$, where $\U, \V ∈
 
 where the optimization argument $Ω ∈ O(3)$ is an orthogonal matrix, but may be
 either a reflection ($\det{Ω} = -1$) or a rotation (($\det{Ω} = 1$) depending
-on the SVD on $\M$. This ensures that as a result $\R^*$ will have determinant
+on the SVD on $\M$. This ensures that as a result $\Rot^*$ will have determinant
 1. The optimal choice of $Ω$ is to set all values to zero except on the
 diagonal, where we place all 1s except the bottom right corner (corresponding
 to the smallest singular value in $Σ$) which is set to $\det{\U\V^\transpose}$:
