@@ -25,6 +25,12 @@ void point_triangle_distance(
 	A.row(3) = Eigen::Vector4d(1, 1, 1, 0);
 	Eigen::Vector4d B = Eigen::Vector4d(a.dot(x), b.dot(x), c.dot(x), 1);
 	Eigen::Vector4d bary = A.inverse()*B;//I think at 4x4, it's faster to directly compute the inverse than it is to solve.
+	//Need to clamp and renormalize the barycentric coordinates, since they're not guarateed to be >0.
+	bary.w() = 0;
+	bary.x() = std::max(bary.x(), 0.0);
+	bary.y() = std::max(bary.y(), 0.0);
+	bary.z() = std::max(bary.z(), 0.0);
+	bary.normalize();
 
 	p = bary(0)*a + bary(1)*b + bary(2)*c;
 	d = (x - p).norm();
