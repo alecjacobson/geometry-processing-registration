@@ -350,6 +350,12 @@ translation vector $\t∈\R³$ that _best_ aligns a given a set of points $\X �
 on the target mesh. We have two choices for _linearizing_ our matching energy:
 point-to-point (gradient descent) and point-to-plane (Gauss-Newton).
 
+![ICP using the point-to-point matching energy linearization is slow to
+converge.](images/max-point-to-point.gif)
+
+![ICP using the point-to-plane matching energy linearization is
+faster.](images/max-point-to-plane.gif)
+
 In either case, this is still a non-linear optimization problem. This time due
 to the [constraints](https://en.wikipedia.org/wiki/Constrained_optimization)
 rather than the energy term. 
@@ -832,14 +838,11 @@ normals `N`, find the optimal rigid transformation (`R`,`t`) that aligns `X` to
 planes passing through `P` orthogonal to `N`, minimizing the point-to-point
 matching energy.
 
-### `src/icp.cpp`
-Using the iterative closest point method align (`VX`,`FX`) to (`VY`,`FY`) by
-finding the rigid transformation (`R`,`t`) minimizing the matching energy:
-
-\\[
-   ∫_X ‖ Rx+t - P_Y( Rx +t ) ‖² dA
-\\]
+### `src/icp_single_iteration.cpp`
+Conduct a _single iteration_ of the iterative closest point method align
+(`VX`,`FX`) to (`VY`,`FY`) by finding the rigid transformation (`R`,`t`)
+minimizing the matching energy.
 
 The caller can specify the number of samples `num_samples` used to approximate
-the integral over $X$ and the number of iterations `num_iters` to run (mostly
-useful to set `num_iters=1` so we can visualize the progress).
+the integral over $X$ and specify the `method` (point-to-point or
+point-to-plane).

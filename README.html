@@ -413,6 +413,20 @@ translation vector <span class="math">\(\t∈\R³\)</span> that <em>best</em> al
 on the target mesh. We have two choices for <em>linearizing</em> our matching energy:
 point-to-point (gradient descent) and point-to-plane (Gauss-Newton).</p>
 
+<figure>
+<img src="images/max-point-to-point.gif" alt="ICP using the point-to-point matching energy linearization is slow to
+converge." />
+<figcaption>ICP using the point-to-point matching energy linearization is slow to
+converge.</figcaption>
+</figure>
+
+<figure>
+<img src="images/max-point-to-plane.gif" alt="ICP using the point-to-plane matching energy linearization is
+faster." />
+<figcaption>ICP using the point-to-plane matching energy linearization is
+faster.</figcaption>
+</figure>
+
 <p>In either case, this is still a non-linear optimization problem. This time due
 to the <a href="https://en.wikipedia.org/wiki/Constrained_optimization">constraints</a>
 rather than the energy term. </p>
@@ -735,6 +749,14 @@ vector, and <span class="math">\(\A ∈ \R^{3k × 6}\)</span> is the same as abo
 <p>This energy is quadratic in <span class="math">\(\u\)</span> and can be solve by setting all partial
 derivatives with respect to <span class="math">\(\u\)</span> to zero.</p>
 
+<blockquote>
+<h3 id="closed-formpoint-to-pointminimizer">Closed-form point-to-point minimizer</h3>
+
+<p>To the best of my knowledge, no known closed-form solution exists. I am not
+sure whether it <strong><em>can not</em></strong> exist or just whether no one has figured it out
+(or they did and I just do not know about it).</p>
+</blockquote>
+
 <h2 id="uniformrandomsamplingofatrianglemesh">Uniform random sampling of a triangle mesh</h2>
 
 <p>Our last missing piece is to sample the surface of a triangle mesh <span class="math">\(X\)</span> with <span class="math">\(m\)</span>
@@ -828,19 +850,6 @@ understand sections 3.2&#8211;3.3 of Sofien Bouaziz&#8217;s PhD thesis &#8220;Re
 Tracking and Animation&#8221; 2015. <em>Understanding</em> this may require digging into
 wikipedia, other online resources or other papers.</p>
 
-<h3 id="derivationofoptimalrigidmotionforpoint-to-planelinearization">Derivation of optimal rigid motion for point-to-plane linearization</h3>
-
-<p>This mathematical derivation task is not directly graded but it will reveal to
-you how to code the <code>src/point_to_plane_rigid_matching.cpp</code> task below.</p>
-
-<p>In the <a href="#background">Background</a> material above, we have derived the optimal
-rigid motion (rotation <span class="math">\(\Rot\)</span> and translation <span class="math">\(\t\)</span>) assuming the
-&#8220;point-to-point&#8221; linearization of the ICP matching energy.</p>
-
-<p>Derive an analogous optimal rigid motion assuming the &#8220;point-to-plane&#8221;
-linearization of the ICP matching energy. The steps will follow very closely to
-the derivation above.</p>
-
 <h3 id="blacklist">Blacklist</h3>
 
 <p>You may not use the following libigl functions:</p>
@@ -870,10 +879,7 @@ the derivation above.</p>
 <h3 id="srcrandom_points_on_mesh.cpp"><code>src/random_points_on_mesh.cpp</code></h3>
 
 <p>Generate <code>n</code> random points uniformly sampled <em>on</em> a given triangle mesh with
-vertex positions <code>VX</code> and face indices <code>FX</code>. The output random points should be
-returned as pairs of <a href="https://en.wikipedia.org/wiki/Barycentric_coordinate_system#Barycentric_coordinates_on_triangles">barycentric
-coordinates</a>
-(rows in <code>B</code>) and a face index (corresponding entry in <code>FI</code>).</p>
+vertex positions <code>VX</code> and face indices <code>FX</code>. </p>
 
 <h3 id="srcpoint_triangle_distance.cpp"><code>src/point_triangle_distance.cpp</code></h3>
 
@@ -883,7 +889,14 @@ a given triangle with corners <code>a</code>, <code>b</code>, and <code>c</code>
 <h3 id="srcpoint_mesh_distance.cpp"><code>src/point_mesh_distance.cpp</code></h3>
 
 <p>Compute the distances <code>D</code> between a set of given points <code>X</code> and their closest
-points <code>P</code> on a given mesh with vertex positions <code>VY</code> and face indices <code>FY</code>.</p>
+points <code>P</code> on a given mesh with vertex positions <code>VY</code> and face indices <code>FY</code>.
+For each point in <code>P</code> also output a corresponding normal in <code>N</code>.</p>
+
+<blockquote>
+<p>It is OK to assume that all points in <code>P</code> lie inside (rather than exactly at
+vertices or exactly along edges) for the purposes of normal computation in
+<code>N</code>.</p>
+</blockquote>
 
 <h3 id="srchausdorff_lower_bound.cpp"><code>src/hausdorff_lower_bound.cpp</code></h3>
 
@@ -891,32 +904,35 @@ points <code>P</code> on a given mesh with vertex positions <code>VY</code> and 
 (<code>VX</code>,<code>FX</code>) to another mesh (<code>VY</code>,<code>FY</code>). This function should be implemented by
 randomly sampling the <span class="math">\(X\)</span> mesh.</p>
 
+<h3 id="srcclosest_rotation.cpp"><code>src/closest_rotation.cpp</code></h3>
+
+<p>Given a 3×3 matrix <code>M</code>, find the closest rotation matrix <code>R</code>.</p>
+
 <h3 id="srcpoint_to_point_rigid_matching.cpp"><code>src/point_to_point_rigid_matching.cpp</code></h3>
 
 <p>Given a set of source points X and corresponding target points P, find the
 optimal rigid transformation (R,t) that aligns X to P, minimizing the
-matching energy:</p>
+point-to-point matching energy.</p>
 
-<p><span class="math">\[
-‖ R X' - t' 1' - P' ‖²
-\]</span></p>
+<p>You may implement either that &#8220;Approximate&#8221; solution via linearizing the
+rotation matrix or the &#8220;closed form&#8221; solution</p>
 
 <h3 id="srcpoint_to_plane_rigid_matching.cpp"><code>src/point_to_plane_rigid_matching.cpp</code></h3>
 
-<p>Inputs X,P,N. Outputs R,t</p>
+<p>Given a set of source points <code>X</code> and corresponding target points <code>P</code> and their
+normals <code>N</code>, find the optimal rigid transformation (<code>R</code>,<code>t</code>) that aligns <code>X</code> to
+planes passing through <code>P</code> orthogonal to <code>N</code>, minimizing the point-to-point
+matching energy.</p>
 
-<h3 id="srcicp.cpp"><code>src/icp.cpp</code></h3>
+<h3 id="srcicp_single_iteration.cpp"><code>src/icp_single_iteration.cpp</code></h3>
 
-<p>Using the iterative closest point method align (<code>VX</code>,<code>FX</code>) to (<code>VY</code>,<code>FY</code>) by
-finding the rigid transformation (<code>R</code>,<code>t</code>) minimizing the matching energy:</p>
-
-<p><span class="math">\[
-   ∫_X ‖ Rx+t - P_Y( Rx +t ) ‖² dA
-\]</span></p>
+<p>Conduct a <em>single iteration</em> of the iterative closest point method align
+(<code>VX</code>,<code>FX</code>) to (<code>VY</code>,<code>FY</code>) by finding the rigid transformation (<code>R</code>,<code>t</code>)
+minimizing the matching energy.</p>
 
 <p>The caller can specify the number of samples <code>num_samples</code> used to approximate
-the integral over <span class="math">\(X\)</span> and the number of iterations <code>num_iters</code> to run (mostly
-useful to set <code>num_iters=1</code> so we can visualize the progress).</p>
+the integral over <span class="math">\(X\)</span> and specify the <code>method</code> (point-to-point or
+point-to-plane).</p>
 
 </body>
 </html>
