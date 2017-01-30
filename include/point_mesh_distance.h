@@ -12,12 +12,14 @@
 // Outputs:
 //   D  #X list of distances from X to P 
 //   P  #X by 3 list of 3d position of closest points
+//   N  #X by 3 list of 3d unit normal vectors of closest points
 void point_mesh_distance(
   const Eigen::MatrixXd & X,
   const Eigen::MatrixXd & VY,
   const Eigen::MatrixXi & FY,
   Eigen::VectorXd & D,
-  Eigen::MatrixXd & P);
+  Eigen::MatrixXd & P,
+  Eigen::MatrixXd & N);
 
 #endif
 

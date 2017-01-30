@@ -8,14 +8,11 @@
 //   V  #V by dim list of mesh vertex positions
 //   F  #F by 3 list of mesh triangle indices
 // Outputs:
-//   B  n by 3 list of barycentric coordinates, ith row are coordinates of
-//     ith sampled point in face FI(i)
-//   FI  n list of indices into F 
+//   X  n by 3 list of random points on (V,F)
 //
 void random_points_on_mesh(
   const int n,
   const Eigen::MatrixXd & V,
   const Eigen::MatrixXi & F,
-  Eigen::MatrixXd & B,
-  Eigen::VectorXi & FI);
+  Eigen::MatrixXd & X);
 #endif

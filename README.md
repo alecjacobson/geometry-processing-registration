@@ -795,10 +795,7 @@ You are encouraged to use the following libigl functions:
 ### `src/random_points_on_mesh.cpp`
 
 Generate `n` random points uniformly sampled _on_ a given triangle mesh with
-vertex positions `VX` and face indices `FX`. The output random points should be
-returned as pairs of [barycentric
-coordinates](https://en.wikipedia.org/wiki/Barycentric_coordinate_system#Barycentric_coordinates_on_triangles)
-(rows in `B`) and a face index (corresponding entry in `FI`).
+vertex positions `VX` and face indices `FX`. 
 
 ### `src/point_triangle_distance.cpp`
 Compute the distance `d` between a given point `x` and the closest point `p` on
@@ -807,6 +804,11 @@ a given triangle with corners `a`, `b`, and `c`.
 ### `src/point_mesh_distance.cpp`
 Compute the distances `D` between a set of given points `X` and their closest
 points `P` on a given mesh with vertex positions `VY` and face indices `FY`.
+For each point in `P` also output a corresponding normal in `N`.
+
+> It is OK to assume that all points in `P` lie inside (rather than exactly at
+> vertices or exactly along edges) for the purposes of normal computation in
+> `N`.
 
 ### `src/hausdorff_lower_bound.cpp`
 Compute a lower bound on the _directed_ Hausdorff distance from a given mesh
