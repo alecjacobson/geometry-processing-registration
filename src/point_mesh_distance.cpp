@@ -15,8 +15,6 @@ void point_mesh_distance(
   igl::per_face_normals(VY, FY, NY);
   
   // Find the closest projection point on the mesh for each point in X
-  P.resizeLike(X);
-  N.resizeLike(X);
   double d;
   Eigen::RowVector3d p;
   for(int i = 0; i < X.rows(); i++) {
