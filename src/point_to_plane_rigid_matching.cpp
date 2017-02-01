@@ -2,7 +2,7 @@
 #include "closest_rotation.h"
 #include <Eigen/Dense>
 
-void point_to_point_rigid_matching(
+void point_to_plane_rigid_matching(
   const Eigen::MatrixXd & X,
   const Eigen::MatrixXd & P,
   const Eigen::MatrixXd & N,
