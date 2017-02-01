@@ -20,7 +20,7 @@ void point_to_point_rigid_matching(
   
   // Find M
   Eigen::Matrix3d M;
-  M = X_bar.transpose() * P_bar;
+  M = P_bar.transpose() * X_bar;
   
   // Find R
   closest_rotation(M, R);
