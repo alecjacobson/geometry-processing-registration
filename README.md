@@ -712,7 +712,7 @@ index $T$ and then uniformly random point in that triangle $\x$ is indeed
 uniform over the surface:
 
 \\[
-h(T) g_T(\x) = \frac{A_T}{A_X} \frac{1}{A_T} = \frac{1}{A_T} = f(\x).
+h(T) g_T(\x) = \frac{A_T}{A_X} \frac{1}{A_T} = \frac{1}{A_X} = f(\x).
 \\]
 
 ### Uniform random sampling of a single triangle
@@ -743,7 +743,7 @@ sum](https://en.wikipedia.org/wiki/Running_total) $\C ∈ \R^{m}$ of the relativ
 areas:
 
 \\[
-C_i = ∑_{j=1}^m \frac{A_j}{A_X},
+C_i = ∑_{j=1}^i \frac{A_j}{A_X},
 \\]
 
 Then our random index is found by identifying the first entry in $\C$ whose
