@@ -29,7 +29,7 @@ void point_triangle_distance(
   proj = x + t*n;
   
   // Find barycentric point on triangle and clamp if necessary
-  /*Eigen::RowVector3d bary;
+  Eigen::RowVector3d bary;
   igl::barycentric_coordinates(proj, a, b, c, bary);
   double num;
   if (bary(0) < 0) {
@@ -51,6 +51,5 @@ void point_triangle_distance(
   p = (bary(0) * a) + (bary(1) * b) + (bary(2) * c);
   
   // Find distance
-  d = sqrt( pow(x(0) - p(0), 2) + pow(x(1) - p(1), 2) + pow(x(2) - p(2), 2) );*/
-  d = sqrt( pow( x(0) - proj(0), 2) + pow( x(1)- proj(1), 2) + pow( x(2) - proj(2), 2) );
+  d = sqrt( pow(x(0) - p(0), 2) + pow(x(1) - p(1), 2) + pow(x(2) - p(2), 2) );
 }

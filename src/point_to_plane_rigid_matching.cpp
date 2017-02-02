@@ -34,7 +34,7 @@ void point_to_plane_rigid_matching(
   }
   
   // Solve for Cu = -b;
-  u = C.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV).solve(b);
+  u = C.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV).solve(-1 * b);
   
   // Retrieve rotation matrix: alpha=u(0), beta=u(1), gamma=u(2)
   Eigen::MatrixXd M(3,3);
