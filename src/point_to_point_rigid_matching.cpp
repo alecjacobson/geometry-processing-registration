@@ -10,17 +10,19 @@ void point_to_point_rigid_matching(
 {
   // Find p_hat and x_hat
   Eigen::RowVector3d p_hat, x_hat;
-  x_hat = X.colwise().sum() / X.rows();
-  p_hat = P.colwise().sum() / P.rows();
+  x_hat = X.colwise().sum() / (double) X.rows();
+  p_hat = P.colwise().sum() / (double) P.rows();
   
   // Find P_bar and X_bar
   Eigen::MatrixXd X_bar(X.rows(), 3), P_bar(P.rows(), 3);
-  X_bar = X - x_hat.replicate(1, X.rows());
-  P_bar = P - p_hat.replicate(1, X.rows());
+  for (int i = 0; i < X.rows(); i++) {
+    X_bar.row(i) = X.row(i) - x_hat;
+    P_bar.row(i) = P.row(i) - p_hat;
+  }
   
   // Find M
   Eigen::Matrix3d M;
-  M = P_bar.transpose() * X_bar;
+  M = P_bar * X_bar.transpose();
   
   // Find R
   closest_rotation(M, R);

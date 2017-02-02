@@ -4,21 +4,19 @@
 #include <random>
 
 double getRandom() {
-  std::default_random_engine gen;
-  std::uniform_real_distribution<double> dist(0.0, 1.0);
-  return dist(gen);
+  double r = ((double) rand() / (RAND_MAX));
+  return r;
 }
 
 void getCumulativeInfo(const Eigen::MatrixXd & V, const Eigen::MatrixXi & F, Eigen::VectorXd & C) {
   Eigen::VectorXd a(F.rows());
   igl::doublearea(V, F, a);
-  double total_area = a.sum();
-  a = a / total_area;
-  igl::cumsum(a, a.rows(), C);
+  igl::cumsum(a, 1, C);
+  C = C / C(F.rows() - 1);
 }
 
+// Return the row number of the chosen triangle
 int getTriangle(const Eigen::VectorXd & C) {
-  // Return the row number of the chosen triangle
   double g = getRandom();
   int count = 0;
   while (C(count) < g && count < C.rows()) {
@@ -34,7 +32,6 @@ void random_points_on_mesh(
   const Eigen::MatrixXi & F,
   Eigen::MatrixXd & X)
 {
-  // REPLACE WITH YOUR CODE:
   X.resize(n,3);
   
   // Construct cumulative array
@@ -43,7 +40,7 @@ void random_points_on_mesh(
   
   int f_row, v1, v2, v3;
   double alpha, beta;
-  for(int i = 0; i<X.rows(); i++) {
+  for(int i = 0; i < X.rows(); i++) {
     
     // randomly pick a triangle from F
     f_row = getTriangle(C);
