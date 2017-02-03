@@ -1,4 +1,7 @@
 #include "point_triangle_distance.h"
+#include <igl/per_face_normals.h>
+
+using namespace Eigen;
 
 void point_triangle_distance(
   const Eigen::RowVector3d & x,
@@ -8,7 +11,29 @@ void point_triangle_distance(
   double & d,
   Eigen::RowVector3d & p)
 {
-  // Replace with your code
-  d = 0;
-  p = a;
+	RowVector3d n = (a - b).cross(a - c);
+	n.normalize();
+
+	//closest point on the plane of the triangle
+	RowVector3d x_0 = x + n.dot(a - x) * n;
+
+	Matrix3d v;
+	v.col(0) = a;
+	v.col(1) = b;
+	v.col(2) = c;
+
+	// compute barycentric coordinates
+	RowVector3d bary = x * v.inverse();
+
+	if (bary(0) < 0)
+		bary(0) = 0;
+	if (bary(1) < 0)
+		bary(1) = 0;
+	if (bary(2) < 0)
+		bary(2) = 0;
+
+	bary.normalize();
+
+	p = bary * v;
+	d = (x - p).norm();
 }
