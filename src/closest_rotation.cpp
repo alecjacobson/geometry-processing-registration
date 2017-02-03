@@ -15,7 +15,7 @@ void closest_rotation(
   Eigen::Matrix3d omega = Eigen::Matrix3d::Identity();
   omega(2,2) = det;
 
-  R = svd.matrixU() * omega * svd.matrixV().transpose();
+  R = svd.matrixV() * omega * svd.matrixU().transpose();
 
 
 }
