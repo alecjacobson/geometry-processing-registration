@@ -678,12 +678,12 @@ matrix</a> of <span class="math">\(\X\)</span> and <span class="math">\(\P\)</sp
 &= \argmin_{\Rot ∈ SO(3)} \left\| \Rot \overline{\X}^\transpose - \overline{\P}^\transpose \right\|_F^2 \\\\
 &= \argmin_{\Rot ∈ SO(3)} \left<\Rot \overline{\X}^\transpose - \overline{\P}^\transpose , \Rot \overline{\X}^\transpose - \overline{\P}^\transpose \right>_F\\\\
 &= \argmin_{\Rot ∈ SO(3)} \left\| \overline{\X} \right\|_F^2 + \left\| \overline{\P} \right\|_F^2 - 2 \left<\Rot \overline{\X}^\transpose , \overline{\P}^\transpose \right>_F\\\\
-&= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\overline{\P}\,\overline{\X}^\transpose\right>_F\\\\
+&= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\overline{\P}^\transpose\,\overline{\X}\right>_F\\\\
 &= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\M\right>_F\\\\
 \end{align}
 \]</span></p>
 
-<p>Letting <span class="math">\(\M = \overline{\P}\,\overline{\X}^\transpose\)</span> we can now follow the
+<p>Letting <span class="math">\(\M = \overline{\P}^\transpose\,\overline{\X}\)</span> we can now follow the
 steps above using <a href="https://en.wikipedia.org/wiki/Singular_value_decomposition">singular value
 decomposition</a> to
 find the optimal <span class="math">\(\Rot\)</span>.</p>
@@ -729,7 +729,7 @@ as:</p>
 <p><span class="math">\[
 \mathop{\text{minimize}}_{\u∈\R⁶}
   \left(
-  \left[\begin{array}{ccc} \text{diag}(\N_1) & \text{diag}(\N_2) & \text{diag}(\N_2)\end{array}\right]
+  \left[\begin{array}{ccc} \text{diag}(\N_1) & \text{diag}(\N_2) & \text{diag}(\N_3)\end{array}\right]
   \left( 
   \A
   \u +

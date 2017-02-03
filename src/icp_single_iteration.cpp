@@ -24,5 +24,8 @@ void icp_single_iteration(
 
 	point_mesh_distance(PX, VY, FY, D0, P0, N0);
 
-	point_to_point_rigid_matching(PX, P0, R, t);
+	if (method == ICP_METHOD_POINT_TO_POINT)
+		point_to_point_rigid_matching(PX, P0, R, t);
+	else
+		point_to_plane_rigid_matching(PX, P0, N0, R, t);
 }

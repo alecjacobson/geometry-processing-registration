@@ -112,7 +112,7 @@ int main(int argc, char *argv[])
       case 'm':
         method = (ICPMethod)((((int)method)+1)%((int)NUM_ICP_METHODS));
         std::cout<< "point-to-"<<
-          (method==ICP_METHOD_POINT_TO_PLANE?"point":"plane")<<std::endl;
+          (method==ICP_METHOD_POINT_TO_PLANE?"plane":"point")<<std::endl;
         break;
       case 'P':
       case 'p':
