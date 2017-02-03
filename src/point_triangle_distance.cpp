@@ -18,9 +18,9 @@ void point_triangle_distance(
 	RowVector3d x_0 = x + n.dot(a - x) * n;
 
 	Matrix3d v;
-	v.col(0) = a;
-	v.col(1) = b;
-	v.col(2) = c;
+	v.row(0) = a;
+	v.row(1) = b;
+	v.row(2) = c;
 
 	// compute barycentric coordinates
 	RowVector3d bary = x * v.inverse();

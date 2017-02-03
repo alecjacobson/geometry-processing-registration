@@ -24,13 +24,14 @@ void point_mesh_distance(
 	double d, d_min;
 	int idx_min;
 
+	// Big-O(km) search
 	for (int i = 0; i < numPts; ++i)
 	{
 		d_min = HUGE_VAL;
 		x = X.row(i).transpose();
 		idx_min = -1;
 
-		// Big-O(km) search
+		//search over all triangles
 		for (int j = 0; j < numF; ++j)
 		{
 			// use space partitioning here if enough time
@@ -47,7 +48,7 @@ void point_mesh_distance(
 		assert(idx_min >= 0 && idx_min < numF);
 
 		D(i) = d_min;
-		P.row(i) = p.transpose();
+		P.row(i) = p_min.transpose();
 		N.row(i) = NY.row(idx_min);
 	}
 }
