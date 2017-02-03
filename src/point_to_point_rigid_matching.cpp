@@ -24,11 +24,8 @@ void point_to_point_rigid_matching(
 
 
 
-  t = (cP -  cX * R.transpose());
+  t = (cP -  cX * R);
 
-  //TODO: Why is this the best (R here R.T for t?
-  R = R.transpose().eval();
-  std::cout << t.transpose() << std::endl;
 
 }
 
