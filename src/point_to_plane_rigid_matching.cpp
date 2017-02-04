@@ -13,8 +13,8 @@ void point_to_plane_rigid_matching(
   // u: alpha, beta, gamma, t1, t2, t3
   Eigen::VectorXd u(6);
   
-  Eigen::MatrixXd C(X.rows(),6);
-  Eigen::VectorXd b(X.rows());
+  Eigen::MatrixXd C(6,6);
+  Eigen::VectorXd b(6);
   C.setZero();
   b.setZero();
   
@@ -25,17 +25,13 @@ void point_to_plane_rigid_matching(
     n = N.row(i);
     p = P.row(i);
     c = x.cross(n);
-    C(i,0) = c(0);
-    C(i,1) = c(1);
-    C(i,2) = c(2);
-    C(i,3) = n(0);
-    C(i,4) = n(1);
-    C(i,5) = n(2);
-    b(i) = n.dot(p-x);
+    cov << c(0), c(1), c(2), n(0), n(1), n(2);
+    C += cov * cov.transpose();
+    b += (p-x).dot(n) * cov;
   }
   
   // Solve for Cu = b
-  u = C.jacobiSvd(Eigen::ComputeThinU | Eigen::ComputeThinV).solve(b);
+  u = C.ldlt().solve(b);
   
   // Construct M, R
   Eigen::Matrix3d M;
