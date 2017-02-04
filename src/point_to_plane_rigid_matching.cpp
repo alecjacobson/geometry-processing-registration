@@ -35,9 +35,9 @@ void point_to_plane_rigid_matching(
   
   // Construct M, R
   Eigen::Matrix3d M;
-  M << 0, -u(2), u(1),
-       u(2), 0, -u(0),
-       -u(1), u(0), 0;
+  M << 1, -u(2), u(1),
+       u(2), 1, -u(0),
+       -u(1), u(0), 1;
   closest_rotation(M,R);
   
   // Construct t
