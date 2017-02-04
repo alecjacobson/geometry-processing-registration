@@ -1,7 +1,6 @@
 #include "point_to_plane_rigid_matching.h"
 #include "closest_rotation.h"
 #include <Eigen/Dense>
-#include <iostream>
 
 void point_to_plane_rigid_matching(
   const Eigen::MatrixXd & X,

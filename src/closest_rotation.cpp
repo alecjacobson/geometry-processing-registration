@@ -1,7 +1,6 @@
 #include "closest_rotation.h"
 #include <Eigen/SVD>
 #include <Eigen/LU>
-#include <iostream>
 
 void closest_rotation(
   const Eigen::Matrix3d & M,

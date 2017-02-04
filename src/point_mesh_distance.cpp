@@ -1,7 +1,6 @@
 #include "point_mesh_distance.h"
 #include "point_triangle_distance.h"
 #include <igl/per_face_normals.h>
-#include <iostream>
 
 void point_mesh_distance(
   const Eigen::MatrixXd & X,
