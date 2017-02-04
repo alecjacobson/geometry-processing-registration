@@ -2,6 +2,7 @@
 #include "random_points_on_mesh.h"
 #include "point_mesh_distance.h"
 #include "point_to_point_rigid_matching.h"
+#include "point_to_plane_rigid_matching.h"
 
 void icp_single_iteration(
   const Eigen::MatrixXd & VX,
@@ -27,5 +28,11 @@ void icp_single_iteration(
   // Find rigid transform
   R = Eigen::Matrix3d::Identity();
   t = Eigen::RowVector3d::Zero();
-  point_to_point_rigid_matching(X, P, R, t);
+
+  switch (method) {
+	  case ICP_METHOD_POINT_TO_PLANE: point_to_plane_rigid_matching(X, P, N, R, t); break;
+	  case ICP_METHOD_POINT_TO_POINT: point_to_point_rigid_matching(X, P, R, t); break;
+	  default: break;
+  }
+  
 }
