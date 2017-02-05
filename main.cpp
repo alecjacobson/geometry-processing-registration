@@ -8,6 +8,9 @@
 #include <string>
 #include <iostream>
 
+// testing
+#include "random_points_on_mesh.h"
+
 int main(int argc, char *argv[])
 {
   // Load input meshes
@@ -18,10 +21,15 @@ int main(int argc, char *argv[])
   igl::read_triangle_mesh(
     (argc>2?argv[2]:"../shared/data/max-registration-complete.obj"),VY,FY);
 
-  int num_samples = 100;
+  int num_samples = 1; // TODO reset to 100
   bool show_samples = true;
   ICPMethod method = ICP_METHOD_POINT_TO_POINT;
 
+  // testing
+  // Eigen::MatrixXd X;
+  // random_points_on_mesh( 5, OVX, FX, X );
+  // return 0;
+  
   // Create a libigl Viewer object to toggle between point cloud and mesh
   igl::viewer::Viewer viewer;
   std::cout<<R"(
