@@ -5,7 +5,7 @@
 
 #include <igl/doublearea.h>
 #include <igl/cumsum.h>
-
+#include <assert.h>
 //
 // Generate n random points uniformly sampled on a given triangle mesh with
 // vertex positions VX and face indices FX.
@@ -21,10 +21,10 @@ void random_points_on_mesh(
     // for(int i = 0;i<X.rows();i++) X.row(i) = V.row(i%V.rows());
 
     // check inputs
-    std::cout << "Requesting " << n << " random triangles...." << std::endl;
-    std::cout << "V is " << V.rows() << "x" << V.cols() << std::endl;
-    std::cout << "F is " << F.rows() << "x" << F.cols() << std::endl;
-    std::cout << "X is " << X.rows() << "x" << X.cols() << std::endl;
+    // std::cout << "Requesting " << n << " random triangles...." << std::endl;
+    // std::cout << "V is " << V.rows() << "x" << V.cols() << std::endl;
+    // std::cout << "F is " << F.rows() << "x" << F.cols() << std::endl;
+    // std::cout << "X is " << X.rows() << "x" << X.cols() << std::endl;
 
     static std::random_device rd;
     static std::mt19937 eng( rd() ); // seed our mersenne twister
@@ -64,12 +64,22 @@ void random_points_on_mesh(
     for( int t=0; t<n; ++t )
     {
         double alpha( distr(eng) ), beta( distr(eng) );
+        if( (alpha + beta) > 1 )
+        {
+            // reflect back across our ||-gram
+            alpha = 1 - alpha;
+            beta = 1 - beta;
+        }
         Eigen::RowVector3i tri( F.row( randomTris[t] ) );
         Eigen::RowVector3d v1( V.row( tri(0) ) ),
                            v2( V.row( tri(1) ) ),
                            v3( V.row( tri(2) ) );
         X.row(t) = v1 + alpha*( v2 - v1 ) + beta*( v3 - v1 );
     }
+
+    std::cout << "Random First Point " << X.row(0) <<
+        " on triangle " << randomTris[0] << " ---> " <<
+        F.row( randomTris[0] ) << std::endl;
 }
 
 
