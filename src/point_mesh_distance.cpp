@@ -48,8 +48,6 @@ void point_mesh_distance(
 		double distance;
 		RowVector3d closestPoint;
 		point_triangle_distance(x, p1, p2, p3, distance, closestPoint);
-		Vector3d normal = (p2 - p1).cross(p3 - p1);
-		normal.normalize();
 	
 		//Populate return values
 		D(j) = distance;
