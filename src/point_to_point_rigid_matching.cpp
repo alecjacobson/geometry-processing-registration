@@ -1,6 +1,5 @@
 #include "point_to_point_rigid_matching.h"
 #include "closest_rotation.h"
-#include <igl/polar_svd.h>
 
 void point_to_point_rigid_matching(
   const Eigen::MatrixXd & X,
