@@ -20,6 +20,8 @@ void point_mesh_distance(
   Eigen::MatrixXd & P,
   Eigen::MatrixXd & N)
 {
+    static bool debug( false );
+    
     // Replace with your code
     D.resize( X.rows() );
     P.resizeLike( X );
@@ -41,7 +43,10 @@ void point_mesh_distance(
     // by finding the closest cells and only walk their triangles.
     
     const int nTris = FY.rows();
-    std::cout << "Have " << X.rows() << " points with " << nTris <<  " tris" << std::endl;
+    if( debug )
+        std::cout << "Have " << X.rows() << " points with " << nTris <<
+            " tris" << std::endl;
+    
     const int nXs = X.rows();
     std::vector<int> closestTris( nXs );
     double d( 0 );
@@ -55,9 +60,12 @@ void point_mesh_distance(
         for( int t=0; t<1; ++t )
         {
             Eigen::RowVector3i tri( FY.row(t) );
-            std::cout <<"--------------------------"<<std::endl;
-            std::cout << FY.row(t) << std::endl;
-            std::cout << tri(0)<<","<<tri(1)<<","<<tri(2)<<std::endl;
+            if( debug )
+            {
+                std::cout <<"--------------------------"<<std::endl;
+                std::cout << FY.row(t) << std::endl;
+                std::cout << tri(0)<<","<<tri(1)<<","<<tri(2)<<std::endl;
+            }
             point_triangle_distance( x,
                                      VY.row( tri(0) ),
                                      VY.row( tri(1) ),
@@ -66,10 +74,11 @@ void point_mesh_distance(
                                      p );
             d = std::abs( d );
             // set the D this time, but just for the first triangle
-                D(i) = d;
-                //std::cout << "d is " << d << std::endl;
-                P.row(i) = p;
-                closestTris[i] = t;
+            D(i) = d;
+            //std::cout << "d is " << d << std::endl;
+            P.row(i) = p;
+            closestTris[i] = t;
+            if( debug )
                 std::cout <<"init value d= "<<d<<" for p "<<p<<std::endl;
         }
     }
@@ -88,31 +97,40 @@ void point_mesh_distance(
                                      VY.row( tri(1) ),
                                      VY.row( tri(2) ),
                                      d,
-                                     p, true );
+                                     p );
             d = std::abs( d );
             if( d < D(i) ) // save new shortest distance...
             {
                 D(i) = d;
-                std::cout<<"SAVED! d is "<<d<<" for tri "<<t<<" in pos "<<i<<std::endl;
+                if( debug )
+                    std::cout<<"SAVED! d is "<<d<<" for tri "<<t<<" in pos "<<
+                        i<<std::endl;
                 P.row(i) = p;
-                std::cout<<"Storing p "<<p<<" into P.row("<<i<<")= "<<P.row(i)<<std::endl;
+                if( debug )
+                    std::cout<<"Storing p "<<p<<" into P.row("<<i<<")= "<<
+                        P.row(i)<<std::endl;
 
                 closestTris[i] = t;
                 ++candidates;                
             }
         }
     }
-    std::cout << "Looked at " << nTris << " and considered n candidates " << candidates << " triangles " << std::endl;
-    std::cout << "Point " << X.row(0) << " closest to tri " << closestTris[0] <<
-        std::endl;
-    std::cout << "Debugging ptd for it by calling again..." << std::endl;
-    Eigen::RowVector3i tri( FY.row(0) );
-    point_triangle_distance( X.row(0),
-                             VY.row( tri(0) ),
-                             VY.row( tri(1) ),
-                             VY.row( tri(2) ),
-                             d,
-                             p, true );
+
+    if( debug )
+    {
+        std::cout << "Looked at " << nTris <<" and considered n candidates "<<
+            candidates << " triangles " << std::endl;
+        std::cout << "Point " << X.row(0) << " closest to tri " <<
+            closestTris[0] << " = " << FY.row(closestTris[0]) <<std::endl;
+        std::cout << "Debugging ptd for it by calling again..." << std::endl;
+        // Eigen::RowVector3i tri( FY.row(0) );
+        // point_triangle_distance( X.row(0),
+        //                          VY.row( tri(0) ),
+        //                          VY.row( tri(1) ),
+        //                          VY.row( tri(2) ),
+        //                          d,
+        //                          p, true );
+    }
     
     
 

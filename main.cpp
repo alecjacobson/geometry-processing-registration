@@ -10,6 +10,8 @@
 #include <iostream>
 // testing
 #include "random_points_on_mesh.h"
+#include "closest_rotation.h"
+#include "point_to_point_rigid_matching.h"
 #include <math.h>
 
 
@@ -21,10 +23,43 @@ testSimpleMesh_extra( Eigen::MatrixXd &OVX,
                       Eigen::MatrixXd &VY,
                       Eigen::MatrixXi &FY )
 {
+    Eigen::MatrixXd X, Y;   // vertices
+    Eigen::MatrixXi TX, TY; // triangles
+    // for reading in the reduced1/2/3 cases...
     igl::read_triangle_mesh(
-        ("../shared/data/face-reduced2-partial.obj"),OVX,FX);
+        ("../shared/data/max-registration-partial.obj"),X,TX);//OVX,FX);
     igl::read_triangle_mesh(
-        ("../shared/data/face-reduced2-complete.obj"),VY,FY);
+        ("../shared/data/max-registration-complete.obj"),Y,TY);//VY,FY);
+
+    std::cout<<"blah"<<std::endl;
+    OVX.resize(3,3);
+    VY.resize(3,3);
+    FX.resize(1,3);
+    FY.resize(1,3);
+   
+    // Test only triangle X -> Y
+    //X triangle 24900 --->  3703 20927 20909
+    //Y triangle  3276 (1106, 1107,  723)
+    const int triX( 24900 ), triY( 3276 );
+    for( int i=0; i<3; ++i )
+    {
+        OVX.row(i) = X.row( TX.row( triX )( i ) );
+        VY.row(i) = Y.row( TY.row( triY)( i ) );
+    }
+
+    std::cout << "Vertices are OVX and then OVY:"<<std::endl;
+    std::cout<<"OVX:"<<std::endl;
+    std::cout << OVX<<std::endl;
+    std::cout<<"VY:"<<std::endl;    
+    std::cout<<VY<<std::endl;
+
+    FX.row(0) = Eigen::RowVector3i( 0, 1, 2 );
+    FY.row(0) = Eigen::RowVector3i( 0, 1, 2 );
+
+    std::cout<<"FX:"<<std::endl;
+    std::cout<<FX<<std::endl;
+    std::cout<<"FY:"<<std::endl;    
+    std::cout<<FY<<std::endl;
 }
 
 void
@@ -173,25 +208,45 @@ testSimpleMesh_zone1( Eigen::MatrixXd &OVX,
 
 int main(int argc, char *argv[])
 {
+  static bool doTests( false );
+  static bool freezeFirstFrame( false );
+  
   // Load input meshes
   Eigen::MatrixXd OVX,VX,VY;
   Eigen::MatrixXi FX,FY;
 
-  //testSimpleMesh_zone0( OVX, FX, VY, FY );
-  //testSimpleMesh_zone1( OVX, FX, VY, FY );
-  //testSimpleMesh_zone2( OVX, FX, VY, FY );
-  //testSimpleMesh_zone3( OVX, FX, VY, FY );
-  //testSimpleMesh_zone4( OVX, FX, VY, FY ); // iffy...
-  //testSimpleMesh_zone5( OVX, FX, VY, FY ); // fixed!
-  //testSimpleMesh_zone6( OVX, FX, VY, FY );
-  testSimpleMesh_extra( OVX, FX, VY, FY ); // passes...
-  
-  // igl::read_triangle_mesh(
-  //     (argc>1?argv[1]:"../shared/data/max-registration-partial.obj"),OVX,FX);
-  // igl::read_triangle_mesh(
-  //     (argc>2?argv[2]:"../shared/data/max-registration-complete.obj"),VY,FY);
+  if( doTests )
+  {
+      //testSimpleMesh_zone0( OVX, FX, VY, FY );
+      //testSimpleMesh_zone1( OVX, FX, VY, FY );
+      //testSimpleMesh_zone2( OVX, FX, VY, FY );
+      //testSimpleMesh_zone3( OVX, FX, VY, FY );
+      //testSimpleMesh_zone4( OVX, FX, VY, FY ); // iffy...
+      //testSimpleMesh_zone5( OVX, FX, VY, FY ); // fixed!
+      //testSimpleMesh_zone6( OVX, FX, VY, FY );
+      testSimpleMesh_extra( OVX, FX, VY, FY ); // passes...
+  }
+  else
+  {
+      igl::read_triangle_mesh(
+          (argc>1?argv[1]:"../shared/data/max-registration-partial.obj"),OVX,
+          FX);
+      igl::read_triangle_mesh(
+          (argc>2?argv[2]:"../shared/data/max-registration-complete.obj"),VY,
+          FY);
 
-  int num_samples = 1; // TODO reset to 100
+      // Eigen::MatrixXd x,y;
+      // Eigen::Matrix3d R;
+      // Eigen::RowVector3d t;
+
+      // x = OVX.block(0,0,3,3);
+      // y = VY.block(0,0,3,3);
+      // point_to_point_rigid_matching( x, y, R, t );
+      // return 0;
+      
+  }
+  
+  int num_samples = 100; // TODO reset to 100
   bool show_samples = true;
   ICPMethod method = ICP_METHOD_POINT_TO_POINT;
 
@@ -236,13 +291,17 @@ int main(int argc, char *argv[])
 
   const auto & set_points = [&]()
   {
-    static Eigen::MatrixXd X,P;
-    static bool once(true);
-    if( once )
-    {
-        random_points_on_mesh(num_samples,VX,FX,X);
-        once = false;
-    }
+    // if( freezeFirstFrame ) {
+    // static Eigen::MatrixXd X,P;
+    // static bool once(true);
+    // if( once )
+    // {
+    //     random_points_on_mesh(num_samples,VX,FX,X);
+    //     once = false;
+    // }
+    //} else {
+    Eigen::MatrixXd X,P;
+    random_points_on_mesh(num_samples,VX,FX,X);
     
 
     Eigen::VectorXd D;

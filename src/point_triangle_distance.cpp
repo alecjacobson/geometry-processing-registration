@@ -96,9 +96,12 @@ void ptd(
     case 4: // close to 2 but not identical
     {
         double tmp0( b+d ), tmp1( c+e );
+        if( debug )
+            std::cout<<"tmp0/1: "<<tmp0<<", "<<tmp1<<std::endl;
         if( tmp1 < tmp0 )
         {
-            //std::cout << "first case" << std::endl;
+            if( debug )
+                std::cout << "first case" << std::endl;
             numer = tmp1 - tmp0;
             denom = a - 2*b + c;
             s = ( numer >= denom ) ? 1 : numer/denom;
@@ -146,6 +149,15 @@ void ptd(
        }
        break;
     }
+
+    if( s > 1 )
+        s = 1;
+    if( t > 1 )
+        t = 1;
+    if( s < 0 )
+        s = 0;
+    if( t < 0 )
+        t = 0;
 
     if( debug )
         std::cout << "Point Triangle Region: " << region << std::endl;
