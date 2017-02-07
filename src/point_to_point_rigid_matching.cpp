@@ -1,5 +1,4 @@
 #include "point_to_point_rigid_matching.h"
-#include <igl/polar_svd.h>
 #include "closest_rotation.h"
 #include <Eigen/Dense>
 
@@ -13,15 +12,15 @@ void point_to_point_rigid_matching(
   //
   // min ∑‖ Rx + t - Py(T(x)) ‖²
   //
-  //      ‖      / X₁ - P₁ \ ‖²
-  // min ∑‖ Au + | X₂ - P₂ | ‖    ,   uϵℝ⁶ => (α,β,ɣ, tϵℝ³)
-  //      ‖      \ X₃ = P₃ / ‖ 
+  //      ‖      [ X₁ - P₁ ] ‖²
+  // min ∑‖ Au + [ X₂ - P₂ ] ‖    ,   uϵℝ⁶ => (α,β,ɣ, tϵℝ³)
+  //      ‖      [ X₃ = P₃ ] ‖ 
   //
   //             [X_i - P_i]
   //
-  //           /  0    X₃  -X₂  1  0  0 \
-  // where A = | -X₃   0    X₁  0  1  0 |
-  //           \  X₂  -X₁   0   0  0  1 /
+  //           [  0    X₃  -X₂  1  0  0 ]
+  // where A = [ -X₃   0    X₁  0  1  0 ]
+  //           [  X₂  -X₁   0   0  0  1 ]
   //
   // using the linearization, minimum occurs at
   // (AᵀA)u = (-Aᵀ [X_i - P_i] )

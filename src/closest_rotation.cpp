@@ -9,9 +9,9 @@ void closest_rotation(
   // the closest transformation comes from the SVD decomp
   // M = UΣVᵀ
   // closest rotation is defined as:
-  //       / 1    0    0     \
-  // R = V | 0    1    0     | Uᵀ
-  //       \ 0    0  det(UV) /
+  //       [ 1    0    0     ]
+  // R = V [ 0    1    0     ] Uᵀ
+  //       [ 0    0  det(UV) ]
   //
   // R = V        Ω            Uᵀ     
   Eigen::Matrix3d U, Omega, V;
