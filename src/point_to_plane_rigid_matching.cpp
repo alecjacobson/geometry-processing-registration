@@ -28,14 +28,16 @@ void point_to_plane_rigid_matching(
     A.block( 0,   3, k, 1 ) =  Eigen::VectorXd::Ones( k );
     A.block( k,   4, k, 1 ) =  Eigen::VectorXd::Ones( k );
     A.block( 2*k, 5, k, 1 ) =  Eigen::VectorXd::Ones( k );
-    // as in notes...
+
     A.block( 0,   1, k, 1 ) =  X.col( 2 ); //  x_i,3
     A.block( 0,   2, k, 1 ) = -X.col( 1 ); // -x_i,2
+
     A.block( k,   0, k, 1 ) = -X.col( 2 ); // -x_i,3
     A.block( k,   2, k, 1 ) =  X.col( 0 ); //  x_i,1
 
     A.block( 2*k, 0, k, 1 ) =  X.col( 1 ); //  x_i,2
     A.block( 2*k, 1, k, 1 ) = -X.col( 0 ); // -x_i,1
+
 
     if( debug )
         std::cout<<"A:"<<A<<std::endl<<std::endl;
