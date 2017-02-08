@@ -123,42 +123,12 @@ void point_mesh_distance(
         std::cout << "Point " << X.row(0) << " closest to tri " <<
             closestTris[0] << " = " << FY.row(closestTris[0]) <<std::endl;
         std::cout << "Debugging ptd for it by calling again..." << std::endl;
-        // Eigen::RowVector3i tri( FY.row(0) );
-        // point_triangle_distance( X.row(0),
-        //                          VY.row( tri(0) ),
-        //                          VY.row( tri(1) ),
-        //                          VY.row( tri(2) ),
-        //                          d,
-        //                          p, true );
     }
     
-    
-
     // copy the normals for those distances/triangles here
-    // note the assumption the instructions that it's "ok" to
+    // note the assumption in the instructions that it's "ok" to
     // assume that all the points are inside triangles, presumably
     // to avoid normal interpolation at vertices and edges
-    
     for( int i=0; i<nXs; ++i )
         N.row(i) = Normals.row( closestTris[i] );
 }
-
-
-
-
-    // std::cout << "X is: " << X.rows() << "x" << X.cols() << std::endl;
-    // std::cout << "D is: " << D.rows() << "x" << D.cols() << std::endl;
-    // std::cout << "N is: " << N.rows() << "x" << N.cols() << std::endl;
-    // std::cout << "FY is: " << FY.rows() << "x" << FY.cols() << std::endl;
-    // std::cout << "VY is: " << VY.rows() << "x" << VY.cols() << std::endl;
-    // std::cout << "Normals is: " << Normals.rows() << "x" << Normals.cols()
-    // << std::endl;
-
-
-    // N = Eigen::MatrixXd::Zero(X.rows(),X.cols());
-    // for(int i = 0;i<X.rows();i++)
-    //     P.row(i) = VY.row(i%VY.rows());
-    // D = (X-P).rowwise().norm();
-
-    //std::cout << "our normals are..." << Normals << std::endl;
-    //return;

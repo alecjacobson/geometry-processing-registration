@@ -73,6 +73,7 @@ void point_to_point_rigid_matching(
     //std::cout<<"t:"<<std::endl<<t<<std::endl;
 }
 
+
 // Eigen::Matrix4d RR = Eigen::Matrix4d::Identity();
 // RR.block(0,0,3,3) = R;
 // Eigen::Vector4d Pxx = Eigen::Vector4d::Zero();

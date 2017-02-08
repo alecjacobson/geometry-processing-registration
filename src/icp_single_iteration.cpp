@@ -7,6 +7,8 @@
 #include "point_to_plane_rigid_matching.h"
 #include <Eigen/Core>
 #include <Eigen/Dense>
+
+
 // Conduct a single iteration of the iterative closest point method align (VX,FX)
 // to (VY,FY) by finding the rigid transformation (R,t) minimizing the matching
 // energy.
@@ -29,7 +31,7 @@ void icp_single_iteration(
     t = Eigen::RowVector3d::Zero();
 
     // Point to Point first...
-
+    
     // sample mesh
     Eigen::MatrixXd X,P;
     random_points_on_mesh( num_samples, VX, FX, X );
@@ -40,26 +42,13 @@ void icp_single_iteration(
     point_mesh_distance( X, VY, FY, D, P, N );
   
     // udpate rigid transofrm to best match X and P
-    point_to_point_rigid_matching( X, P, R, t );
+    if( method == ICP_METHOD_POINT_TO_POINT )
+        point_to_point_rigid_matching( X, P, R, t );
+    else
+        point_to_plane_rigid_matching( X, P, N, R, t );
 
     // looks like this is already done in our calling routine...
     // transform original source mesh by R and T
     //VX = ((VX*R).rowwise() + t).eval();
-    //VX = (VX*R);
-    //VX = VX.rowwise() + t;
 }
 
-
-/*
-    // small rotation to test...
-    double ct = std::cos( 0.1 );
-    double st = std::sin( 0.1 );
-
-    Eigen::Matrix3d r;
-    r << 1,   0,   0,
-         0,   ct,   -st,
-         0,   st,   ct;
-    r.setIdentity(); //uh, let's remove the rotation...just test trans
-    Eigen::RowVector3d t2( 0, 1, 0 );
-    P = (X * R).rowwise() + t2;
-*/

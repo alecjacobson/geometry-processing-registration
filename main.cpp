@@ -248,7 +248,7 @@ int main(int argc, char *argv[])
   
   int num_samples = 100; // TODO reset to 100
   bool show_samples = true;
-  ICPMethod method = ICP_METHOD_POINT_TO_POINT;
+  ICPMethod method = ICP_METHOD_POINT_TO_PLANE;//ICP_METHOD_POINT_TO_POINT;
 
   // testing
   // Eigen::MatrixXd X;
@@ -369,7 +369,7 @@ int main(int argc, char *argv[])
       case 'm':
         method = (ICPMethod)((((int)method)+1)%((int)NUM_ICP_METHODS));
         std::cout<< "point-to-"<<
-          (method==ICP_METHOD_POINT_TO_PLANE?"point":"plane")<<std::endl;
+          (method==ICP_METHOD_POINT_TO_PLANE?"plane":"point")<<std::endl;
         break;
       case 'P':
       case 'p':
