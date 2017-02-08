@@ -75,7 +75,6 @@ void point_mesh_distance(
             d = std::abs( d );
             // set the D this time, but just for the first triangle
             D(i) = d;
-            //std::cout << "d is " << d << std::endl;
             P.row(i) = p;
             closestTris[i] = t;
             if( debug )

@@ -26,7 +26,7 @@ void ptd(
     double b = E0.dot( E1 );
     double c = E1.dot( E1 );
     double d = E0.dot( D );
-    double e = E1.dot( D ); // getting rid of the -1 is better? 2 differences in text!
+    double e = E1.dot( D );
     double f = D.dot( D );
 
     assert( ( E0.cross( E1 ) ).norm() > 0 ); // degenerate triangle?
@@ -39,8 +39,6 @@ void ptd(
     double t = b*d - a*e; // should this be b*d - a*d ?? no, mistake in eberly.
 
     assert( (E0.cross(E1)).norm() );
-
-    //double invDet, numer
   
     // determine the region on the plane of the triangle
     if( s+t <= det )
@@ -137,14 +135,8 @@ void ptd(
         break;
    case 5:
        {
-           //std::cout << "5: d is " << d << " and a is " << a << std::endl;
-           //std::cout << "5: -d/a= "<<(-d/a)<<std::endl;
            t = 0;
            s = ( d >= 0 ? 0 : (-d >= a ? 1 : -d/a ) );
-           //std::cout <<"5: s,t= "<<s<<", "<<t<<std::endl;
-           //t = 0;     // TODO check
-           //s = ( e >= 0 ? (e >= c ? e/c : 1 ) : 0 );
-           //s = ( e >= 0 ? (e >= c ? -e/c : 1) : 0 );
        }
        break;
     }
@@ -169,11 +161,6 @@ void ptd(
         std::cout << "s,t = " << s << ", " << t << " d= " << dd << std::endl;
         std::cout << "p= " << p << std::endl;
     }
-
-    // TODO -- REMOVE -- TESTING!
-    // for testing, let's always return v0 as the nearest point
-    //p = v0;
-    //d = (p-x).norm();
 }
 
 //
@@ -189,14 +176,6 @@ void point_triangle_distance(
   Eigen::RowVector3d & p,
   bool debug )
 {
-    // Replace with your code
-    //d = 0;
-    //p = a;
-    // std::cout << "Given x= " << x << std::endl;
-    // std::cout << "a: " << a << std::endl;
-    // std::cout << "b: " << b << std::endl;
-    // std::cout << "c: " << c << std::endl;
-
     ptd( x, a, b, c, d, p, debug );
 }
 

@@ -18,9 +18,6 @@ void point_to_plane_rigid_matching(
   Eigen::RowVector3d & t)
 {
     static bool debug( false );
-    // Replace with your code
-    //R = Eigen::Matrix3d::Identity();
-    //t = Eigen::RowVector3d::Zero();
 
     const int k( X.rows() );
     Eigen::MatrixXd A, NN;
@@ -61,10 +58,6 @@ void point_to_plane_rigid_matching(
     XmP.block( 0,   0, k, 1 ) = X.col( 0 ) - P.col( 0 );
     XmP.block( k,   0, k, 1 ) = X.col( 1 ) - P.col( 1 );
     XmP.block( 2*k, 0, k, 1 ) = X.col( 2 ) - P.col( 2 );
-    // Eigen::VectorXd XmP(3*k);
-    // XmP.segment(0*k,k) = (X-P).col(0);
-    // XmP.segment(1*k,k) = (X-P).col(1);
-    // XmP.segment(2*k,k) = (X-P).col(2);
     if( debug )
     {
         std::cout<<"XmP:"<<std::endl<<XmP<<std::endl;

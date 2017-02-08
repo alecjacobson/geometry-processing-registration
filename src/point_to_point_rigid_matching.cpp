@@ -15,10 +15,6 @@ void point_to_point_rigid_matching(
   Eigen::Matrix3d & R,
   Eigen::RowVector3d & t)
 {
-  // Replace with your code
-  //R = Eigen::Matrix3d::Identity();
-  //t = Eigen::RowVector3d::Zero();
-
     // uh, should have just used .colwise().sum()
      const int nP( P.rows() );
     // Eigen::RowVector3d Pc = (1./nP) * Eigen::RowVector3d(
@@ -37,50 +33,16 @@ void point_to_point_rigid_matching(
     assert( nP == nX );
 
     Eigen::MatrixXd XX, PP;
-    //XX.resizeLike( X );
-    //PP.resizeLike( P );
-
     XX = X.rowwise() - Xc;
     PP = P.rowwise() - Pc;
-    // std::cout<<"X:"<<std::endl<<X<<std::endl;
-    //std::cout<<"Xc:"<<std::endl<<Xc<<std::endl;
-    //std::cout<<"Pc:"<<std::endl<<Pc<<std::endl;
-    //std::cout<<"XX:"<<std::endl<<XX<<std::endl;
-
-    // Eigen::VectorXd Ones;
-    // Ones = Eigen::VectorXd::Constant( nP, 1 );
-    // std::cout<<"Ones:"<<Ones<<std::endl;
-    //t = ( (PP.transpose() * Ones) - (R*XX 
 
     Eigen::Matrix3d M;
     M = PP.transpose() * XX;
-    //M = PP.transpose() * PP;
-    //std::cout << "size of M is now:" << M.rows() << "x" << M.cols() << std::endl;
 
     // svd this...
     closest_rotation( M, R );
 
-    // check sizes:
-    // std::cout<<"size R: "<<R.rows()<<"x"<<R.cols()<<std::endl;
-    // std::cout<<"size Xc: "<<Xc.rows()<<"x"<<Xc.cols()<<std::endl;
-    // std::cout<<"size Pc: "<<Pc.rows()<<"x"<<Pc.cols()<<std::endl;
-    // std::cout<<"size t: "<<t.rows()<<"x"<<t.cols()<<std::endl;
 
     // calculate t given R
     t = Pc - (R.transpose()*Xc.transpose()).transpose();
-
-    //std::cout<<"R:"<<std::endl<<R<<std::endl;
-    //std::cout<<"t:"<<std::endl<<t<<std::endl;
 }
-
-
-// Eigen::Matrix4d RR = Eigen::Matrix4d::Identity();
-// RR.block(0,0,3,3) = R;
-// Eigen::Vector4d Pxx = Eigen::Vector4d::Zero();
-// Pxx.block(0,0,3,1) = Xc.transpose();
-// Eigen::Vector4d rotatedPoint = RR*Pxx;
-// std::cout<<"Pxx:"<<std::endl<<Pxx<<std::endl;
-// std::cout<<"rotatedPoint:"<<std::endl<<rotatedPoint<<std::endl;
-// std::cout<<"alt rotatedPoint:"<<std::endl<<(R*Xc.transpose())<<std::endl;
-// Eigen::RowVector3d finalX = rotatedPoint.transpose().block(0,0,1,3);
-// t = Pc - finalX;
