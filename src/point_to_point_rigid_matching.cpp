@@ -37,22 +37,25 @@ void point_to_point_rigid_matching(
     assert( nP == nX );
 
     Eigen::MatrixXd XX, PP;
-    XX.resizeLike( X );
-    PP.resizeLike( P );
+    //XX.resizeLike( X );
+    //PP.resizeLike( P );
 
     XX = X.rowwise() - Xc;
     PP = P.rowwise() - Pc;
     // std::cout<<"X:"<<std::endl<<X<<std::endl;
-    // std::cout<<"Xc:"<<std::endl<<Xc<<std::endl;
-    // std::cout<<"XX:"<<std::endl<<XX<<std::endl;
+    //std::cout<<"Xc:"<<std::endl<<Xc<<std::endl;
+    //std::cout<<"Pc:"<<std::endl<<Pc<<std::endl;
+    //std::cout<<"XX:"<<std::endl<<XX<<std::endl;
 
     // Eigen::VectorXd Ones;
     // Ones = Eigen::VectorXd::Constant( nP, 1 );
     // std::cout<<"Ones:"<<Ones<<std::endl;
     //t = ( (PP.transpose() * Ones) - (R*XX 
 
-    Eigen::MatrixXd M;
-    M = PP * XX.transpose();
+    Eigen::Matrix3d M;
+    M = PP.transpose() * XX;
+    //M = PP.transpose() * PP;
+    //std::cout << "size of M is now:" << M.rows() << "x" << M.cols() << std::endl;
 
     // svd this...
     closest_rotation( M, R );
@@ -64,10 +67,10 @@ void point_to_point_rigid_matching(
     // std::cout<<"size t: "<<t.rows()<<"x"<<t.cols()<<std::endl;
 
     // calculate t given R
-    t = Pc - (R*Xc.transpose()).transpose();
+    t = Pc - (R.transpose()*Xc.transpose()).transpose();
 
-    std::cout<<"R:"<<std::endl<<R<<std::endl;
-    std::cout<<"t:"<<std::endl<<t<<std::endl;
+    //std::cout<<"R:"<<std::endl<<R<<std::endl;
+    //std::cout<<"t:"<<std::endl<<t<<std::endl;
 }
 
 // Eigen::Matrix4d RR = Eigen::Matrix4d::Identity();

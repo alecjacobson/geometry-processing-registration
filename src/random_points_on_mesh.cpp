@@ -59,7 +59,7 @@ void random_points_on_mesh(
     // for each random triangle, find a random place inside it.
     // Again, I should spend some time with eigen and c++XX to
     // make this prettier...sigh...
-    std::cout<<V.row(0)<<std::endl;
+    //std::cout<<V.row(0)<<std::endl;
     X.resize( n, 3 );
     for( int t=0; t<n; ++t )
     {
@@ -77,9 +77,9 @@ void random_points_on_mesh(
         X.row(t) = v1 + alpha*( v2 - v1 ) + beta*( v3 - v1 );
     }
 
-    std::cout << "Random First Point " << X.row(0) <<
-        " on triangle " << randomTris[0] << " ---> " <<
-        F.row( randomTris[0] ) << std::endl;
+    //std::cout << "Random First Point " << X.row(0) <<
+    //    " on triangle " << randomTris[0] << " ---> " <<
+    //    F.row( randomTris[0] ) << std::endl;
 }
 
 
