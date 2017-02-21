@@ -470,6 +470,11 @@ onto the space of rotation matrices.
 
 #### Recovering a pure rotation from its linearization
 
+> In an effort to provide an alternative from "Least-Squares Rigid Motion Using
+> SVD" [Sorkine 2009], this derivation purposefully _avoids_ the [trace
+> operator](https://en.wikipedia.org/wiki/Trace_(linear_algebra)) and its
+> various nice properties.
+
 If $α$, $β$ and $γ$ are all small, then it may be safe to _interpret_ these
 values as rotation angles about the $x$, $y$, and $z$ axes respectively.
 
@@ -477,34 +482,102 @@ In general, it is better to find the closest rotation matrix to $\M$. In other
 words, we'd like to solve the small optimization problem:
 
 \\[
-\begin{align}
-\Rot^* 
-&= \argmin_{\Rot ∈ SO(3)} \left\| \Rot - \M \right\|_F^2 \\\\
-&= \argmin_{\Rot ∈ SO(3)} \left\| \M \right\|_F^2 + \left\| \Rot \right\|_F^2 - 2 \left<\Rot^\transpose, \M \right>_F\\\\
-&= \argmax_{\Rot ∈ SO(3)} \left<\Rot^\transpose, \M \right>_F
-\end{align}
+\Rot^* = \argmin_{\Rot ∈ SO(3)} \left\| \Rot - \M \right\|_F^2,
+\\]
+where $\|\X\|_F^2$ computes the squared [Frobenius
+norm](https://en.wikipedia.org/wiki/Matrix_norm#Frobenius_norm) of the matrix
+$\X$ (i.e., the sum of all squared element values. In MATLAB syntax:
+`sum(sum(A.^2))`). We can expand the norm by taking advantage of the [associativity
+property](https://en.wikipedia.org/wiki/Associative_property) of the Frobenius
+norm:
+\\[
+\Rot^* = \argmin_{\Rot ∈ SO(3)} \left\| \M \right\|_F^2 + \left\| \Rot
+\right\|_F^2 - 2 \left<\Rot^\transpose, \M \right>_F,
+\\]
+where $\left<\A, \B \right>_F$ is the
+[Frobenius inner
+product](https://en.wikipedia.org/wiki/Frobenius_inner_product) of  $\A$ and
+$\B$ (i.e., the sum of all per-element products. In MATLAB syntax:
+`sum(sum(A.*B))`). We can drop the Frobenius norm
+of $\M$ term ($\left\| \M
+\right\|_F^2$) because it is constant with respect to the unknown rotation
+matrix $\Rot$. We can also drop the Frobenius norm of $\Rot$ term because it
+must equal one ($\left\|
+\Rot\right\|_F^2 = 1$) since $\Rot$ is required to be a orthonormal matrix
+($\Rot ∈ SO(3)$). We can drop the factor of $2$ and flip the minus sign to
+change our _minimization_ problem into a _maximization_ problem:
+\\[
+\Rot^* = \argmax_{\Rot ∈ SO(3)} \left<\Rot^\transpose, \M \right>_F
 \\]
 
 We now take advantage of the [singular value
 decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) of
-$\M = \U Σ \V^\transpose$, where $\U, \V ∈
-\R^{3×3}$ are orthonormal matrices and $Σ∈\R^{3×3}$ is a diagonal matrix:
+$\M = \U Σ \V^\transpose$, where $\U, \V ∈ \R^{3×3}$ are orthonormal matrices
+and $Σ∈\R^{3×3}$ is a non-negative diagonal matrix:
 
 \\[
-\begin{align}
-\Rot^*  
-  &= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\V Σ \U^\transpose \right>_F \\\\
-  &= \argmax_{\Rot ∈ SO(3)} \left<\V^\transpose \Rot \U, Σ \right>_F \\\\
-  &= \U \left( \argmax_{Ω ∈ O(3),\ \det{Ω} = \det{\U\V^\transpose}} \left<Ω, Σ \right>_F \right) \V^\transpose,\\\\
-\end{align}
+\Rot^* = \argmax_{\Rot ∈ SO(3)} \left<\Rot,\V Σ \U^\transpose \right>_F.
 \\]
 
-where the optimization argument $Ω ∈ O(3)$ is an orthogonal matrix, but may be
-either a reflection ($\det{Ω} = -1$) or a rotation (($\det{Ω} = 1$) depending
-on the SVD on $\M$. This ensures that as a result $\Rot^*$ will have determinant
-1. The optimal choice of $Ω$ is to set all values to zero except on the
-diagonal, where we place all 1s except the bottom right corner (corresponding
-to the smallest singular value in $Σ$) which is set to $\det{\U\V^\transpose}$:
+The Frobenius inner product will let us move the products by $\V$ and $\U$ from
+the right argument to the left argument:
+
+> Recall some linear algebra properties:
+> 
+>  1. Matrix multiplication (on the left) can be understood as _acting_ on each
+>    column: $\A \B = \A [\B_1 \  \B_2 \ … \ \B_n] = [\A \B_1 \  \A \B_2 \  … \
+>    \A \B_n]$,
+>  4. The [Kronecker product](https://en.wikipedia.org/wiki/Kronecker_product)
+>    $\I ꕕ \A$ of the identity matrix $\I$ of size $k$ and a matrix $\A$ simply
+>    repeats $\A$ along the diagonal k times. In MATLAB, `repdiag(A,k)`,
+>  3. Properties 1. and 2. imply that the vectorization of a matrix product
+>    $\B\C$ can be written as the Kronecker product of the #-columns-in-$\C$
+>    identity matrix and $\B$ times the vectorization of $\C$:
+>    $\text{vec}(\B\C) = (\I ꕕ \B)\text{vec}(\C)$,
+>  4. The transpose of a Kronecker product is the Kronecker product of
+>    transposes: $(\A ꕕ \B)^\transpose = \A^\transpose ꕕ \B^\transpose$,
+>  5. The Frobenius inner product can be written as a [dot
+>    product](://en.wikipedia.org/wiki/Dot_product) of
+>    [vectorized](https://en.wikipedia.org/wiki/Vectorization_(mathematics))
+>    matrices: $<\A,\B>_F = \text{vec}(\A) ⋅ \text{vec}(\B) =
+>    \text{vec}(\A)^\transpose \text{vec}(\B)$,
+>  6. Properties 3., 4., and 5. imply that Frobenius inner product of a matrix
+>    $\A$ and the matrix product of matrix $\B$ and $\C$ is equal to the
+>    Frobenius inner product of the matrix product of the transpose of $\B$ and
+>    $\A$  and the matrix $\C$:
+>    $<\A,\B\C>_F = \text{vec}(\A)^\transpose \text{vec}(\B\C) =
+>    \text{vec}(\A)^\transpose (\I ꕕ \B)\text{vec}(\C) = 
+>    \text{vec}(\A)^\transpose (\I ꕕ \B^\transpose)^\transpose \text{vec}(\C) = 
+>    \text{vec}(\B^\transpose\A)^\transpose \text{vec}(\C) = 
+>    <\B^\transpose \A,\C>_F$.
+>  
+
+\\[
+\Rot^* = \argmax_{\Rot ∈ SO(3)} \left<\V^\transpose \Rot \U, Σ \right>_F.
+\\]
+
+Now, $\U$ and $\V$ are both orthonormal. We can pull them out of the
+maximization if we account for the reflection they _might_ incur . When we move
+the $\argmax$ inside, we now look for an orthonormal matrix $Ω ∈ O(3)$ that is
+a reflection (if $\det{\U\V^\transpose} = -1$) or a rotation (if
+$\det{\U\V^\transpose} = 1$):
+
+\\[
+  \Rot^* = \U \left( \argmax_{Ω ∈ O(3),\ \det{Ω} = \det{\U\V^\transpose}} \left<Ω, Σ \right>_F \right) \V^\transpose.
+\\]
+
+This ensures that as a result $\Rot^*$ will be a rotation: $\det{\Rot^*} = 1$.
+
+> Recall that $Σ∈\R^{3×3}$ is a non-negative diagonal matrix of singular values
+> sorted so that the smallest value is in the bottom right corner.
+
+Because $Ω$ is orthonormal, each column (or row) of $Ω$ must have unit norm.
+Placing a non-zero on the off-diagonal will get "killed" when multiplied by the
+corresponding zero in $Σ$. So the optimal choice of $Ω$ is to set all values to
+zero except on the diagonal. If $\det{\U\V^\transpose} = -1$, then we should
+set one (and only one) of these values to $-1$. The best choice is the bottom
+left corner since that will multiply against the smallest singular value in $∑$
+(add negatively affect the maximization the least):
 
 \\[
 Ω_{ij} = \begin{cases}
