@@ -18,5 +18,6 @@ void point_triangle_distance(
   const Eigen::RowVector3d & b,
   const Eigen::RowVector3d & c,
   double & d,
-  Eigen::RowVector3d & p);
+  Eigen::RowVector3d & p,
+  bool debug = false );
 #endif
