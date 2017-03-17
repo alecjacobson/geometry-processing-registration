@@ -22,14 +22,13 @@ int main(int argc, char *argv[])
   bool show_samples = true;
   ICPMethod method = ICP_METHOD_POINT_TO_POINT;
 
-  // Create a libigl Viewer object to toggle between point cloud and mesh
   igl::viewer::Viewer viewer;
   std::cout<<R"(
   [space]  toggle animation
   H,h      print lower bound on directed Hausdorff distance from X to Y
   M,m      toggle between point-to-point and point-to-plane methods
-  R,r      reset, also recomputes a random sampling and closest points
   P,p      show sample points
+  R,r      reset, also recomputes a random sampling and closest points
   S        double number of samples
   s        halve number of samples
 )";
@@ -112,7 +111,7 @@ int main(int argc, char *argv[])
       case 'm':
         method = (ICPMethod)((((int)method)+1)%((int)NUM_ICP_METHODS));
         std::cout<< "point-to-"<<
-          (method==ICP_METHOD_POINT_TO_PLANE?"point":"plane")<<std::endl;
+          (method==ICP_METHOD_POINT_TO_PLANE?"plane":"point")<<std::endl;
         break;
       case 'P':
       case 'p':
