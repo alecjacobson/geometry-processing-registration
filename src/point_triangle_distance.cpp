@@ -13,12 +13,12 @@ void point_triangle_distance(
 {
   typedef Eigen::RowVector3d Vector;
   // Replace with your code
-  d = 0;
-  p = P1;
-  //from http://cs.swan.ac.uk/~csmark/PDFS/1995_3D_distance_point_to_triangle
-  //Let a be the origin of the plane
-  //The two basis are:
+  p = (P1 + P2 + P3) / 3;
+  d = (P0 - p).norm();
+  //return; //enable this line if only need rough approximation
 
+  //Faithful implementation of http://cs.swan.ac.uk/~csmark/PDFS/1995_3D_distance_point_to_triangle
+  //Not optimized for debugging purpose
   Vector P1P0 = P0 - P1; Vector P0P1 = -P1P0;
   Vector P2P0 = P0 - P2; Vector P0P2 = -P2P0;
   Vector P3P0 = P0 - P3; Vector P0P3 = -P3P0;
@@ -60,6 +60,7 @@ void point_triangle_distance(
       Vector P0pp = P0p + P0pP0pp;//eq12
       Vector num = P0pp - P1; Vector denom = P2 - P1;
       double t = 0;
+      //Checking all components may not be necessary
       for (int i = 0; i < 3; i++)
         if (abs(num(i)) > ESP && abs(denom(i)) > ESP)
           t += num(i) / denom(i);
@@ -82,26 +83,19 @@ void point_triangle_distance(
     }
     else
     {
-      d = P0P0p_norm;
+      d = abs(P0P0p_norm);
       p = P0p;
     }
     return;
   }
 
-  
-
-  
   if (f3 < 0 && f2>0)//If P0' is clockwise of V3 and anticlockwise of V2
   {
     if (P0pP2.cross(P0pP3).dot(Np) < 0)//eq7//outside of the triangle
     {
       auto R = P0pP3.cross(P0pP2).cross(P2P3);//eq8
-      
-      
       double cos_gamma = P0pP2.dot(R) / (P0pP2.norm()*R.norm());//eq9
-
       auto P0pP0pp_norm = P0pP2.norm()*cos_gamma;//eq10
-
       auto P0pP0pp = P0pP0pp_norm*R / R.norm();//eq11
       auto P0pp = P0p + P0pP0pp;//eq12
       auto num = P0pp - P2; auto denom = P3 - P2;
@@ -128,7 +122,7 @@ void point_triangle_distance(
     }
     else
     {
-      d = P0P0p_norm;
+      d = abs(P0P0p_norm);
       p = P0p;
     }
     return;
@@ -140,12 +134,8 @@ void point_triangle_distance(
     if (P0pP3.cross(P0pP1).dot(Np) < 0)//eq7//outside of the triangle
     {
       auto R = P0pP1.cross(P0pP3).cross(P3P1);//eq8
-
-
       double cos_gamma = P0pP3.dot(R) / (P0pP3.norm()*R.norm());//eq9
-
       auto P0pP0pp_norm = P0pP3.norm()*cos_gamma;//eq10
-
       auto P0pP0pp = P0pP0pp_norm*R / R.norm();//eq11
       auto P0pp = P0p + P0pP0pp;//eq12
       auto num = P0pp - P3; auto denom = P1 - P3;
@@ -172,15 +162,14 @@ void point_triangle_distance(
     }
     else
     {
-      d = P0P0p_norm;
+      d = abs(P0P0p_norm);
       p = P0p;
     }
     return;
   }
   else
   {
-    std::cout << "WTF f1:" << f1 << " f2: " << f2 << " f3: " << f3 << std::endl;
+    std::cout << "point_triangle_distance WTF f1:" << f1 << " f2: " << f2 << " f3: " << f3 << std::endl;
   }
    
- 
 }
