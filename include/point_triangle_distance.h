@@ -13,10 +13,10 @@
 //   d  distance from x to closest point on triangle abc
 //   p  3d position of closest point 
 void point_triangle_distance(
-  const Eigen::RowVector3d & x,
-  const Eigen::RowVector3d & a,
-  const Eigen::RowVector3d & b,
-  const Eigen::RowVector3d & c,
+  const Eigen::RowVector3d & P0,
+  const Eigen::RowVector3d & P1,
+  const Eigen::RowVector3d & P2,
+  const Eigen::RowVector3d & P3,
   double & d,
   Eigen::RowVector3d & p);
 #endif
