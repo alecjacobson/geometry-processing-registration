@@ -2,7 +2,7 @@
 #include <random>
 #include <iostream>
 
-#define VERTEX_ONLY
+//#define VERTEX_ONLY
 
 void random_points_on_mesh(
   const int n,
@@ -12,7 +12,7 @@ void random_points_on_mesh(
 {
   // REPLACE WITH YOUR CODE:
   X.resize(n,3);
-  std::default_random_engine generator;
+  static std::default_random_engine generator;
 #ifndef VERTEX_ONLY
   int max_face_index = F.rows();
   //from http://www.cplusplus.com/reference/random/uniform_int_distribution/
