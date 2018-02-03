@@ -23,19 +23,19 @@ void random_points_on_mesh(
   for (int m = 0; m < X.rows(); m++)
   {
     int face_index = rand_distribution_int(generator);
-    Eigen::MatrixXd v(3,3);
-    //Randomly Fetch Triangles from the mesh
-    //Use Barycentric coord to compute internal point within a triangle;
-    //https://en.wikipedia.org/wiki/Barycentric_coordinate_system
-    Eigen::RowVector3d lambda(3);
-    for (int i = 0; i < 3; i++)
+    double alpha, beta;
+    alpha = rand_distribution_double(generator);
+    beta = rand_distribution_double(generator);
+    if (alpha + beta > 1)
     {
-      v.row(i) = V.row(F(face_index, i));
-      lambda(i) = rand_distribution_double(generator);
+      alpha = 1 - alpha;
+      beta = 1 - beta;
     }
-    lambda /= lambda.sum();
-    X.row(m) = lambda*v;
+    X.row(m) = V.row(F(face_index, 0)) +
+              (V.row(F(face_index, 1)) - V.row(F(face_index, 0)))*alpha +
+              (V.row(F(face_index, 2)) - V.row(F(face_index, 0)))*beta;
   }
+
 #else
   int max_vertex_index = V.rows();
   std::uniform_int_distribution<int> rand_distribution_int(0, max_vertex_index);
