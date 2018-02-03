@@ -9,14 +9,14 @@ void random_points_on_mesh(
   // REPLACE WITH YOUR CODE:
   X.resize(n,3);
   // Get the area matrix
-  Eigen::MatrixXd A(n,1);
+  Eigen::MatrixXd A(V.rows(),1);
   igl::doublearea(V, F, A);
   // Get the cumulative sum
-  Eigen::MatrixXd C(n,1);
+  Eigen::MatrixXd C(V.rows(),1);
   igl::cumsum(A,1,C);
 
   for(int i=0; i < n; i++){
-    int triangle_idx = get_random_triangle(C, n);
+    int triangle_idx = get_random_triangle(C, C.rows());
     Eigen::RowVector3d triangle_pt = get_random_point(triangle_idx, V, F);
     X.row(i) = triangle_pt;
   }
@@ -26,8 +26,7 @@ int get_random_triangle(
   const Eigen::MatrixXd & C,
   const int n)
 {
-
-  double gamma = rand();
+  double gamma = ((double) rand() / (RAND_MAX)) * C(C.rows()-1,0);
   int l = 0;
   int r = n;
   int mid = ((l + r) / 2);
@@ -40,6 +39,7 @@ int get_random_triangle(
     } else{ // throw away right half
       r = mid;
     }
+    mid = ((l + r) / 2);
   }
   return mid;
 }
