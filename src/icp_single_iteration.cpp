@@ -4,6 +4,7 @@
 #include "point_to_point_rigid_matching.h"
 #include "random_points_on_mesh.h"
 #include "point_mesh_distance.h"
+#include "point_to_plane_rigid_matching.h"
 /***********************************************************************
 Conduct a single iteration of the iterative closest point method
 align (VX,FX) to (VY,FY) by finding the rigid transformation (R,t)
@@ -27,17 +28,17 @@ void icp_single_iteration(
   using namespace Eigen;
   R = Eigen::Matrix3d::Identity();
   t = Eigen::RowVector3d::Zero();
+
+  Eigen::MatrixXd  X;
+  random_points_on_mesh(num_samples, VX, FX, X);
+
+  Eigen::VectorXd D;
+  Eigen::MatrixXd P;
+  Eigen::MatrixXd N;
+  point_mesh_distance(X, VY, FY, D, P, N);
+
   if (method == ICP_METHOD_POINT_TO_POINT)
-  {
-    Eigen::MatrixXd  X;
-    random_points_on_mesh(num_samples, VX, FX, X);
-    Eigen::VectorXd D;
-    Eigen::MatrixXd P;
-    Eigen::MatrixXd N;
-    point_mesh_distance(X, VY, FY, D, P, N);
     point_to_point_rigid_matching(X, P, R, t);
-    //t = Eigen::RowVector3d::Zero();
-  }
   else if (method == ICP_METHOD_POINT_TO_PLANE)
-    throw std::logic_error("Not implemented");
+    point_to_plane_rigid_matching(X, P, N, R, t);
 }
