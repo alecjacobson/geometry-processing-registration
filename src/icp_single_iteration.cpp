@@ -10,7 +10,21 @@ void icp_single_iteration(
   Eigen::Matrix3d & R,
   Eigen::RowVector3d & t)
 {
-  // Replace with your code
+  // Initialize R and t
   R = Eigen::Matrix3d::Identity();
   t = Eigen::RowVector3d::Zero();
+  // Get a random sample X
+  Eigen::MatrixXd X;
+  random_points_on_mesh(num_samples, VX, FX, X);
+  // Get Y_o and N
+  Eigen::MatrixXd Y_o;
+  Eigen::VectorXd D;
+  Eigen::MatrixXd N;
+  point_mesh_distance(X, VY, FY, D, Y_o, N);
+
+  if(method == ICPMethod::ICP_METHOD_POINT_TO_POINT){
+    point_to_point_rigid_matching(X, Y_o, R, t);
+  } else{
+    point_to_plane_rigid_matching(X, Y_o, N, R, t);
+  }
 }
