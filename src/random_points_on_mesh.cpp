@@ -26,12 +26,22 @@ int get_random_triangle(
   const Eigen::MatrixXd & C,
   const int n)
 {
-  int gamma = rand();
-  int c_idx = n/2;
-  while(C(c_idx) < gamma){
-    c_idx *= 2;
+
+  double gamma = rand();
+  int l = 0;
+  int r = n;
+  int mid = ((l + r) / 2);
+  while(!(C(mid,0) > gamma && (mid == 0 || C(mid-1,0) <= gamma))) {
+    if(C(mid,0) == gamma){
+      return mid + 1;
+    }
+    if(C(mid,0) < gamma){ // throw away left half
+      l = mid;
+    } else{ // throw away right half
+      r = mid;
+    }
   }
-  return c_idx;
+  return mid;
 }
 
 Eigen::RowVector3d get_random_point(
