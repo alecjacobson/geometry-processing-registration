@@ -10,5 +10,16 @@ void point_triangle_distance(
 {
   // Replace with your code
   d = 0;
-  p = a;
+  //Create the vectors of the triangle
+    Eigen::RowVector3d u = a - b;
+    Eigen::RowVector3d v = c - b;
+    u = u / u.norm();
+    v = v / v.norm();
+    v = v - u.dot(v) * u;
+    
+    Eigen::RowVector3d projectedPoint;
+    p = u.dot(x) * u + v.dot(x) * v;
+    d = sqrt(p.dot(p) + x.dot(x) - 2* x.dot(p));
+    
+    
 }
