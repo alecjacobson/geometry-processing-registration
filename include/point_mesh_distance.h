@@ -1,6 +1,9 @@
 #ifndef POINT_MESH_DISTANCE_H
 #define POINT_MESH_DISTANCE_H
 #include <Eigen/Core>
+#include "point_triangle_distance.h"
+#include "igl/per_face_normals.h"
+#include <iostream>
 // Compute the distances `D` between a set of given points `X` and their
 // closest points `P` on a given mesh with vertex positions `VY` and face
 // indices `FY`.

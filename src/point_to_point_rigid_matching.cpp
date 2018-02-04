@@ -7,8 +7,15 @@ void point_to_point_rigid_matching(
   Eigen::Matrix3d & R,
   Eigen::RowVector3d & t)
 {
-  // Replace with your code
-  R = Eigen::Matrix3d::Identity();
-  t = Eigen::RowVector3d::Zero();
+    // Replace with your code
+    Eigen::RowVector3d xmean = X.colwise().mean();
+    Eigen::MatrixXd Xbar = X.rowwise() - xmean;
+    
+    Eigen::RowVector3d pmean = P.colwise().mean();
+    Eigen::MatrixXd Pbar = P.rowwise() - pmean;
+    Eigen::Matrix3d M = (Pbar.transpose() * Xbar).transpose();
+    closest_rotation(M,R);
+    
+    t = pmean.transpose() - R*(xmean.transpose());
 }
 

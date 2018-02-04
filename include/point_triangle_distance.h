@@ -1,6 +1,8 @@
+
 #ifndef POINT_TRIANGLE_DISTANCE_H
 #define POINT_TRIANGLE_DISTANCE_H
 #include <Eigen/Core>
+#include <Eigen/Geometry>
 // Compute the distance `d` between a given point `x` and the closest point `p` on
 // a given triangle with corners `a`, `b`, and `c`.
 //

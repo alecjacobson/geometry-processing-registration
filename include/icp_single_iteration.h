@@ -1,6 +1,10 @@
 #ifndef ICP_SINGLE_ITERATION_H
 #define ICP_SINGLE_ITERATION_H
 #include <Eigen/Core>
+#include "random_points_on_mesh.h"
+#include "point_mesh_distance.h"
+#include "point_to_point_rigid_matching.h"
+#include "point_to_plane_rigid_matching.h"
 
 enum ICPMethod
 {
