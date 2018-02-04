@@ -28,14 +28,10 @@ void point_mesh_distance(
       Eigen::RowVector3d b = VY.row(FY(f, 1));
       Eigen::RowVector3d c = VY.row(FY(f, 2));
       point_triangle_distance(X.row(i), a,b,c, d, p);
-      if(min_d == -1){
+      if(min_d == -1 || d < min_d){
         min_d = d;
         closest_p = p;
         min_f_idx = f;
-      } else if (d < min_d){
-        min_d = d;
-        closest_p = p;
-        min_f_idx = 0;
       }
     }
     P.row(i) = closest_p;

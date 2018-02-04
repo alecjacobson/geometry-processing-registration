@@ -10,9 +10,6 @@ void icp_single_iteration(
   Eigen::Matrix3d & R,
   Eigen::RowVector3d & t)
 {
-  // Initialize R and t
-  R = Eigen::Matrix3d::Identity();
-  t = Eigen::RowVector3d::Zero();
   // Get a random sample X
   Eigen::MatrixXd X;
   random_points_on_mesh(num_samples, VX, FX, X);

@@ -53,7 +53,8 @@ Eigen::RowVector3d get_random_point(
   Eigen::RowVector3d v2 = V.row(F(triangle_idx,1));
   Eigen::RowVector3d v3 = V.row(F(triangle_idx,2));
 
-  float a = rand(); float b = rand();
+  float a = ((double) rand() / (RAND_MAX));
+  float b = ((double) rand() / (RAND_MAX));
   if(a + b > 1){
     a = 1 - a;
     b = 1 - b;

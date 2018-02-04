@@ -1,4 +1,5 @@
 #include "point_triangle_distance.h"
+#include <iostream>
 
 void point_triangle_distance(
   const Eigen::RowVector3d & x,
@@ -8,12 +9,12 @@ void point_triangle_distance(
   double & d,
   Eigen::RowVector3d & p)
 {
-
-  // find the plane spanned by (b-a) and (c-a)
+  //find the plane spanned by (b-a) and (c-a)
   Eigen::RowVector3d n = (b-a).cross(c-a);
-  // find the closest point from x to the plane
-  double t = (n(0)*a(0) - n(0)*x(0) + n(1)*a(1) - n(1)*x(1) + n(2)*a(2) - n(2)*x(2));
-  Eigen::RowVector3d closest_pt = x + t*n;
+  n.normalize();
+  Eigen::RowVector3d pt = (x-c);
+  double dist = pt.dot(n);
+  Eigen::RowVector3d closest_pt = x - (dist * n);
   // check if the point is in the triangle
     if(in_triangle(closest_pt, a, b, c)){
       d = (closest_pt - x).norm();
@@ -52,14 +53,15 @@ void point_triangle_distance(
     }
 }
 
+// Reference: http://blackpawn.com/texts/pointinpoly/
 bool same_side(
   const Eigen::RowVector3d & x,
   const Eigen::RowVector3d & a,
   const Eigen::RowVector3d & b,
   const Eigen::RowVector3d & c)
 {
-  Eigen::RowVector3d cross_x_bc = (c-b).cross(x);
-  Eigen::RowVector3d cross_a_bc = (c-b).cross(a);
+  Eigen::RowVector3d cross_x_bc = (c-b).cross(x-b);
+  Eigen::RowVector3d cross_a_bc = (c-b).cross(a-b);
   return cross_x_bc.dot(cross_a_bc) >= 0;
 }
 
