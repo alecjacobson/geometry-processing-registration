@@ -43,6 +43,16 @@ void point_mesh_distance(
         D(i) = bestDist;
         P.row(i) = bestP;
         N.row(i) = allN.row(bestIndex);
+        /*Eigen::RowVector3d e0, e1, testN;
+        e0.array() = VY.row(FY(bestIndex,0)).array()  - VY.row(FY(bestIndex,1)).array();
+        e1.array() = VY.row(FY(bestIndex,2)).array()  - VY.row(FY(bestIndex,1)).array();
+        e0 = e0 / e0.norm();
+        e1 = e1 / e1.norm();
+        testN = e1.cross(e0);
+        testN = testN / testN.norm();
+        cout << "test N:" << testN << "\n";
+        cout << N.row(i) << "\n";
+        //cout << "Index : " << i << " Val: " << N.row(i) << "\n";*/
         
     }
     delete curDist;
