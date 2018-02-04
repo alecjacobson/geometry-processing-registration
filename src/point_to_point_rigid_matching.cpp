@@ -12,7 +12,6 @@ void point_to_point_rigid_matching(
 {
   // Replace with your code
     Eigen::MatrixXd XBar, PBar, M;
-    Eigen::Matrix3d tempR;
     M.resize(3,3);
     
     XBar.resizeLike(X);
@@ -29,8 +28,8 @@ void point_to_point_rigid_matching(
     }
     M =   (XBar.transpose()) * PBar;
     
-    closest_rotation(M,tempR);
-    R = tempR.adjoint();
+    closest_rotation(M,R);
+
     
     t = P.colwise().mean().transpose() - R * (X.colwise().mean().transpose());
     

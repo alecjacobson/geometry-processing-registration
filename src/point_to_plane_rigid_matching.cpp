@@ -88,12 +88,12 @@ void point_to_plane_rigid_matching(
     t(2) = u(5,0);
     cout << "T: " << t << "\n";
     cout << sqrt((C1 * u + B_new).array().square().mean()) << "\n";
-    M(1,0) = u(2,0);
-    M(2,0) = -u(1,0);
-    M(0,1) = -u(2,0);
-    M(2,1) = u(0,0);
-    M(0,2) = u(1,0);
-    M(1,2) = -u(0,0);
+    M(1,0) = -u(2,0);
+    M(2,0) = u(1,0);
+    M(0,1) = u(2,0);
+    M(2,1) = -u(0,0);
+    M(0,2) = -u(1,0);
+    M(1,2) = u(0,0);
     cout << "M: " << M << "\n";
     
     closest_rotation(M,R);

@@ -12,11 +12,11 @@ void closest_rotation(
     Eigen::JacobiSVD<Eigen::Matrix3d> svdofM(M, Eigen::ComputeThinU | Eigen::ComputeThinV);
     Eigen::Matrix3d Omega, tempVal;
     
-    tempVal = svdofM.matrixV()*(svdofM.matrixU().transpose());
+    tempVal = svdofM.matrixU()*(svdofM.matrixV().transpose());
     
     Omega = Eigen::Matrix3d::Identity();
     Omega(2,2) = tempVal.determinant();
-    R = (svdofM.matrixV() * Omega)*svdofM.matrixU().transpose();
+    R = (svdofM.matrixU() * Omega)*svdofM.matrixV().transpose();
 
     //cout << "M: " << M << "\n";
 }
