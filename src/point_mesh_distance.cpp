@@ -1,5 +1,6 @@
 #include "point_mesh_distance.h"
 #include "point_triangle_distance.h"
+#include <igl/per_face_normals.h>
 void point_mesh_distance(
   const Eigen::MatrixXd & X,
   const Eigen::MatrixXd & VY,
@@ -10,25 +11,29 @@ void point_mesh_distance(
 {
   // Replace with your code
   P.resizeLike(X);
+    Eigen::MatrixXd allN;
+    allN.resizeLike(FY);
+    igl::per_face_normals(VY,FY,allN);
   N = Eigen::MatrixXd::Zero(X.rows(),X.cols());
     D.resize(X.rows());
     for(int i = 0;i<X.rows();i++) {
         int bestIndex = 0;
-        double bestDist, curDist;
+        double bestDist, *curDist;
         Eigen::RowVector3d bestP, curP;
         Eigen::RowVector3d bestN;
         
-        point_triangle_distance(X.row(i), V.row(F(0,0)), V.row(F(0,1)),V.row(F(0,2)), &bestDist, bestP);
-        
+        point_triangle_distance(X.row(i), VY.row(FY(0,0)), VY.row(FY(0,1)),VY.row(FY(0,2)), *curDist, bestP);
+        bestDist = *curDist;
         for (int j = 1; j < FY.rows(); j++){
-            point_triangle_distance(X.row(i), V.row(F(j,0)), V.row(F(j,1)),V.row(F(j,2)), &curDist, curP);
-            if (curDist < bestDist) {
+            point_triangle_distance(X.row(i), VY.row(FY(j,0)), VY.row(FY(j,1)),VY.row(FY(j,2)), *curDist, curP);
+            if (*curDist < bestDist) {
                 bestIndex = j;
-                bestDist = curDist;
+                bestDist = *curDist;
                 bestP = curP;
             }
         }
         D(i) = bestDist;
         P.row(i) = bestP;
+        N.row(i) = allN.row(bestIndex);
     }
 }
