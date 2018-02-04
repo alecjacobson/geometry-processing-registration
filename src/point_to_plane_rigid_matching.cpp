@@ -9,6 +9,8 @@ void point_to_plane_rigid_matching(
 {
     int k = X.rows();
     Eigen::MatrixXd A;
+    
+    //set up A as in the approximate point-to-point
     A = Eigen::MatrixXd::Zero(3*k,6);
 
     //column 0
@@ -28,12 +30,14 @@ void point_to_plane_rigid_matching(
     A.col(4).segment(k,k) = Eigen::VectorXd::Ones(k);
     A.col(5).segment(2*k,k) = Eigen::VectorXd::Ones(k);
 
+    //set up the RHS of the least squares in point-to-point
     Eigen::VectorXd v;
     v = Eigen::VectorXd::Zero(3*k);
     v.segment(0,k) = X.col(0)-P.col(0);
     v.segment(k,k) = X.col(1)-P.col(1);
     v.segment(2*k,k) = X.col(2)-P.col(2);
     
+    //Now make it point-to-plane by doing the matrix version of dotting by the normal
     Eigen::MatrixXd Nmat;
     Nmat = Eigen::MatrixXd::Zero(k,3*k);
     Nmat.block(0,0,k,k) = N.col(0).asDiagonal();
