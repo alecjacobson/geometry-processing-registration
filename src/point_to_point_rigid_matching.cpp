@@ -26,6 +26,7 @@ void point_to_point_rigid_matching(
     M =   (XBar.transpose()) * PBar;
     
     closest_rotation(M,R);
+    
     t = P.colwise().sum().transpose() - R * (P.colwise().sum().transpose());
 }
 

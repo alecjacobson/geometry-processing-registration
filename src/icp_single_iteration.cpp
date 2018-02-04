@@ -3,6 +3,8 @@
 #include "point_to_plane_rigid_matching.h"
 #include "random_points_on_mesh.h"
 #include "point_mesh_distance.h"
+#include <iostream>
+using namespace std;
 
 void icp_single_iteration(
   const Eigen::MatrixXd & VX,
@@ -22,13 +24,14 @@ void icp_single_iteration(
     
     point_mesh_distance(sampledPoints,VY,FY, D,P,N);
     
-    
-    if (method & ICP_METHOD_POINT_TO_POINT) {
+    if (method == ICP_METHOD_POINT_TO_POINT) {
         point_to_point_rigid_matching(sampledPoints, P,R,t);
         
     }
-    else if (method & ICP_METHOD_POINT_TO_PLANE){
+    else if (method == ICP_METHOD_POINT_TO_PLANE){
         point_to_plane_rigid_matching(sampledPoints,P,N,R,t);
         
     }
+    
+    
 }
