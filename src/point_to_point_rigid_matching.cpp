@@ -22,15 +22,19 @@ void point_to_point_rigid_matching(
     xNum = X.rows();
     pNum = P.rows();
     
+    //Compute the centralized query points and their closest points
     for (int i = 0; i < 3; i ++) {
         XBar.col(i).array() -= (XBar.col(i).mean());
         PBar.col(i).array() -= (PBar.col(i).mean());
     }
+    
+    //Estimate closed form of M
     M =   (XBar.transpose()) * PBar;
     
+    //Project it to space of rotations
     closest_rotation(M,R);
 
-    
+    //Compute translation
     t = P.colwise().mean().transpose() - R * (X.colwise().mean().transpose());
     
 }

@@ -2,10 +2,11 @@
 #include "math.h"
 #include <igl/cumsum.h>
 #include <igl/doublearea.h>
-#include <iostream>
-using namespace std;
 
-//Still need to finish this?
+//Runs binary search on matrix V to find randomly sampled triangle based on areas.
+//Correct up to index +- 1. To be precise, the higher level structure of binary search is there,
+//but the nuance of working out the edge cases might not be.
+
 int binary_search(const Eigen::MatrixXd &V, double randVal)
 {
     
@@ -36,36 +37,41 @@ void random_points_on_mesh(
   Eigen::MatrixXd & X)
 {
 
-  // REPLACE WITH YOUR CODE:
+    
     X.resize(n,3);
     int size = V.rows(), curIndex;
+    //These are used to sample the triangle and mesh
     double alpha,beta, randVal, curSum;
     Eigen::MatrixXd A;
     A.resize(size,1);
     curSum = 0;
+    //Compute the area of each triangle
     igl::doublearea(V,F,A);
     A.array() = A.array() / 2;
     Eigen::MatrixXd C;
     C.resizeLike(A);
+    //compute their cumsum
     igl::cumsum(A,1,C);
+    
+    //Normalize the sums
     C.array() /= C(C.rows() - 1, 0);
     
     for(int i = 0;i<n;i++) {
         randVal = ((double) rand()/RAND_MAX);
         alpha = (double) rand() / RAND_MAX;
         beta = (double) rand() / RAND_MAX;
+        //Randomly sample a triangle by sampling a parallelogram , flip if we are on the wrong side of the parallelogram.
         if (alpha + beta > 1) {
             alpha = 1 - alpha;
             beta = 1 - beta;
         }
-        //cout << randVal << "\n";
+        
+        //Randomly sample a triangle from the best
         curIndex = binary_search(C, randVal);
         
-        //cout << "Point: " << i << "RandVal: " << randVal << " Val: " << C(curIndex) << "\n";
-        //cout << "Index: " << curIndex << " Value : " << V.row(F(curIndex,0)) << "\n";
+        
         X.row(i) = (1 - (alpha + beta)) * V.row(F(curIndex,0)) + alpha * V.row(F(curIndex,1)) + beta * V.row(F(curIndex,2));
-        //Need to find the current triangle
-        //cout << "Index: " << curIndex << " Value : " << X.row(i) << "\n";
+
     }
 
 

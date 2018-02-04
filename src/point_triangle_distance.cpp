@@ -1,7 +1,6 @@
 #include "point_triangle_distance.h"
-#include <iostream>
-using namespace std;
 
+//Clamps the values to interval [a,b]
 float clamp (float x, float a, float b) {
     if (x < a) {
         return a;
@@ -26,6 +25,7 @@ void projectPoint (const Eigen::RowVector2d & x_new,
     
 }
 
+//Compute the closest point of X on 2 connected line segments
 void findProjectedPoint (const Eigen::RowVector2d & x_new,
                          const Eigen::RowVector2d & a_new,
                          const Eigen::RowVector2d & b_new,
@@ -62,17 +62,17 @@ void point_triangle_distance(
 {
 
   //Create the vectors of the triangle
-    //Used this to compute closest point to triangle https://www.gamedev.net/forums/topic/552906-closest-point-on-triangle
     //I realized this was not as simple as just projecting the points onto the plane defined by the triangle, will update the algorithm to incorporate my idea.
     
-    //Effectively, you have 3 lines that divide the plane. There lines define 7 cases.
+    //Effectively, we compute 3 lines that cut up the plane. These lines define 7 cases.
+    //We can check the case by looking at which side of the line the projected X point lies in
     
     Eigen::RowVector3d e0,e1,e2, e1_norm;
     e0.array() = b.array() - a.array();
     Eigen::RowVector3d v;
     e1.array() = c.array() - a.array();
     
-    
+    //We compute a new coordinate system in the plane containing the triangle
     e0 = e0 / e0.norm();
     e1 = e1 / e1.norm();
     e1_norm = e1 - e0.dot(e1) * e0;
@@ -88,19 +88,23 @@ void point_triangle_distance(
     c_new(0) = e0.dot(c - a);
     c_new(1) = e1_norm.dot(c-a);
     
-    //
+    //Rotation matrix to compute the normal for each line
     Eigen::Matrix2d RotMat;
     RotMat = Eigen::Matrix2d::Zero();
     RotMat(0,1) = -1;
     RotMat(1,0) = 1;
     
     Eigen::RowVector2d lineEq0, lineEq1, lineEq2;
+    //Eq for line AB
     lineEq0(0) = 0;
     lineEq0(1) = -1;
     
+    //Eq for line AC
     lineEq1 = RotMat * (c_new - a_new).transpose();
+    //Eq for line CB
     lineEq2 = RotMat * (b_new - c_new).transpose();
     
+    //Check the side of the line x_new lies on (negative means on the side the triangle is on)
     float af,bf,cf, projectedPoint, dist1, dist2;
     af = x_new.dot(lineEq0);
     bf = x_new.dot(lineEq1);
@@ -112,30 +116,37 @@ void point_triangle_distance(
             if (cf <= 0) {
                 finalProj = x_new;
             }
+            //Point is closest to edge 2, i.e. BC.
             else {
                 projectPoint(x_new, c_new,b_new, finalProj);
             }
         } else {
+            //Point is closest to edge 1, i.e. AC.
             if (cf <= 0) {
                 projectPoint(x_new, a_new,c_new, finalProj);
             }
+            //Point lies in the intersection of 2 half-planes defined by CA and CB.
             else { //Annoying Case
                 findProjectedPoint(x_new,c_new,b_new,a_new,finalProj);
             }
         }
     } else {
         if (bf <= 0) {
-            //Everything lies on the correct side of the divided plane
+            //Point is closest to edge 0, i.e. AB.
             if (cf <= 0) {
                 projectPoint(x_new, a_new,b_new, finalProj);
             }
+            //Point lies in the intersection of 2 half-planes defined by BA and BC.
             else { //Annoying Case, Line
                 findProjectedPoint(x_new,b_new,a_new,c_new,finalProj);
             }
+            //Point lies in the intersection of 2 half-planes defined by AC and AB.
         } else { //Annoying Case
             if (cf <= 0) {
                 findProjectedPoint(x_new,a_new,b_new,c_new,finalProj);
                 
+            } //We should never end up here, but just in case, we return a generic point
+            else {findProjectedPoint(x_new,a_new,b_new,c_new,finalProj);
             }
         }
     }

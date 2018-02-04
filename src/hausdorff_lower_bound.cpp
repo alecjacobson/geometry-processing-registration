@@ -16,8 +16,9 @@ double hausdorff_lower_bound(
     Eigen::VectorXd D;
     Eigen::MatrixXd P, N;
     
-    point_mesh_distance(sampledPoints,VY,FY, D,P,N);
     //Then run point_mesh_distance
+    point_mesh_distance(sampledPoints,VY,FY, D,P,N);
     
+    //return the largest distance
     return D.maxCoeff();
 }
