@@ -46,6 +46,7 @@ void point_mesh_distance(
 
       if (f == 0){
         d_min = d;
+        f_min = f;
         p_min = p;
       }
 
