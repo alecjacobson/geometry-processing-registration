@@ -13,6 +13,9 @@ void point_mesh_distance(
   P.resizeLike(X);
   N.resizeLike(X);
   D.resize(n);
+
+  Eigen::MatrixXd PFN;
+  igl::per_face_normals(VY, FY, Eigen::Vector3d(1,1,1).normalized(), PFN);
   // loop through every point
   for(int i = 0;i<X.rows();i++){
     double min_d = -1;
@@ -36,10 +39,6 @@ void point_mesh_distance(
     }
     P.row(i) = closest_p;
     D(i) = min_d;
-    // normal of face at min_f_idx;
-    Eigen::RowVector3d f_edge1 = VY.row(FY(min_f_idx, 0)) - VY.row(FY(min_f_idx, 1));
-    Eigen::RowVector3d f_edge2 = VY.row(FY(min_f_idx, 2)) - VY.row(FY(min_f_idx, 1));
-    N.row(i) = f_edge1.cross(f_edge2);
-    N.row(i) /= N.row(i).norm();
+    N.row(i) = PFN.row(min_f_idx);
   }
 }
