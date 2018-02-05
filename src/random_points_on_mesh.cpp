@@ -6,6 +6,8 @@
 #include <igl/doublearea.h>
 #include <igl/cumsum.h>
 
+std::default_random_engine generator(time(0));
+
 void random_points_on_mesh(
   const int n,
   const Eigen::MatrixXd & V,
@@ -13,9 +15,8 @@ void random_points_on_mesh(
   Eigen::MatrixXd & X)
 {
   // REPLACE WITH YOUR CODE:
-  X.resize(n,3);
+  X.resize(n,3);  
   
-  std::default_random_engine generator(time(0));
   std::uniform_real_distribution<double> distribution(0.0,1.0);
 
   Eigen::VectorXd A(F.rows());
