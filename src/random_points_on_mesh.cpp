@@ -15,7 +15,7 @@ void random_points_on_mesh(
   // REPLACE WITH YOUR CODE:
   X.resize(n,3);
   
-  std::default_random_engine generator;
+  std::default_random_engine generator(time(0));
   std::uniform_real_distribution<double> distribution(0.0,1.0);
 
   Eigen::VectorXd A(F.rows());
