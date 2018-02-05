@@ -7,9 +7,14 @@
 #include <Eigen/Core>
 #include <string>
 #include <iostream>
+#include <cstdlib> // srand
+#include <time.h> // time
 
 int main(int argc, char *argv[])
 {
+  // seed the random number generator
+  srand(time(NULL));
+    
   // Load input meshes
   Eigen::MatrixXd OVX,VX,VY;
   Eigen::MatrixXi FX,FY;
@@ -52,7 +57,7 @@ int main(int argc, char *argv[])
     viewer.data.set_colors(C);
   };
   const auto & set_points = [&]()
-  {
+  { 
     Eigen::MatrixXd X,P;
     random_points_on_mesh(num_samples,VX,FX,X);
     Eigen::VectorXd D;
@@ -84,8 +89,10 @@ int main(int argc, char *argv[])
       Eigen::Matrix3d R;
       Eigen::RowVector3d t;
       icp_single_iteration(VX,FX,VY,FY,num_samples,method,R,t);
+      
       // Apply transformation to source mesh
       VX = ((VX*R).rowwise() + t).eval();
+
       set_meshes();
       if(show_samples)
       {
