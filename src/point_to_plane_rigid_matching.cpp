@@ -14,28 +14,28 @@ void point_to_plane_rigid_matching(
   t = Eigen::RowVector3d::Zero();
 
   Eigen::MatrixXd A = Eigen::MatrixXd::Zero(3 * k, 6);
-  A.block(1,0, k,1) = -X.col(2);
-  A.block(2,0, k,1) = X.col(1);
+  A.block(k,0, k,1) = -X.col(2);
+  A.block(2*k,0, k,1) = X.col(1);
 
   A.block(0,1, k,1) = X.col(2);
-  A.block(2,1, k,1) = -X.col(0);
+  A.block(2*k,1, k,1) = -X.col(0);
 
   A.block(0,2, k,1) = -X.col(1);
-  A.block(1,2, k,1) = X.col(0);
+  A.block(k,2, k,1) = X.col(0);
 
-  A.block(3,0, k,1) = Eigen::MatrixXd::Ones(k,1);
-  A.block(4,1, k,1) = Eigen::MatrixXd::Ones(k,1);
-  A.block(5,2, k,1) = Eigen::MatrixXd::Ones(k,1);
+  A.block(0,3, k,1) = Eigen::MatrixXd::Ones(k,1);
+  A.block(k,4, k,1) = Eigen::MatrixXd::Ones(k,1);
+  A.block(k*2,5, k,1) = Eigen::MatrixXd::Ones(k,1);
 
   Eigen::MatrixXd B = Eigen::MatrixXd::Zero(3 * k, 1);
   B.block(0,0, k,1) = X.col(0) - P.col(0);
-  B.block(0,1, k,1) = X.col(1) - P.col(1);
-  B.block(0,2, k,1) = X.col(2) - P.col(2);
+  B.block(k,0, k,1) = X.col(1) - P.col(1);
+  B.block(2*k,0, k,1) = X.col(2) - P.col(2);
 
   Eigen::MatrixXd C = Eigen::MatrixXd::Zero(k, 3 * k);
   C.block(0,0,k,k) = N.col(0).asDiagonal();
-  C.block(1,0,k,k) = N.col(1).asDiagonal();
-  C.block(2,0,k,k) = N.col(2).asDiagonal();
+  C.block(k,0,k,k) = N.col(1).asDiagonal();
+  C.block(2*k,0,k,k) = N.col(2).asDiagonal();
 
   A = C * A;
   B = C * B;

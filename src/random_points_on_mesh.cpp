@@ -11,6 +11,8 @@ int binary_search_larger(Eigen::MatrixXd & X, double limit){
     c = (a+b)/2;
     while(1){
         double ratio = X(c,0)/X(X.rows()-1,0);
+        //std::cout << "rows:" << X.rows() << std::endl;
+        //std::cout<<"ratio: " << ratio << "limit: " << limit << std::endl;
         if (ratio> limit){
             a = a;
             b = c;
@@ -23,6 +25,7 @@ int binary_search_larger(Eigen::MatrixXd & X, double limit){
         if (a == b){
             break;
         }
+        //std::cout << "a:" <<a << " b:" << b << " c:" << c <<std::endl; 
     }
     return c;
 }
@@ -46,7 +49,13 @@ void random_points_on_mesh(
     std::uniform_real_distribution<double> b(0.0,1.0);
     std::uniform_real_distribution<double> c(0.0,1.0);
     //std::cout << "w1" <<colsum.rows() << " " << colsum.cols() << std::endl;
-    X.resize(n,3);
+      //std::cout << colsum << std::endl;
+    std::cout << colsum.rows() << std::endl;
+    std::cout << areas.rows() << std::endl;
+    std::cout << n << std::endl;
+    std::cout << X.rows() << std::endl;
+    std::cout << V.rows() << std::endl;
+    std::cout << F.rows() << std::endl;
     for (int i = 0; i < X.rows(); i++){
         double rand_tri = c(generator);
         int tri_idx = binary_search_larger(colsum, rand_tri);

@@ -28,7 +28,8 @@ void point_mesh_distance(
     for (int j = 0; j < FY.rows(); ++j){
       double temp_d = 0;
       Eigen::RowVector3d temp_p;
-      point_triangle_distance(X.row(i), VY.row(FY(j,0)), VY.row(FY(j,1)), VY.row(FY(j,2)), temp_d, temp_p);  
+      point_triangle_distance(X.row(i), VY.row(FY(j,0)), VY.row(FY(j,1)), VY.row(FY(j,2)), temp_d, temp_p);
+
       if (temp_d < min_d){
         min_d = temp_d;
         min_p = temp_p;
