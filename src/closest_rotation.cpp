@@ -6,4 +6,10 @@ void closest_rotation(
 {
   // Replace with your code
   R = Eigen::Matrix3d::Identity();
+  Eigen::JacobiSVD<Eigen::MatrixXd> svd(M, ComputeThinU | ComputeThinV);
+  Eigen::Matrix3d omega;
+  omega << 1, 0, 0,
+  0, 1, 0,
+  0, 0, (svd.matrixU() * svd.matrixV().transpose()).determinant();
+  R = svd.matrixU() * omega * svd.matrixV().transpose();
 }
