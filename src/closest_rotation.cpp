@@ -13,5 +13,5 @@ void closest_rotation(
   omega << 1, 0, 0,
   0, 1, 0,
   0, 0, (svd.matrixU() * svd.matrixV().transpose()).determinant();
-  R = svd.matrixU() * omega * svd.matrixV().transpose();
+  R = svd.matrixV() * omega * svd.matrixU().transpose();
 }

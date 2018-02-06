@@ -69,8 +69,8 @@ void random_points_on_mesh(
     }
 
   	X.row(i) = V.row(F(idx, 0)) + 
-  			   alpha * V.row(F(idx, 1)) +
-  			   beta * V.row(F(idx, 2));
+  			   alpha * (V.row(F(idx, 1)) - V.row(F(idx, 0))) +
+  			   beta * (V.row(F(idx, 2)) - V.row(F(idx, 0)));
     // std::cout << "==============" << std::endl;
     // std::cout << idx << std::endl;
     // std::cout << randx << std::endl;

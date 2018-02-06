@@ -13,11 +13,11 @@ void point_triangle_distance(
 {
   // following algorithm from below link
   // http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.104.4264&rep=rep1&type=pdf
-  if (true) {
-    d = (x-a).norm();
-    p = a;
-    return ;
-  }
+  // if (true) {
+  //   d = (x-a).norm();
+  //   p = a;
+  //   return ;
+  // }
   Eigen::RowVector3d ab = a-b;
   Eigen::RowVector3d ba = b-a;
   Eigen::RowVector3d ac = a-c;
@@ -43,7 +43,6 @@ void point_triangle_distance(
   	0 <= gamma && gamma <= 1) {
   	p = projectx;
   	d = (x - p).norm();
-    std::cout << "test1" << std::endl;
   	return ;
   }
   d = std::numeric_limits<double>::max();
@@ -63,17 +62,14 @@ void dist_helper(const Eigen::RowVector3d & x,
   if (abs((pa-a).norm() + (a-b).norm() - (pa-b).norm()) < 1e-10) {
     distance = (x-a).norm();
     p = a;
-    std::cout << "test2" << std::endl;
   }
   else if (abs((pa-b).norm() + (b-a).norm() - (pa-a).norm()) <1e-10) {
     distance = (x-b).norm();
     p = b;
-    std::cout << "test3" << std::endl;
   }
   else {
     distance = (x-pa).norm();
     p = pa;
-    std::cout << "test4" << std::endl;
   }
 
   if (d > distance) {
