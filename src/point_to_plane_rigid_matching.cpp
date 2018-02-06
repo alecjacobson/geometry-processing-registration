@@ -11,14 +11,10 @@ void point_to_plane_rigid_matching(
   Eigen::RowVector3d & t)
 {
   // Replace with your code
-  std::cout << "test3.1" << std::endl;
   Eigen::MatrixXd dig = Eigen::MatrixXd::Zero(X.rows(), X.rows() *3);
   dig.block(0,0,X.rows(),X.rows()) = N.col(0).asDiagonal();
-  std::cout << "test3.11" << std::endl;
   dig.block(0,X.rows(),X.rows(),X.rows()) = N.col(1).asDiagonal();
-  std::cout << "test3.12" << std::endl;
   dig.block(0,X.rows()*2,X.rows(),X.rows()) = N.col(2).asDiagonal();
-  std::cout << "test3.15" << std::endl;
 
   Eigen::MatrixXd A = Eigen::MatrixXd::Zero(X.rows() * 3, 6);
   for (int i = 0; i<X.rows();i ++){
@@ -35,14 +31,12 @@ void point_to_plane_rigid_matching(
   	A(i+X.rows()*2, 5) = 1;
 
   }
-  std::cout << "test3.2" << std::endl;
 
   Eigen::VectorXd B = Eigen::VectorXd::Zero(X.rows() * 3);
   Eigen::MatrixXd XP = X-P;
   B << XP.col(0), XP.col(1), XP.col(2);
   Eigen::MatrixXd new_A = dig * A;
   Eigen::MatrixXd new_B = dig * B;
-  std::cout << "test3.3" << std::endl;
 
   Eigen::VectorXd u = (new_A.transpose() * new_A).inverse() * (-new_A.transpose() * new_B);
   Eigen::MatrixXd M = Eigen::MatrixXd::Zero(3, 3);
@@ -51,7 +45,6 @@ void point_to_plane_rigid_matching(
   	   -u(1), u(0), 1;
   closest_rotation(M, R);
   t << u(3), u(4), u(5);
-  std::cout << "test3.4" << std::endl;
   std::cout << R << std::endl;
   std::cout << t << std::endl;
 }
