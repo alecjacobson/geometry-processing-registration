@@ -29,9 +29,9 @@ bool same_side(
   const Eigen::RowVector3d & b,
   const Eigen::RowVector3d & c);
 
-  bool in_triangle(
-    const Eigen::RowVector3d & x,
-    const Eigen::RowVector3d & a,
-    const Eigen::RowVector3d & b,
-    const Eigen::RowVector3d & c);
+bool in_triangle(
+  const Eigen::RowVector3d & x,
+  const Eigen::RowVector3d & a,
+  const Eigen::RowVector3d & b,
+  const Eigen::RowVector3d & c);
 #endif

@@ -23,23 +23,36 @@ void point_triangle_distance(
       std::vector<Eigen::RowVector3d> candidate_pts;
       // add vertices to candidate_pts
       candidate_pts.push_back(a); candidate_pts.push_back(b); candidate_pts.push_back(c);
-      // add closest points on triangle edges to candidate_pts
 
-      // LINE AB
-      Eigen::RowVector3d u = a - b;
-      u /= u.norm();
-      Eigen::RowVector3d v = a - x;
-      candidate_pts.push_back(u.dot(v) * u);
+      // add closest points on triangle edges to candidate_pts
+      // http://geomalgorithms.com/a02-_lines.html
+      // LINE AB ... this should all be refactored daflhdsfa
+      Eigen::RowVector3d v = b - a;
+      Eigen::RowVector3d w = x - a;
+      double c1 = w.dot(v);
+      double c2 = v.dot(v);
+      if(c1 > 0 && c2 > c1){
+        double t = c1/c2;
+        candidate_pts.push_back(a + t * v);
+      }
       // LINE BC
-      u = b - c;
-      u /= u.norm();
-      v = b - x;
-      candidate_pts.push_back(u.dot(v) * u);
+      v = c - b;
+      w = x - b;
+      c1 = w.dot(v);
+      c2 = v.dot(v);
+      if(c1 > 0 && c2 > c1){
+        double t = c1/c2;
+        candidate_pts.push_back(b + t * v);
+      }
       // LINE AC
-      u = a - c;
-      u /= u.norm();
-      v = c - x;
-      candidate_pts.push_back(u.dot(v) * u);
+      v = c - a;
+      w = x - a;
+      c1 = w.dot(v);
+      c2 = v.dot(v);
+      if(c1 > 0 && c2 > c1){
+        double t = c1/c2;
+        candidate_pts.push_back(a + t * v);
+      }
 
       // find min distance and point among candidate_pts
       d = (a-x).norm();
