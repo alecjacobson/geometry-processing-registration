@@ -11,7 +11,6 @@ double hausdorff_lower_bound(
   // Replace with your code
     Eigen::MatrixXd sampled_X;
     random_points_on_mesh(n,VX,FX,sampled_X);
-
     Eigen::VectorXd D;
     Eigen::MatrixXd P;
     Eigen::MatrixXd N;
