@@ -16,18 +16,14 @@ void icp_single_iteration(
   Eigen::RowVector3d & t)
 {
   // Replace with your code
-  std::cout << "test1" << std::endl;
   R = Eigen::Matrix3d::Identity();
   t = Eigen::RowVector3d::Zero();
   Eigen::MatrixXd X;
   random_points_on_mesh(num_samples, VX, FX, X);
-  std::cout << "test2" << std::endl;
   Eigen::VectorXd D;
   Eigen::MatrixXd P;
   Eigen::MatrixXd N;
   point_mesh_distance(X, VY, FY, D, P, N);
-
-  std::cout << "test3" << std::endl;
   switch(method)
   {
     case ICP_METHOD_POINT_TO_POINT: point_to_point_rigid_matching(X, P, R, t);   break;
