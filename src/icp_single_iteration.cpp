@@ -28,15 +28,14 @@ void icp_single_iteration(
   Eigen::VectorXd D;
   Eigen::MatrixXd N;
 
-  std::cout << "1" <<std::endl;
+
   random_points_on_mesh(num_samples, VX, FX, X);
-  std::cout << "2" <<std::endl;
+
   point_mesh_distance(X, VY, FY, D, P, N);
-  std::cout << "3" <<std::endl;
+
   if (method == ICP_METHOD_POINT_TO_POINT){
     point_to_point_rigid_matching(X, P, R, t);
   } else if (method == ICP_METHOD_POINT_TO_PLANE){
     point_to_plane_rigid_matching(X, P, N, R, t);
   }
-  std::cout << "4" <<std::endl;
 }

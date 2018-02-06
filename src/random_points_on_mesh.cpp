@@ -44,18 +44,11 @@ void random_points_on_mesh(
 
     igl::doublearea(V, F, areas);
     igl::cumsum(areas, 1, colsum);
-    std::default_random_engine generator;
+    static std::default_random_engine generator;
     std::uniform_real_distribution<double> a(0.0,1.0);
     std::uniform_real_distribution<double> b(0.0,1.0);
     std::uniform_real_distribution<double> c(0.0,1.0);
-    //std::cout << "w1" <<colsum.rows() << " " << colsum.cols() << std::endl;
-      //std::cout << colsum << std::endl;
-    std::cout << colsum.rows() << std::endl;
-    std::cout << areas.rows() << std::endl;
-    std::cout << n << std::endl;
-    std::cout << X.rows() << std::endl;
-    std::cout << V.rows() << std::endl;
-    std::cout << F.rows() << std::endl;
+
     for (int i = 0; i < X.rows(); i++){
         double rand_tri = c(generator);
         int tri_idx = binary_search_larger(colsum, rand_tri);

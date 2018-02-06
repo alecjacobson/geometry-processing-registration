@@ -20,7 +20,6 @@ void point_mesh_distance(
   //D = (X-P).rowwise().norm();
   Eigen::MatrixXi temp_F;
   temp_F.resize(X.rows(),3);
-  std::cout << "2.1" <<std::endl;
   for (int i = 0; i< X.rows(); ++i){
     double min_d =  std::numeric_limits<double>::max();
     Eigen::RowVector3d min_p;
@@ -29,7 +28,6 @@ void point_mesh_distance(
       double temp_d = 0;
       Eigen::RowVector3d temp_p;
       point_triangle_distance(X.row(i), VY.row(FY(j,0)), VY.row(FY(j,1)), VY.row(FY(j,2)), temp_d, temp_p);
-
       if (temp_d < min_d){
         min_d = temp_d;
         min_p = temp_p;
@@ -40,6 +38,5 @@ void point_mesh_distance(
     P.row(i) = min_p;
     temp_F.row(i) = FY.row(min_f);
   }
-  std::cout << "2.2" <<std::endl;
   igl::per_face_normals(VY,temp_F,Eigen::Vector3d(1,1,1).normalized(),N);  
 }

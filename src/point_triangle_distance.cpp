@@ -29,6 +29,19 @@ void closet_to_line(const Eigen::RowVector3d & a, const Eigen::RowVector3d & b, 
     }
 }
 
+//https://math.stackexchange.com/questions/544946/determine-if-projection-of-3d-point-onto-plane-is-within-a-triangle
+bool point_in_triangle(const Eigen::RowVector3d & p, const Eigen::RowVector3d & a, const Eigen::RowVector3d & b, const Eigen::RowVector3d & c){
+    auto u = b - a;
+    auto v = c - a;
+    auto n = u.cross(v);
+    auto w = p - a;
+    double a0 = u.cross(w).dot(n)/n.dot(n);
+    double a1 = w.cross(v).dot(n)/n.dot(n);
+    double a2 = 1 - a0 - a1;
+
+    return (a0 >= 0 && a0 <=1) && (a1 >= 0 && a1 <=1)  &&(a2 >= 0 && a2 <=1);
+}
+
 void point_triangle_distance(
   const Eigen::RowVector3d & x,
   const Eigen::RowVector3d & a,
@@ -38,23 +51,16 @@ void point_triangle_distance(
   Eigen::RowVector3d & p)
 {
   // Replace with your code
-    #warning "speed by doing nothing"
-    p = (a+b+c)/3;
-    d = (x - p).norm();
-    return;
+    // #warning "speed by doing nothing"
+    // p = (a+b+c)/3;
+    // d = (x - p).norm();
+    // return;
   auto tempab = b - a;
   auto tempca = c - a;
   auto normal = tempab.cross(tempca).normalized();
   auto intersect = x + (normal.dot(a) - normal.dot(x)) * normal;
   
-  Eigen::Matrix3d A;
-  A.col(0) = a.transpose();
-  A.col(1) = b.transpose();
-  A.col(2) = c.transpose();
-  Eigen::Vector3d coeff = A.colPivHouseholderQr().solve(intersect.transpose());
-  if (!(coeff(0,0) >= 0 &&  coeff(0,0) <= 1
-       && coeff(1,0) >= 0 &&  coeff(1,0) <= 1
-       && coeff(2,0) >= 0 &&  coeff(2,0) <= 1)){ 
+  if (!point_in_triangle(intersect, a,b,c)){ 
     double line_d[3];
     Eigen::RowVector3d line_p[3]; 
     closet_to_line(a, b, x, line_d[0], line_p[0]);
