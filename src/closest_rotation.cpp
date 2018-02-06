@@ -1,4 +1,6 @@
 #include "closest_rotation.h"
+#include <Eigen/SVD>
+#include <Eigen/Dense>
 
 void closest_rotation(
   const Eigen::Matrix3d & M,
@@ -6,7 +8,7 @@ void closest_rotation(
 {
   // Replace with your code
   R = Eigen::Matrix3d::Identity();
-  Eigen::JacobiSVD<Eigen::MatrixXd> svd(M, ComputeThinU | ComputeThinV);
+  Eigen::JacobiSVD<Eigen::MatrixXd> svd(M, Eigen::ComputeThinU | Eigen::ComputeThinV);
   Eigen::Matrix3d omega;
   omega << 1, 0, 0,
   0, 1, 0,
