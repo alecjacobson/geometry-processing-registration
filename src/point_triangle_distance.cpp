@@ -20,7 +20,6 @@ void point_triangle_distance(
 	Eigen::RowVector3d v3 = x0 - a;
 	double v11 = v1.dot(v1);
 	double v12 = v1.dot(v2);
-	//double v21 = v2.dot(v1);
 	double v22 = v2.dot(v2);
 	double v31 = v3.dot(v1);
 	double v32 = v3.dot(v2);
