@@ -13,11 +13,6 @@ void point_triangle_distance(
 {
   // following algorithm from below link
   // http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.104.4264&rep=rep1&type=pdf
-  // if (true) {
-  //   d = (x-a).norm();
-  //   p = a;
-  //   return ;
-  // }
   Eigen::RowVector3d ab = a-b;
   Eigen::RowVector3d ba = b-a;
   Eigen::RowVector3d ac = a-c;

@@ -30,7 +30,6 @@ void point_mesh_distance(
         N.row(i) = pfn.row(j);
       }
     }
-    // std::cout << "test2.4" << std::endl;
   }
 
 }

@@ -24,10 +24,8 @@ void random_points_on_mesh(
 
   	int idx = cumsumA.rows() / 2;
   	int gap = cumsumA.rows() / 4;
-  	//go over boundary?
   	while(idx >= 1 && idx <= cumsumA.rows() - 1 && gap != 0) {
       if (cumsumA(idx - 1, 0) < randx && cumsumA(idx, 0) > randx) {
-        // std::cout << "hihiiiihi" << std::endl;
         break;
       }
   		if (randx > cumsumA(idx)) {
@@ -40,17 +38,7 @@ void random_points_on_mesh(
       if (gap == 0) {
         gap = 1;
       }
-      // std::cout << "==============" << std::endl;
-      // std::cout << cumsumA(idx - 1) << std::endl;
-      // std::cout << randx << std::endl;
-      // std::cout << cumsumA(idx) << std::endl;
-      // std::cout << gap << std::endl;
-      // std::cout << idx << std::endl;
-      // std::string mystr;
-      // getline (std::cin, mystr);
-
   	}
-    // std::cout << idx << std::endl;
     std::uniform_real_distribution<double> distribution_alpha(0.,1.);
     std::uniform_real_distribution<double> distribution_beta(0.,1.);
   	double alpha = distribution_alpha(generator);
@@ -71,11 +59,6 @@ void random_points_on_mesh(
   	X.row(i) = V.row(F(idx, 0)) + 
   			   alpha * (V.row(F(idx, 1)) - V.row(F(idx, 0))) +
   			   beta * (V.row(F(idx, 2)) - V.row(F(idx, 0)));
-    // std::cout << "==============" << std::endl;
-    // std::cout << idx << std::endl;
-    // std::cout << randx << std::endl;
-    // std::cout << alpha << std::endl;
-    // std::cout << beta << std::endl;
   }
 }
 
