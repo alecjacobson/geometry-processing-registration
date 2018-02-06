@@ -1,5 +1,6 @@
 #include "icp_single_iteration.h"
 #include "point_to_point_rigid_matching.h"
+#include "point_to_plane_rigid_matching.h"
 #include "random_points_on_mesh.h"
 #include "point_mesh_distance.h"
 
@@ -22,5 +23,10 @@ void icp_single_iteration(
   random_points_on_mesh(num_samples, VX, FX, X_samp);
   point_mesh_distance(X_samp, VY, FY, min_distances, closest_points, normals);
 
-  point_to_point_rigid_matching(X_samp, closest_points, R, t);
+  if(method == ICPMethod::ICP_METHOD_POINT_TO_POINT) {
+    point_to_point_rigid_matching(X_samp, closest_points, R, t);
+  } else {
+    point_to_plane_rigid_matching(X_samp, closest_points, normals, R, t);
+  }
+
 }
