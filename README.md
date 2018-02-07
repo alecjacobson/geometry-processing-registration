@@ -680,12 +680,12 @@ Finally, we have a formula for our optimal rotation:
 > &= \argmin_{\Rot ∈ SO(3)} \left\| \Rot \overline{\X}^\transpose - \overline{\P}^\transpose \right\|_F^2 \\\\
 > &= \argmin_{\Rot ∈ SO(3)} \left<\Rot \overline{\X}^\transpose - \overline{\P}^\transpose , \Rot \overline{\X}^\transpose - \overline{\P}^\transpose \right>_F\\\\
 > &= \argmin_{\Rot ∈ SO(3)} \left\| \overline{\X} \right\|_F^2 + \left\| \overline{\P} \right\|_F^2 - 2 \left<\Rot \overline{\X}^\transpose , \overline{\P}^\transpose \right>_F\\\\
-> &= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\overline{\P}\,\overline{\X}^\transpose\right>_F\\\\
-> &= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\M\right>_F\\\\
+> &= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\overline{\P}^\transpose\,\overline{\X}\right>_F\\\\
+> &= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\M\right>_F\\
 > \end{align}
 > \\]
 > 
-> Letting $\M = \overline{\P}\,\overline{\X}^\transpose$ we can now follow the
+> Letting $\M = \overline{\P}^\transpose\,\overline{\X}$ we can now follow the
 > steps above using [singular value
 > decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) to
 > find the optimal $\Rot$.
