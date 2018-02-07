@@ -492,7 +492,7 @@ property](https://en.wikipedia.org/wiki/Associative_property) of the Frobenius
 norm:
 \\[
 \Rot^* = \argmin_{\Rot ∈ SO(3)} \left\| \M \right\|_F^2 + \left\| \Rot
-\right\|_F^2 - 2 \left<\Rot^\transpose, \M \right>_F,
+\right\|_F^2 - 2 \left<\Rot, \M \right>_F,
 \\]
 where $\left<\A, \B \right>_F$ is the
 [Frobenius inner
@@ -507,7 +507,7 @@ must equal one ($\left\|
 ($\Rot ∈ SO(3)$). We can drop the factor of $2$ and flip the minus sign to
 change our _minimization_ problem into a _maximization_ problem:
 \\[
-\Rot^* = \argmax_{\Rot ∈ SO(3)} \left<\Rot^\transpose, \M \right>_F
+\Rot^* = \argmax_{\Rot ∈ SO(3)} \left<\Rot, \M \right>_F
 \\]
 
 We now take advantage of the [singular value
@@ -516,7 +516,7 @@ $\M = \U Σ \V^\transpose$, where $\U, \V ∈ \R^{3×3}$ are orthonormal matrice
 and $Σ∈\R^{3×3}$ is a non-negative diagonal matrix:
 
 \\[
-\Rot^* = \argmax_{\Rot ∈ SO(3)} \left<\Rot,\V Σ \U^\transpose \right>_F.
+\Rot^* = \argmax_{\Rot ∈ SO(3)} \left<\Rot,\U Σ \V^\transpose \right>_F.
 \\]
 
 The Frobenius inner product will let us move the products by $\V$ and $\U$ from
@@ -553,14 +553,18 @@ the right argument to the left argument:
 >  
 
 \\[
-\Rot^* = \argmax_{\Rot ∈ SO(3)} \left<\V^\transpose \Rot \U, Σ \right>_F.
+\Rot^* = \argmax_{\Rot ∈ SO(3)} \left<\U^\transpose \Rot \V, Σ \right>_F.
 \\]
 
-Now, $\U$ and $\V$ are both orthonormal. We can pull them out of the
-maximization if we account for the reflection they _might_ incur . When we move
-the $\argmax$ inside, we now look for an orthonormal matrix $Ω ∈ O(3)$ that is
-a reflection (if $\det{\U\V^\transpose} = -1$) or a rotation (if
-$\det{\U\V^\transpose} = 1$):
+Now, $\U$ and $\V$ are both
+[orthonormal](https://en.wikipedia.org/wiki/Orthogonal_matrix), so multiplying
+them against a rotation matrix $\Rot$ does not change its orthonormality. We can
+pull them out of the maximization if we account for the reflection they _might_
+incur: introduce $Ω = \U^T\Rot\V ∈ O(3)$ with $\det{Ω} = \det{\U\V^\transpose}$.
+This implies that the optimal rotation for the original probklem is recovered
+via $\Rot^* = \U Ω^* \V^\transpose$.  When we move the $\argmax$ inside, we now
+look for an orthonormal matrix $Ω ∈ O(3)$ that is a reflection (if
+$\det{\U\V^\transpose} = -1$) or a rotation (if $\det{\U\V^\transpose} = 1$):
 
 \\[
   \Rot^* = \U \left( \argmax_{Ω ∈ O(3),\ \det{Ω} = \det{\U\V^\transpose}} \left<Ω, Σ \right>_F \right) \V^\transpose.
@@ -580,7 +584,7 @@ corner since that will multiply against the smallest singular value in $∑$ (ad
 negatively affect the maximization the least):
 
 \\[
-Ω_{ij} = \begin{cases}
+Ω^*_{ij} = \begin{cases}
 1 & \text{ if $i=j\lt3$} \\\\
 \det{\U\V^\transpose} & \text{ if $i=j=3$} \\\\
 0 & \text{ otherwise.}
@@ -590,7 +594,7 @@ negatively affect the maximization the least):
 Finally, we have a formula for our optimal rotation:
 
 \\[
-\Rot = \U Ω \V^\transpose.
+\Rot = \U Ω^* \V^\transpose.
 \\]
 
 > ### Closed-form point-to-point minimizer

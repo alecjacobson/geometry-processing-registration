@@ -580,7 +580,7 @@ property</a> of the Frobenius
 norm:
 <span class="math">\[
 \Rot^* = \argmin_{\Rot ∈ SO(3)} \left\| \M \right\|_F^2 + \left\| \Rot
-\right\|_F^2 - 2 \left<\Rot^\transpose, \M \right>_F,
+\right\|_F^2 - 2 \left<\Rot, \M \right>_F,
 \]</span>
 where <span class="math">\(\left<\A, \B \right>_F\)</span> is the
 <a href="https://en.wikipedia.org/wiki/Frobenius_inner_product">Frobenius inner
@@ -595,7 +595,7 @@ must equal one (<span class="math">\(\left\|
 (<span class="math">\(\Rot ∈ SO(3)\)</span>). We can drop the factor of <span class="math">\(2\)</span> and flip the minus sign to
 change our <em>minimization</em> problem into a <em>maximization</em> problem:
 <span class="math">\[
-\Rot^* = \argmax_{\Rot ∈ SO(3)} \left<\Rot^\transpose, \M \right>_F
+\Rot^* = \argmax_{\Rot ∈ SO(3)} \left<\Rot, \M \right>_F
 \]</span></p>
 
 <p>We now take advantage of the <a href="https://en.wikipedia.org/wiki/Singular_value_decomposition">singular value
@@ -604,7 +604,7 @@ decomposition</a> of
 and <span class="math">\(Σ∈\R^{3×3}\)</span> is a non-negative diagonal matrix:</p>
 
 <p><span class="math">\[
-\Rot^* = \argmax_{\Rot ∈ SO(3)} \left<\Rot,\V Σ \U^\transpose \right>_F.
+\Rot^* = \argmax_{\Rot ∈ SO(3)} \left<\Rot,\U Σ \V^\transpose \right>_F.
 \]</span></p>
 
 <p>The Frobenius inner product will let us move the products by <span class="math">\(\V\)</span> and <span class="math">\(\U\)</span> from
@@ -644,14 +644,18 @@ the right argument to the left argument:</p>
 </blockquote>
 
 <p><span class="math">\[
-\Rot^* = \argmax_{\Rot ∈ SO(3)} \left<\V^\transpose \Rot \U, Σ \right>_F.
+\Rot^* = \argmax_{\Rot ∈ SO(3)} \left<\U^\transpose \Rot \V, Σ \right>_F.
 \]</span></p>
 
-<p>Now, <span class="math">\(\U\)</span> and <span class="math">\(\V\)</span> are both orthonormal. We can pull them out of the
-maximization if we account for the reflection they <em>might</em> incur . When we move
-the <span class="math">\(\argmax\)</span> inside, we now look for an orthonormal matrix <span class="math">\(Ω ∈ O(3)\)</span> that is
-a reflection (if <span class="math">\(\det{\U\V^\transpose} = -1\)</span>) or a rotation (if
-<span class="math">\(\det{\U\V^\transpose} = 1\)</span>):</p>
+<p>Now, <span class="math">\(\U\)</span> and <span class="math">\(\V\)</span> are both
+<a href="https://en.wikipedia.org/wiki/Orthogonal_matrix">orthonormal</a>, so multiplying
+them against a rotation matrix <span class="math">\(\Rot\)</span> does not change its orthonormality. We can
+pull them out of the maximization if we account for the reflection they <em>might</em>
+incur: introduce <span class="math">\(Ω = \U^T\Rot\V ∈ O(3)\)</span> with <span class="math">\(\det{Ω} = \det{\U\V^\transpose}\)</span>.
+This implies that the optimal rotation for the original probklem is recovered
+via <span class="math">\(\Rot^* = \U Ω^* \V^\transpose\)</span>. When we move the <span class="math">\(\argmax\)</span> inside, we now
+look for an orthonormal matrix <span class="math">\(Ω ∈ O(3)\)</span> that is a reflection (if
+<span class="math">\(\det{\U\V^\transpose} = -1\)</span>) or a rotation (if <span class="math">\(\det{\U\V^\transpose} = 1\)</span>):</p>
 
 <p><span class="math">\[
   \Rot^* = \U \left( \argmax_{Ω ∈ O(3),\ \det{Ω} = \det{\U\V^\transpose}} \left<Ω, Σ \right>_F \right) \V^\transpose.
@@ -673,7 +677,7 @@ corner since that will multiply against the smallest singular value in <span cla
 negatively affect the maximization the least):</p>
 
 <p><span class="math">\[
-Ω_{ij} = \begin{cases}
+Ω^*_{ij} = \begin{cases}
 1 & \text{ if $i=j\lt3$} \\\\
 \det{\U\V^\transpose} & \text{ if $i=j=3$} \\\\
 0 & \text{ otherwise.}
@@ -683,7 +687,7 @@ negatively affect the maximization the least):</p>
 <p>Finally, we have a formula for our optimal rotation:</p>
 
 <p><span class="math">\[
-\Rot = \U Ω \V^\transpose.
+\Rot = \U Ω^* \V^\transpose.
 \]</span></p>
 
 <blockquote>
