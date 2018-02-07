@@ -574,10 +574,10 @@ This ensures that as a result $\Rot^*$ will be a rotation: $\det{\Rot^*} = 1$.
 Because $Ω$ is orthonormal, each column (or row) of $Ω$ must have unit norm.
 Placing a non-zero on the off-diagonal will get "killed" when multiplied by the
 corresponding zero in $Σ$. So the optimal choice of $Ω$ is to set all values to
-zero except on the diagonal. If $\det{\U\V^\transpose} = -1$, then we should
-set one (and only one) of these values to $-1$. The best choice is the bottom
-left corner since that will multiply against the smallest singular value in $∑$
-(add negatively affect the maximization the least):
+zero except on the diagonal. If $\det{\U\V^\transpose} = -1$, then we should set
+one (and only one) of these values to $-1$. The best choice is the bottom right
+corner since that will multiply against the smallest singular value in $∑$ (add
+negatively affect the maximization the least):
 
 \\[
 Ω_{ij} = \begin{cases}
