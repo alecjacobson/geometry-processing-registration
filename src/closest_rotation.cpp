@@ -10,7 +10,7 @@ void closest_rotation(
 	using namespace Eigen;
 	
 	// Calculate UV
-	JacobiSVD<Matrix3d> svd(M, ComputeThinU | ComputeThinV);
+	JacobiSVD<MatrixXd> svd(M, ComputeThinU | ComputeThinV);
 	Matrix3d U, V, omega;
 	U = svd.matrixU();
 	V = svd.matrixV();
