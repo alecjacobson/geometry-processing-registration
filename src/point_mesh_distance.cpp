@@ -1,5 +1,5 @@
 #include "point_mesh_distance.h"
-#include <iostream>
+// #include <iostream>
 
 void point_mesh_distance(
   const Eigen::MatrixXd & X,
