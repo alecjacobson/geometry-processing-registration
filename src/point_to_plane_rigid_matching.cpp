@@ -8,9 +8,9 @@ void point_to_plane_rigid_matching(
   Eigen::RowVector3d & t)
 {
   int k = X.rows();
-  Eigen::MatrixXd A;
 
   // Set A to zeros
+  Eigen::MatrixXd A;
   A = Eigen::MatrixXd::Zero(3*k, 6);
 
   // Build A
@@ -26,12 +26,12 @@ void point_to_plane_rigid_matching(
   A.col(4).segment(k, k) = Eigen::VectorXd::Ones(k);
   A.col(5).segment(2*k, k) = Eigen::VectorXd::Ones(k);
 
-  // Build P-X
+  // Build X-P
   Eigen::VectorXd PX;
   PX = Eigen::VectorXd::Zero(3*k, 1);
-  PX.segment(0, k) = P.col(0) - X.col(0);
-  PX.segment(k, k) = P.col(1) - X.col(1);
-  PX.segment(2*k, k) = P.col(2) - X.col(2);
+  PX.segment(0, k) = X.col(0) - P.col(0);
+  PX.segment(k, k) = X.col(1) - P.col(1);
+  PX.segment(2*k, k) = X.col(2) - P.col(2);
 
   // Build N_diag
   Eigen::MatrixXd N_diag;
@@ -39,20 +39,20 @@ void point_to_plane_rigid_matching(
   N_diag.block(0,0,k,k) = N.col(0).asDiagonal();
   N_diag.block(0,k,k,k) = N.col(1).asDiagonal();
   N_diag.block(0,2*k,k,k) = N.col(2).asDiagonal();
-
-  A = N * A;
-  PX = N * PX;
-
-  // Lease squares solution
-  Eigen::Matrix3d M;
-  Eigen::VectorXd u;
-  u = (A.transpose() * A).inverse() * (A.transpose() * PX);
-  t = Eigen::Vector3d(u(3),u(4),u(5));
   
-  // Because I used P - X, I don't have an extra minus here
-  M << 0, -u(2), u(1),
+  A = N_diag * A;
+  PX = N_diag * PX;
+
+  // Least squares solution
+  Eigen::Matrix3d M, residual;
+  Eigen::VectorXd u;
+  u = (A.transpose() * A).inverse() * (-A.transpose() * PX);
+  t = Eigen::RowVector3d(u(3),u(4),u(5));
+  
+  residual << 0, -u(2), u(1),
        u(2), 0, -u(0),
        -u(1), u(0), 0;
 
+  M = Eigen::Matrix3d::Identity() - residual;
   closest_rotation(M, R);
 }
