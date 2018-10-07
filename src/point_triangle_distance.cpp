@@ -2,7 +2,6 @@
 
 #include <Eigen/Geometry> 
 
-
 void point_triangle_distance(
   const Eigen::RowVector3d & x,
   const Eigen::RowVector3d & a,

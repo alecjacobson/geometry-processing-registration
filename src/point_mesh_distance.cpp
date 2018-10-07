@@ -6,6 +6,7 @@
 #include <vector>
 #include <algorithm>
 
+
 void point_mesh_distance(
   const Eigen::MatrixXd & X,
   const Eigen::MatrixXd & VY,
@@ -18,42 +19,35 @@ void point_mesh_distance(
     P.resizeLike(X);
     N.resizeLike(X);
 
-    auto nx = X.rows();
     auto ny = FY.rows();
 
     Eigen::MatrixXd NY;
     igl::per_face_normals(VY, FY, Eigen::Vector3d(1,1,1).normalized(), NY);
 
     int min_idx;
-    double d;
-    Eigen::RowVector3d p;
-    Eigen::VectorXd closest_distances(ny);
-    Eigen::MatrixXd closest_points(ny, 3);
+    double d, min_d;
+    Eigen::RowVector3d p, closest_p;
 
-    for (int i = 0; i < nx; ++i) {
+    for (int i = 0; i < X.rows(); ++i) {
         auto x = X.row(i);
+        min_idx = 0;
+        min_d = std::numeric_limits<int>::max();
 
         // Computes closest distance & points from `x` to every triangle `t`
+        // Find triangle that minimizes point-to-mesh distance
         for (int j = 0; j < ny; ++j) {
             auto t = FY.row(j);
             point_triangle_distance(x, VY.row(t(0)), VY.row(t(1)), VY.row(t(2)), d, p);
-            closest_distances(j) = d;
-            closest_points.row(j) = p;
-        }
-        
-        // Find triangle that minimizes point-to-mesh distance
-        d = std::numeric_limits<int>::max();
-        min_idx = 0;
-        for (int j = 0; j < ny; ++j) {
-            if (closest_distances(j) < d) {
-                d = closest_distances(j);
+            if (d < min_d) {
+                min_d = d;
                 min_idx = j;
+                closest_p = p;
             }
         }
         
         // Saves closest distance, closest point, and normal
-        D(i) = d;
-        P.row(i) = closest_points.row(min_idx);
+        D(i) = min_d;
+        P.row(i) = closest_p;
         N.row(i) = NY.row(min_idx);
     }
 }
