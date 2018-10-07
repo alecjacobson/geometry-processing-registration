@@ -46,6 +46,5 @@ void point_triangle_distance(
   	d=dd;
   	p=c2a;
   }
-  d=0;
 }
 
