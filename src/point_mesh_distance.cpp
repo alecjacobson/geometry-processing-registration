@@ -13,6 +13,7 @@ void point_mesh_distance(
   Eigen::MatrixXd & P,
   Eigen::MatrixXd & N)
 {
+  
   P.resizeLike(X);
   N.resizeLike(X);
   D.resize(X.rows());
