@@ -5,7 +5,6 @@
 #include <algorithm>
 #include <iterator>
 #include <float.h>
-#include <iostream>
 
 void point_mesh_distance(
   const Eigen::MatrixXd & X,
@@ -45,12 +44,10 @@ void point_mesh_distance(
         closestP = currentP;
         closestFaceInd = j;
       }
-
     }
-    // insert values for closest point on mesh
+
     D(i) = minD;
     P.row(i) = closestP;
     N.row(i) = allNormals.row(closestFaceInd);
-
   }
 }

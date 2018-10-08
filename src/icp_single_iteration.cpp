@@ -16,12 +16,13 @@ void icp_single_iteration(
 {
   Eigen::MatrixXd X, P, N;
   Eigen::VectorXd D;
+
   random_points_on_mesh(num_samples, VX, FX, X);
   point_mesh_distance(X, VY, FY, D, P, N);
+
   if (method == ICP_METHOD_POINT_TO_POINT) {
     point_to_point_rigid_matching(X, P, R, t);
-  }
-  else {
+  } else {
     point_to_plane_rigid_matching(X, P, N, R, t);
   }
 }

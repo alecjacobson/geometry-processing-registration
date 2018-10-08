@@ -9,7 +9,6 @@ void point_to_plane_rigid_matching(
   Eigen::Matrix3d & R,
   Eigen::RowVector3d & t)
 {
-  //initialize...
   int k = X.rows();
   Eigen::VectorXd X1, X2, X3, kOnes, kZeroes, u;
   Eigen::MatrixXd N1, N2, N3;
@@ -45,13 +44,13 @@ void point_to_plane_rigid_matching(
   diff = diagN * diff;
   u = (A.transpose() * A).inverse() * (-A.transpose() * diff);
 
-  // construct M to get R
+  // construct M
   Eigen::MatrixXd M(3, 3);
   M << 1.0, u(2), -u(1),
        -u(2), 1.0, u(0),
        u(1), -u(0), 1.0;
-  closest_rotation(M, R);
 
-  // extract t
+  // get R and t!
+  closest_rotation(M, R);
   t = u.tail<3>();
 }

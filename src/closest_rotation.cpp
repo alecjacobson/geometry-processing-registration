@@ -8,9 +8,11 @@ void closest_rotation(
 {
   Eigen::MatrixXd U, V, omega;
   Eigen::JacobiSVD<Eigen::MatrixXd> svd(M, Eigen::ComputeFullU | Eigen::ComputeFullV);
+
   U = svd.matrixU();
   V = svd.matrixV();
   omega = Eigen::Matrix3d::Identity();
   omega(2,2) = (U * V.transpose()).determinant();
+
   R = U * omega * V.transpose();
 }

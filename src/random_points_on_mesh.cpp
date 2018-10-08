@@ -2,7 +2,6 @@
 #include <igl/doublearea.h>
 #include <igl/cumsum.h>
 #include <random>
-#include <iostream>
 
 int binary_search_upper_bound(
   const Eigen::VectorXd & v,
@@ -11,16 +10,21 @@ int binary_search_upper_bound(
   const double val)
 {
   int n = upper - lower;
-  int ind = upper;
+  int ind = upper; // ensures that largest val (initial upper) is returned if no upper bound is found
+
   if (n >= 1) {
     ind = lower + (upper - lower)/2;
+
     if (v(ind) <= val) {
       return binary_search_upper_bound(v, ind + 1, upper, val);
     }
+
     if (v(ind - 1) <= val) {
       return ind;
     }
+
     return binary_search_upper_bound(v, lower, ind - 1, val);
+
   }
   return ind;
 }
@@ -31,13 +35,14 @@ void random_points_on_mesh(
   const Eigen::MatrixXi & F,
   Eigen::MatrixXd & X)
 {
-
   // create vector of triangle areas
   Eigen::MatrixXd areas(F.rows(), 1);
   igl::doublearea(V, F, areas);
+
   // cumsum all triangle areas
   Eigen::MatrixXd cumulativeAreas(F.rows(), 1);
   igl::cumsum(areas, 1, cumulativeAreas);
+  
   // divide by last entry (which should be total area)
   Eigen::MatrixXd cumulativeRelativeAreas(F.rows(), 1);
   cumulativeRelativeAreas = cumulativeAreas / cumulativeAreas.row(cumulativeAreas.rows() - 1).value();
@@ -51,16 +56,15 @@ void random_points_on_mesh(
   std::mt19937 gen(seed());
   std::uniform_real_distribution<> dist(0.0, 1.0);
 
+  // put n random samples in X
   for(int i = 0;i<X.rows();i++) {
+
     // 1) pick random triangle
     gamma = dist(gen);
 
-    // find index of first entry in C whose value is greater than a uniform random variable γ
-    // ... binary search
+    // binary search for upper bound on gamma
     ind = binary_search_upper_bound(cumulativeRelativeAreas.col(0), 0, cumulativeRelativeAreas.rows() - 1, gamma);
-    if (ind == -1) ind = cumulativeRelativeAreas.rows() - 1;
     
-
     // get vertices of the randomly selected triangle
     v0 = V.row(F(ind, 0));
     v1 = V.row(F(ind, 1));
@@ -70,11 +74,13 @@ void random_points_on_mesh(
     // uniform random sample
     alpha = dist(gen);
     beta = dist(gen);
+
     // reflection 
     if (alpha + beta > 1) {
       alpha = 1 - alpha;
       beta = 1 - beta;
     }
+
     // x = v0 + alpha(v1 - v0) + beta(v2 - v0)
     X.row(i) = v0 + (alpha * (v1 - v0)) + (beta * (v2 - v0)); 
   }

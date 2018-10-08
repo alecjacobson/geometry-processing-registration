@@ -1,7 +1,6 @@
 #include "point_triangle_distance.h"
 #include <Eigen/Geometry> 
 #include <algorithm>
-#include <iostream>
 
 // returns true if p1 and p2 are on the same side of the line ab
 // http://blackpawn.com/texts/pointinpoly/
@@ -45,29 +44,31 @@ void point_triangle_distance(
   double & d,
   Eigen::RowVector3d & p)
 {
-  // eigen can do some of the work for me: projection of point onto plane
+  // project point onto plane
   Eigen::Hyperplane<double, 3> plane = Eigen::Hyperplane<double, 3>::Through(a, b, c);
   Eigen::RowVector3d projection = plane.projection(x);
+
   // if the projection is inside the triangle, return it
-  // (i think i need to stay consistent with direction?)
   if (same_side(a, b, c, x) && same_side(b, c, a, x) && same_side(c, a, b, x)) {
     d = (x - projection).norm();
     p = projection;
   }
-  // otherwise, find distances from projection to sides of triangle
+  
+  // otherwise, return the distance to the closest side (edge)
   else {
     Eigen::RowVector3d currentP, closestP;
     double closestD = std::numeric_limits<double>::max();
     double currentD;
-    // loop over sides to find min distance
     Eigen::RowVector3d sides [3] = {a, b, c};
+
+    // loop over sides to find min distance
     for (int i = 0; i < 3; i++) {
       closest_point_on_line(x, sides[i], sides[(i+1)%3], currentD, currentP);
       if (currentD < closestD) {
         closestD = currentD;
         closestP = currentP;
       }
-    }
+    } 
     d = closestD;
     p = closestP;
   }
