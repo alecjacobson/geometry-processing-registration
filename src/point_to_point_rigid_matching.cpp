@@ -24,23 +24,25 @@ void point_to_point_rigid_matching(
         X.col(1) - P.col(1),
         X.col(2) - P.col(2);
 
-  Eigen::VectorXd u = (A.transpose() * A).inverse() * (-A.transpose() * xp);
+  Eigen::VectorXd u(6);
+  u = (A.transpose() * A).inverse() * (-A.transpose() * xp);
 
-  Eigen::Matrix3d tmp;
-  tmp = Eigen::Matrix3d::Zero();
-  tmp(1, 0) = u(2);
-  tmp(2, 0) = -u(1);
-  tmp(0, 1) = -u(2);
-  tmp(2, 1) = u(0);
-  tmp(0, 2) = u(1);
-  tmp(1, 2) = -u(0);
+  Eigen::Matrix3d tmp = Eigen::Matrix3d::Identity();
+  tmp = Eigen::Matrix3d::Ones();
 
-  tmp += Eigen::Matrix3d::Identity();
+  // Sign error on README ???
+  tmp(1, 0) = -u(2);
+  tmp(2, 0) = u(1);
+  tmp(0, 1) = u(2);
+  tmp(2, 1) = -u(0);
+  tmp(0, 2) = -u(1);
+  tmp(1, 2) = u(0);
 
   closest_rotation(tmp, R);
 
   t(0) = u(3);
   t(1) = u(4);
   t(2) = u(5);
+
 }
 
