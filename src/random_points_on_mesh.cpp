@@ -31,7 +31,7 @@ void random_points_on_mesh(
   std::map<double,int> cumsum_map;
   for (int i = 0; i < cumsum.rows(); ++i) {
     cumsum_map.insert(
-      std::pair<double,int>(cumsum(i), i)
+      std::pair<double,int>(cumsum(i)/cumsum(cumsum.rows() - 1), i)
       );
   }
 
