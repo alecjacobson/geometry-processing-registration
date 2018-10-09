@@ -24,5 +24,5 @@ void point_to_plane_rigid_matching(
     Eigen::Matrix3d M;
     M <<  1, u(2), -u(1), -u(2), 1, u(0), u(1), -u(0), 1;
     closest_rotation(M,R);
-    t = Eigen::Vector3d(u(3),u(4),u(5));
+    t = Eigen::Vector3d(u(3), u(4), u(5));
 }
