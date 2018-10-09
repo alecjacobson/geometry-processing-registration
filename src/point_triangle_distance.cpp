@@ -4,12 +4,12 @@
 #include <iostream>
 
 void point_triangle_distance(
-                             const Eigen::RowVector3d & x,
-                             const Eigen::RowVector3d & a,
-                             const Eigen::RowVector3d & b,
-                             const Eigen::RowVector3d & c,
-                             double & d,
-                             Eigen::RowVector3d & p)
+  const Eigen::RowVector3d & x,
+  const Eigen::RowVector3d & a,
+  const Eigen::RowVector3d & b,
+  const Eigen::RowVector3d & c,
+  double & d,
+  Eigen::RowVector3d & p)
 {
     Eigen::Hyperplane<double, 3> plane = Eigen::Hyperplane<double, 3>::Through(a, b, c);
     Eigen::RowVector3d proj = plane.projection(x);
