@@ -13,14 +13,11 @@ struct Triangle
     int frow;
 };
 
-namespace Eigen 
+Eigen::AlignedBox3d bounding_box(Triangle t) 
 {
-    AlignedBox3d bounding_box(Triangle t) 
-    {
         Eigen::Vector3d corner1 = t.vertices.colwise().minCoeff();
         Eigen::Vector3d corner2 = t.vertices.colwise().maxCoeff();
-        return AlignedBox3d(corner1, corner2);
-    }
+        return Eigen::AlignedBox3d(corner1, corner2);
 }
 
 struct PointTriangleMinimizer
