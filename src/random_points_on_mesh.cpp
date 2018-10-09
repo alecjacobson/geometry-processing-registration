@@ -15,16 +15,16 @@ void random_points_on_mesh(
     igl::cumsum(area * 0.5, 1, cumarea);
     std::random_device gen;
     std::uniform_real_distribution<> distribution(0.0, 1.0);
-    for(int i = 0;i<X.rows();i++){
+    for(int i = 0;i<X.rows();i++) {
         double ra = distribution(gen) * cumarea(cumarea.rows()-1);
         int tri = 0;
-        while (cumarea(tri) < ra){
+        while (cumarea(tri) < ra) {
             tri++;
         }
         Eigen::Vector3d v[] = {V.row(F(tri,0)), V.row(F(tri,1)), V.row(F(tri,2))};
         double alpha = distribution(gen);
         double beta = distribution(gen);
-        if(alpha + beta > 1){
+        if(alpha + beta > 1) {
             alpha = 1 - beta;
             beta = 1 - alpha;
         }
