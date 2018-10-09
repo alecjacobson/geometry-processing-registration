@@ -21,7 +21,7 @@ void icp_single_iteration(
     if (method == ICP_METHOD_POINT_TO_POINT) {
         point_to_point_rigid_matching(X,P,R,t);
     }
-    else if (ICP_METHOD_POINT_TO_POINT) {
+    else {
         point_to_plane_rigid_matching(X,P,N,R,t);
     }
 }
