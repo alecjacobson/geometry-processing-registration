@@ -1,6 +1,9 @@
 #ifndef CLOSEST_ROTATION_H
 #define CLOSEST_ROTATION_H
 #include <Eigen/Core>
+#include <Eigen/LU> 
+#include <Eigen/SVD>
+
 // Given a 3×3 matrix `M`, find the closest rotation matrix `R`.
 //
 // Inputs:
