@@ -263,7 +263,7 @@ derived our gradients geometrically.
 
 ### Linear function approximation
 
-If we make make a slightly more appropriate assuming that in the neighborhood
+If we make make a slightly more appropriate assumption that in the neighborhood
 of the  $P_Y(\z₀)$ the surface $Y$ is a plane, then we can improve this
 approximation while keeping $\f$ linear in $\z$:
 
