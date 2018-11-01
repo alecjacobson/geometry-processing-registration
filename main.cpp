@@ -3,7 +3,7 @@
 #include "random_points_on_mesh.h"
 #include "point_mesh_distance.h"
 #include <igl/read_triangle_mesh.h>
-#include <igl/viewer/Viewer.h>
+#include <igl/opengl/glfw/Viewer.h>
 #include <Eigen/Core>
 #include <string>
 #include <iostream>
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
   bool show_samples = true;
   ICPMethod method = ICP_METHOD_POINT_TO_POINT;
 
-  igl::viewer::Viewer viewer;
+  igl::opengl::glfw::Viewer viewer;
   std::cout<<R"(
   [space]  toggle animation
   H,h      print lower bound on directed Hausdorff distance from X to Y
@@ -43,13 +43,13 @@ int main(int argc, char *argv[])
     V << VX, VY;
     Eigen::MatrixXi F(FX.rows()+FY.rows(),FX.cols());
     F<<FX,FY.array()+VX.rows();
-    viewer.data.clear();
-    viewer.data.set_mesh(V,F);
+    viewer.data().clear();
+    viewer.data().set_mesh(V,F);
     // Assign orange and blue colors to each mesh's faces
     Eigen::MatrixXd C(F.rows(),3);
     C.topLeftCorner(FX.rows(),3).rowwise() = orange;
     C.bottomLeftCorner(FY.rows(),3).rowwise() = blue;
-    viewer.data.set_colors(C);
+    viewer.data().set_colors(C);
   };
   const auto & set_points = [&]()
   {
@@ -63,18 +63,18 @@ int main(int argc, char *argv[])
     Eigen::MatrixXd C(XP.rows(),3);
     C.array().topRows(X.rows()).rowwise() = (1.-(1.-orange.array())*.8);
     C.array().bottomRows(P.rows()).rowwise() = (1.-(1.-blue.array())*.4);
-    viewer.data.set_points(XP,C);
+    viewer.data().set_points(XP,C);
     Eigen::MatrixXi E(X.rows(),2);
     E.col(0) = Eigen::VectorXi::LinSpaced(X.rows(),0,X.rows()-1);
     E.col(1) = Eigen::VectorXi::LinSpaced(X.rows(),X.rows(),2*X.rows()-1);
-    viewer.data.set_edges(XP,E,Eigen::RowVector3d(0.3,0.3,0.3));
+    viewer.data().set_edges(XP,E,Eigen::RowVector3d(0.3,0.3,0.3));
   };
   const auto & reset = [&]()
   {
     VX = OVX;
     set_meshes();
   };
-  viewer.callback_pre_draw = [&](igl::viewer::Viewer &)->bool
+  viewer.callback_pre_draw = [&](igl::opengl::glfw::Viewer &)->bool
   {
     if(viewer.core.is_animating)
     {
@@ -95,7 +95,7 @@ int main(int argc, char *argv[])
     return false;
   };
   viewer.callback_key_pressed = 
-    [&](igl::viewer::Viewer &,unsigned char key,int)->bool
+    [&](igl::opengl::glfw::Viewer &,unsigned char key,int)->bool
   {
     switch(key)
     {
@@ -136,7 +136,7 @@ int main(int argc, char *argv[])
 
   reset();
   viewer.core.is_animating = true;
-  viewer.core.point_size = 10;
+  viewer.data().point_size = 10;
   viewer.launch();
 
   return EXIT_SUCCESS;
