@@ -14,9 +14,9 @@ int main(int argc, char *argv[])
   Eigen::MatrixXd OVX,VX,VY;
   Eigen::MatrixXi FX,FY;
   igl::read_triangle_mesh(
-    (argc>1?argv[1]:"../shared/data/max-registration-partial.obj"),OVX,FX);
+    (argc>1?argv[1]:"../data/max-registration-partial.obj"),OVX,FX);
   igl::read_triangle_mesh(
-    (argc>2?argv[2]:"../shared/data/max-registration-complete.obj"),VY,FY);
+    (argc>2?argv[2]:"../data/max-registration-complete.obj"),VY,FY);
 
   int num_samples = 100;
   bool show_samples = true;
