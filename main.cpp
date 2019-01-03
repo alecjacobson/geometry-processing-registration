@@ -85,7 +85,7 @@ int main(int argc, char *argv[])
       Eigen::RowVector3d t;
       icp_single_iteration(VX,FX,VY,FY,num_samples,method,R,t);
       // Apply transformation to source mesh
-      VX = ((VX*R).rowwise() + t).eval();
+      VX = ((VX*R.transpose()).rowwise() + t).eval();
       set_meshes();
       if(show_samples)
       {
