@@ -37,5 +37,4 @@ void icp_single_iteration(
   const ICPMethod method,
   Eigen::Matrix3d & R,
   Eigen::RowVector3d & t);
-
 #endif

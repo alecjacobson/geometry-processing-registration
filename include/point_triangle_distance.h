@@ -19,4 +19,11 @@ void point_triangle_distance(
   const Eigen::RowVector3d & c,
   double & d,
   Eigen::RowVector3d & p);
+
+void dist_helper(const Eigen::RowVector3d & x,
+                 const Eigen::RowVector3d & px,
+                 const Eigen::RowVector3d & a,
+                 const Eigen::RowVector3d & b,
+                 double & d,
+                 Eigen::RowVector3d & p);
 #endif
