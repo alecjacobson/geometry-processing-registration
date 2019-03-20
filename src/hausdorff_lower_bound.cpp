@@ -8,5 +8,10 @@ double hausdorff_lower_bound(
   const int n)
 {
   // Replace with your code
-  return 0;
+    Eigen::MatrixXd X;
+    random_points_on_mesh(n,VX,FX,X);
+    Eigen::VectorXd D;
+    Eigen::MatrixXd P,N;
+    point_mesh_distance(X,VY,FY,D,P,N);
+    return D.maxCoeff();
 }
