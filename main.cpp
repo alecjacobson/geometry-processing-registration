@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 
   int num_samples = 100;
   bool show_samples = true;
-  ICPMethod method = ICP_METHOD_POINT_TO_POINT;
+  ICPMethod method = ICP_METHOD_POINT_TO_PLANE;
 
   igl::opengl::glfw::Viewer viewer;
   std::cout<<R"(
