@@ -8,7 +8,8 @@ void point_triangle_distance(
   double & d,
   Eigen::RowVector3d & p)
 {
-  // Replace with your code
-  d = 0;
-  p = a;
+  Eigen::RowVector3d center = (a + b + c) / 3;
+
+  d = (center - x).norm();
+  p = c;
 }
