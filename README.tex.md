@@ -26,7 +26,7 @@ Rather than [registering multiple point
 clouds](https://en.wikipedia.org/wiki/Point_set_registration), we will register
 multiple triangle mesh surfaces. 
 
-This _algorithm_ and its many variants has been use for quite some time to
+This _algorithm_ and its many variants has been used for quite some time to
 align discrete shapes. One of the first descriptions is given in "A Method for
 Registration of 3-D Shapes" by Besl & McKay 1992. However, the award-winning
 PhD thesis of Sofien Bouaziz ("Realtime Face Tracking and Animation" 2015,
