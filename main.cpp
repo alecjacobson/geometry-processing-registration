@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
   };
 
   reset();
-  viewer.core().is_animating = true;
+  viewer.core().is_animating = false;
   viewer.data().point_size = 10;
   viewer.launch();
 
