@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
   };
   viewer.callback_pre_draw = [&](igl::opengl::glfw::Viewer &)->bool
   {
-    if(viewer.core.is_animating)
+    if(viewer.core().is_animating)
     {
       ////////////////////////////////////////////////////////////////////////
       // Perform single iteration of ICP method
@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
     switch(key)
     {
       case ' ':
-        viewer.core.is_animating ^= 1;
+        viewer.core().is_animating ^= 1;
         break;
       case 'H':
       case 'h':
@@ -135,7 +135,7 @@ int main(int argc, char *argv[])
   };
 
   reset();
-  viewer.core.is_animating = true;
+  viewer.core().is_animating = true;
   viewer.data().point_size = 10;
   viewer.launch();
 

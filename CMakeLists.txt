@@ -20,5 +20,5 @@ endif()
 add_library(core ${SRCFILES})
 target_link_libraries(core igl::core igl::opengl igl::opengl_glfw )
 
-add_executable(mesh-reconstruction "main.cpp")
-target_link_libraries(mesh-reconstruction core igl::core igl::opengl igl::opengl_glfw )
+add_executable(registration "main.cpp")
+target_link_libraries(registration core igl::core igl::opengl igl::opengl_glfw )
