@@ -26,11 +26,11 @@ Rather than [registering multiple point
 clouds](https://en.wikipedia.org/wiki/Point_set_registration), we will register
 multiple triangle mesh surfaces. 
 
-This _algorithm_ and its many variants has been used for quite some time to
-align discrete shapes. One of the first descriptions is given in "A Method for
-Registration of 3-D Shapes" by Besl & McKay 1992. However, the award-winning
-PhD thesis of Sofien Bouaziz ("Realtime Face Tracking and Animation" 2015,
-section 3.2-3.3) contains a more modern view that unifies many of the variants
+This _algorithm_ and its many [variants](papers/Effcient_Variants_of_ICP.pdf) has been used for quite some time to
+align discrete shapes. One of the first descriptions is given in ["A Method for
+Registration of 3-D Shapes" by Besl & McKay 1992](papers/method-for-registration-3d-shapes.pdf). However, the award-winning
+PhD thesis of Sofien Bouaziz [("Realtime Face Tracking and Animation" 2015,
+section 3.2-3.3)](https://lgg.epfl.ch/publications/2015/Sofien_Thesis/thesis.pdf) contains a more modern view that unifies many of the variants
 with respect to how they impact the same core optimization problem. 
 
 For our assignment, we will assume that we have a triangle mesh representing a
