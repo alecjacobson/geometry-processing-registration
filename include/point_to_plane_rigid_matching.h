@@ -1,6 +1,8 @@
 #ifndef POINT_TO_PLANE_RIGID_MATCHING_H
 #define POINT_TO_PLANE_RIGID_MATCHING_H
 #include <Eigen/Core>
+#include <closest_rotation.h>
+
 // Given a set of source points `X` and corresponding target points `P` and
 // normals `N`, find the optimal rigid transformation (`R`,`t`) that aligns `X`
 // to `P`, minimizing the matching energy:

@@ -1,6 +1,9 @@
 #ifndef RANDOM_POINTS_ON_MESH_H
 #define RANDOM_POINTS_ON_MESH_H
 #include <Eigen/Core>
+#include <igl/doublearea.h>
+#include <igl/cumsum.h>
+#include <cstdlib>
 // RANDOM_POINTS_ON_MESH Randomly sample a mesh (V,F) n times.
 //
 // Inputs:
