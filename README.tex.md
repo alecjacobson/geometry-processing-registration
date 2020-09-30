@@ -60,7 +60,6 @@ $$
 d(\mathbf{x},\mathbf{y}) = \| \mathbf{x} - \mathbf{y}\| .
 $$
 
-
 #### Point-to-projection distance
 
 When we consider the distance between a point $\mathbf{x}$ and some _larger_ object $Y$ (a line,
@@ -70,7 +69,6 @@ closest point $\mathbf{y}$ on $Y$:
 $$
 d(\mathbf{x},Y) = \inf_{\mathbf{y} \in  Y} d(\mathbf{x},\mathbf{y}).
 $$
-
 
 written in this way the
 [infimum](https://en.wikipedia.org/wiki/Infimum_and_supremum) considers all
@@ -90,7 +88,7 @@ projection](https://en.wikipedia.org/wiki/Projection_(linear_algebra)#Orthogonal
 ![The distance between a surface $Y$ (light blue) and a point $\mathbf{x}$ (orange) is
 determined by the closest point $P_Y(\mathbf{x})$ (blue)](images/max-point-mesh.gif)
 
-### Directed Hausdorff distance
+### Directed Hausdorff Distance
 
 We might be tempted to define the distance from surface $X$ to $Y$ as the
 _infimum_ of _point-to-projection_ distances over all points $\mathbf{x}$ on $X$:
