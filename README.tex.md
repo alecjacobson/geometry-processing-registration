@@ -53,64 +53,69 @@ surfaces are matched. In other words, we would like to measure the _distance_
 between two surfaces. Let's start by reviewing more familiar distances:
 
 #### Point-to-point distance
-The usually Euclidean distance between _two points_ $\x$ and $\y$ is the $L²$
+The usually Euclidean distance between _two points_ $\mathbf{x}$ and $\mathbf{y}$ is the $L^2 $
 norm of their difference :
 
-\\[
-d(\x,\y) = ‖\x - \y‖.
-\\]
+$$
+d(\mathbf{x},\mathbf{y}) = \| \mathbf{x} - \mathbf{y}\| .
+$$
+
 
 #### Point-to-projection distance
 
-When we consider the distance between a point $\x$ and some _larger_ object $Y$ (a line,
+When we consider the distance between a point $\mathbf{x}$ and some _larger_ object $Y$ (a line,
 a circle, a surface), the natural extension is to take the distance to the
-closest point $\y$ on $Y$:
+closest point $\mathbf{y}$ on $Y$:
 
-\\[
-d(\x,Y) = \inf_{\y ∈ Y} d(\x,\y).
-\\]
+$$
+d(\mathbf{x},Y) = \inf_{\mathbf{y} \in  Y} d(\mathbf{x},\mathbf{y}).
+$$
+
 
 written in this way the
 [infimum](https://en.wikipedia.org/wiki/Infimum_and_supremum) considers all
-possible points $\y$ and keeps the minimum distance. We may equivalently write
-this distance instead as simply the point-to-point distance between $\x$ and
-the _closest-point projection_ $P_Y(\x)$:
+possible points $\mathbf{y}$ and keeps the minimum distance. We may equivalently write
+this distance instead as simply the point-to-point distance between $\mathbf{x}$ and
+the _closest-point projection_ $P_Y(\mathbf{x})$:
 
-\\[
-d(\x,Y) = d((\x,P_Y(\x)) = ‖\x - P_Y(\x)‖.
-\\]
+$$
+d(\mathbf{x},Y) = d((\mathbf{x},P_Y(\mathbf{x})) = \| \mathbf{x} - P_Y(\mathbf{x})\| .
+$$
+
 
 If $Y$ is a smooth surface, this projection will also be an [orthogonal
 projection](https://en.wikipedia.org/wiki/Projection_(linear_algebra)#Orthogonal_projections).
 
 
-![The distance between a surface $Y$ (light blue) and a point $\x$ (orange) is
-determined by the closest point $P_Y(\x)$ (blue)](images/max-point-mesh.gif)
+![The distance between a surface $Y$ (light blue) and a point $\mathbf{x}$ (orange) is
+determined by the closest point $P_Y(\mathbf{x})$ (blue)](images/max-point-mesh.gif)
 
 ### Directed Hausdorff distance
 
 We might be tempted to define the distance from surface $X$ to $Y$ as the
-_infimum_ of _point-to-projection_ distances over all points $\x$ on $X$:
+_infimum_ of _point-to-projection_ distances over all points $\mathbf{x}$ on $X$:
 
-\\[
-D_\text{inf}(X,Y) = \inf_{\x ∈ X} ‖\x - P_Y(\x)‖,
-\\]
+$$
+D_\text{inf}(X,Y) = \inf_{\mathbf{x} \in  X} \| \mathbf{x} - P_Y(\mathbf{x})\| ,
+$$
+
 
 but this will not be useful for registering two surfaces: it will measure zero
-if even just a single point of $\x$ happens to lie on $Y$. Imagine the noses of
+if even just a single point of $\mathbf{x}$ happens to lie on $Y$. Imagine the noses of
 two faces touching at their tips.
 
 Instead, we should take the _supremum_ of _point-to-projection_ distances over
-all points $\x$ on $X$:
+all points $\mathbf{x}$ on $X$:
 
-\\[
-D_{\overrightarrow{H}}(X,Y) = \sup_{\x ∈ X} ‖\x - P_Y(\x)‖.
-\\]
+$$
+D_{\overrightarrow{H}}(X,Y) = \sup_{\mathbf{x} \in  X} \| \mathbf{x} - P_Y(\mathbf{x})\| .
+$$
+
 
 This surface-to-surface distance measure is called the _directed_ [Hausdorff
 distance](https://en.wikipedia.org/wiki/Hausdorff_distance). We may interpret
 this as taking the worst of the best: we 
-let each point $\x$ on $X$ declare its shortest distance to $Y$ and then keep
+let each point $\mathbf{x}$ on $X$ declare its shortest distance to $Y$ and then keep
 the longest of those.
 
 ![The directed Hausdorff distance between from surface $X$ (light orange) to
@@ -126,30 +131,32 @@ points on $Y$ that do not lie on $X$. In other words, _in general_ the directed
 Hausdorff distance from surface $X$ to surface $Y$ will not equal the Hausdorff
 distance from surface $Y$ to surface $X$:
 
-\\[
-D_{\overrightarrow{H}}(X,Y) ≠ D_{\overrightarrow{H}}(Y,X).
-\\]
+$$
+D_{\overrightarrow{H}}(X,Y) \ne  D_{\overrightarrow{H}}(Y,X).
+$$
+
 
 #### directed Hausdorff distance between triangle meshes
 
 We can approximate a _lower bound_ on the Hausdorff distance between two meshes
 by densely sampling surfaces $X$ and $Y$. We will discuss sampling methods,
-later. For now consider that we have chosen a set $\P_X$ of $k$ points on $X$
+later. For now consider that we have chosen a set $\mathbf{P}_X$ of $k$ points on $X$
 (each point might lie at a vertex, along an edge, or inside a triangle). The
 directed Hausdorff distance from $X$ to another triangle mesh $Y$ must be
 _greater_ than the directed Hausdorff distance from this [point
-cloud](https://en.wikipedia.org/wiki/Point_cloud) $\P_X$ to $Y$:
+cloud](https://en.wikipedia.org/wiki/Point_cloud) $\mathbf{P}_X$ to $Y$:
 
-\\[
-D_{\overrightarrow{H}}(X,Y) ≥ 
-D_{\overrightarrow{H}}(\P_X,Y) = \max_{i=1}^k ‖\p_i - P_Y(\p_i)‖,
-\\]
+$$
+D_{\overrightarrow{H}}(X,Y) \ge  
+D_{\overrightarrow{H}}(\mathbf{P}_X,Y) = \max_{i=1}^k \| \mathbf{p}_i - P_Y(\mathbf{p}_i)\| ,
+$$
 
-where we should be careful to ensure that the projection $P_Y(\p_i)$ of the
-point $\p_i$ onto the triangle mesh $Y$ might lie at a vertex, along an edge or
+
+where we should be careful to ensure that the projection $P_Y(\mathbf{p}_i)$ of the
+point $\mathbf{p}_i$ onto the triangle mesh $Y$ might lie at a vertex, along an edge or
 inside a triangle. 
 
-As our sampling $\P_X$ becomes denser and denser on $X$ this lower bound will
+As our sampling $\mathbf{P}_X$ becomes denser and denser on $X$ this lower bound will
 approach the true directed Hausdorff distance. Unfortunately, an efficient
 _upper bound_ is significantly more difficult to design.
 
@@ -161,10 +168,10 @@ between surfaces $X$ and $Y$ as an energy to be minimized, then only change to
 the surfaces that will decrease the energy will be moving the (in general)
 isolated point on $X$ and isolated point on $Y$ generating the maximum-minimum
 distance. In effect, the rest of the surface does not even matter or effect the
-Hausdorff distance. This, or any type of $L^∞$ norm, will be much more
+Hausdorff distance. This, or any type of $L^\infty $ norm, will be much more
 difficult to optimize.
 
-Hausdorff distance can serve as a validation measure, while we turn to $L²$
+Hausdorff distance can serve as a validation measure, while we turn to $L^2 $
 norms for optimization.
 
 ## Integrated closest-point distance
@@ -173,15 +180,16 @@ We would like a distance measure between two surfaces that---like Hausdorff
 distance---does not require a shared parameterization. Unlike Hausdorff
 distance, we would like this distance to _diffuse_ the measurement over the
 entire surfaces rather than generate it from the sole _worst offender_. We can
-accomplish this by replacing the _supremum_ in the Hausdorff distance ($L^∞$)
-with a integral of squared distances ($L²$). Let us first define a directed
+accomplish this by replacing the _supremum_ in the Hausdorff distance ($L^\infty $)
+with a integral of squared distances ($L^2 $). Let us first define a directed
 _closest-point distance_ from  a surface $X$ to another surface $Y$, as the
-integral of the squared distance from every point $\x$ on $X$ to its
-closest-point projection $P_Y(\x)$ on the surfaces $Y$:
+integral of the squared distance from every point $\mathbf{x}$ on $X$ to its
+closest-point projection $P_Y(\mathbf{x})$ on the surfaces $Y$:
 
-\\[
-D_{\overrightarrow{C}}(X,Y) = \sqrt{\ ∫\limits_{\x∈X} ‖\x - P_Y(\x) ‖² \;dA }.
-\\]
+$$
+D_{\overrightarrow{C}}(X,Y) = \sqrt{\ \int \limits_{\mathbf{x}\in X} \| \mathbf{x} - P_Y(\mathbf{x}) \| ^2  \;dA }.
+$$
+
 
 This distance will only be zero if all points on $X$ also lie on $Y$, but when
 it is non-zero it is summing/averaging/diffusing the distance measures of all
@@ -193,35 +201,37 @@ dig into it a bit. We'll define a directed _matching energy_
 $E_{\overrightarrow{C}}(Z,Y)$ from $Z$ to $Y$ to be the squared directed
 closest point distance from $X$ to $Y$:
 
-\\[
-E_{\overrightarrow{C}}(Z,Y) = ∫\limits_{\z∈Z} ‖\z - P_Y(\z) ‖² \;dA =
-∫\limits_{\z∈Z} ‖f_Y(\z) ‖² \;dA
-\\]
+$$
+E_{\overrightarrow{C}}(Z,Y) = \int \limits_{\mathbf{z}\in Z} \| \mathbf{z} - P_Y(\mathbf{z}) \| ^2  \;dA =
+\int \limits_{\mathbf{z}\in Z} \| f_Y(\mathbf{z}) \| ^2  \;dA
+$$
 
-where we introduce the proximity function $\f_Y:\R³→\R³$ defined simply as the
-vector from a point $\z$ to its closest-point projection onto $Y$:
 
-\\[
-\f(\z) = \z - P_Y(\z).
-\\]
+where we introduce the proximity function $\mathbf{f}_Y:\mathbf{R}^3 \Rightarrow \mathbf{R}^3 $ defined simply as the
+vector from a point $\mathbf{z}$ to its closest-point projection onto $Y$:
 
-Suppose $Y$ was not a surface, but just a single point $Y = \{\y\}$. In this
-case, $\f(\z) = \z - \y$ is clearly linear in $\z$.
+$$
+\mathbf{f}(\mathbf{z}) = \mathbf{z} - P_Y(\mathbf{z}).
+$$
+
+
+Suppose $Y$ was not a surface, but just a single point $Y = \{\mathbf{y}\}$. In this
+case, $\mathbf{f}(\mathbf{z}) = \mathbf{z} - \mathbf{y}$ is clearly linear in $\mathbf{z}$.
 
 Similarly, suppose $Y$ was an [infinite
-plane](https://en.wikipedia.org/wiki/Plane_(geometry)) $Y = \{\y | (\y-\p)⋅\n =
-0\}$ defined by some point $\p$ on the plane and the plane's unit normal vector
-$\n$. Then $\f(\z) = ((\z-\p)⋅\n)\n)$ is also linear in $\z$.
+plane](https://en.wikipedia.org/wiki/Plane_(geometry)) $Y = \{\mathbf{y} | (\mathbf{y}-\mathbf{p})\cdot \mathbf{n} =
+0\}$ defined by some point $\mathbf{p}$ on the plane and the plane's unit normal vector
+$\mathbf{n}$. Then $\mathbf{f}(\mathbf{z}) = ((\mathbf{z}-\mathbf{p})\cdot \mathbf{n})\mathbf{n})$ is also linear in $\mathbf{z}$.
 
-But in general, if $Y$ is an interesting surface $\f(\z)$ will be non-linear; it
+But in general, if $Y$ is an interesting surface $\mathbf{f}(\mathbf{z})$ will be non-linear; it
 might not even be a continuous function.
 
 ![](images/closest-point-discontinuous.png)
 
 In optimization, a common successful strategy to minimize energies composed of
-squaring a non-linear functions $\f$ is to
+squaring a non-linear functions $\mathbf{f}$ is to
 [linearize](https://en.wikipedia.org/wiki/Linearization) the function about a
-current input value (i.e., a current guess $\z₀$), minimize the energy built
+current input value (i.e., a current guess $\mathbf{z}₀$), minimize the energy built
 from this linearization, then re-linearize around that solution, and then
 repeat. 
 
@@ -230,55 +240,57 @@ descent](https://en.wikipedia.org/wiki/Gradient_descent) and the
 [Gauss-Newton](https://en.wikipedia.org/wiki/Gauss–Newton_algorithm) methods:
 
 ```
-minimize f(z)²
-  z₀ ← initial guess
+minimize f(z)^2 
+  z₀ \Leftarrow  initial guess
   repeat until convergence
-    f₀ ← linearize f(z) around z₀
-    z₀ ← minimize f₀(z)²
+    f₀ \Leftarrow  linearize f(z) around z₀
+    z₀ \Leftarrow  minimize f₀(z)^2 
 ```
 
-Since our $\f$ is a geometric function, we can derive its linearizations
+Since our $\mathbf{f}$ is a geometric function, we can derive its linearizations
 _geometrically_.
 
 ### Constant function approximation
 
 If we make the convenient---however unrealistic---assumption that in the
-neighborhood of the closest-point projection $P_Y(\z₀)$ of the current guess
-$\z₀$ the surface $Y$ is simply the point $P_Y(\z₀)$ (perhaps imagine that $Y$
-is makes a sharp needle-like point at $P_Y(\z₀)$ or that $Y$ is very far away
-from $\x$), then we can approximate $\f(\z)$ in the proximity of our current
-guess $\z₀$ as the vector between the input point $\z$ and $P_Y(\z₀)$:
+neighborhood of the closest-point projection $P_Y(\mathbf{z}₀)$ of the current guess
+$\mathbf{z}₀$ the surface $Y$ is simply the point $P_Y(\mathbf{z}₀)$ (perhaps imagine that $Y$
+is makes a sharp needle-like point at $P_Y(\mathbf{z}₀)$ or that $Y$ is very far away
+from $\mathbf{x}$), then we can approximate $\mathbf{f}(\mathbf{z})$ in the proximity of our current
+guess $\mathbf{z}₀$ as the vector between the input point $\mathbf{z}$ and $P_Y(\mathbf{z}₀)$:
 
-\\[
-\f(\z) \approx \f_\text{point}(\z) = \z-P_Y(\z₀)
-\\]
+$$
+\mathbf{f}(\mathbf{z}) \approx \mathbf{f}_\text{point}(\mathbf{z}) = \mathbf{z}-P_Y(\mathbf{z}₀)
+$$
+
 
 In effect, we are assuming that the surface $Y$ is _constant_ function of its
-parameterization: $\y(u,v) = P_Y(\z₀)$.
+parameterization: $\mathbf{y}(u,v) = P_Y(\mathbf{z}₀)$.
 
 Minimizing $E_{\overrightarrow{C}}$ iteratively using this linearization (or
-rather _constantization_) of $\f$ is equivalent to the [gradient
+rather _constantization_) of $\mathbf{f}$ is equivalent to the [gradient
 descent](https://en.wikipedia.org/wiki/Gradient_descent). We have simply
 derived our gradients geometrically.
 
 ### Linear function approximation
 
 If we make make a slightly more appropriate assumption that in the neighborhood
-of the  $P_Y(\z₀)$ the surface $Y$ is a plane, then we can improve this
-approximation while keeping $\f$ linear in $\z$:
+of the  $P_Y(\mathbf{z}₀)$ the surface $Y$ is a plane, then we can improve this
+approximation while keeping $\mathbf{f}$ linear in $\mathbf{z}$:
 
-\\[
-\f(\z) \approx \f_\text{plane}(\z) = ((\z-P_Y(\z₀))⋅\n) \n.
-\\]
+$$
+\mathbf{f}(\mathbf{z}) \approx \mathbf{f}_\text{plane}(\mathbf{z}) = ((\mathbf{z}-P_Y(\mathbf{z}₀))\cdot \mathbf{n}) \mathbf{n}.
+$$
 
-where the plane that _best_ approximates $Y$ locally near $P_Y(\z₀)$ is the
+
+where the plane that _best_ approximates $Y$ locally near $P_Y(\mathbf{z}₀)$ is the
 [tangent plane](https://en.wikipedia.org/wiki/Tangent_space) defined by the
-[normal vector](https://en.wikipedia.org/wiki/Normal_(geometry)) $\n$ at
-$P_Y(\z₀)$.
+[normal vector](https://en.wikipedia.org/wiki/Normal_(geometry)) $\mathbf{n}$ at
+$P_Y(\mathbf{z}₀)$.
 
 
 Minimizing $E_{\overrightarrow{C}}$ iteratively using this linearization of
-$\f$ is equivalent to the
+$\mathbf{f}$ is equivalent to the
 [Gauss-Newton](https://en.wikipedia.org/wiki/Gauss–Newton_algorithm) method. We
 have simply derived our linear approximation geometrically.
 
@@ -294,39 +306,41 @@ In our _rigid_ alignment and registration problem, we would like to
 [transform](https://en.wikipedia.org/wiki/Transformation_(function)) one
 surface $X$ into a new surface $T(X) = Z$ so that it best aligns with/matches
 the other surface $Y$. Further we require that $T$ is a rigid transformation:
-$T(\x) = \Rot \x + \t$ for some rotation matrix $\Rot ∈ SO(3) ⊂ \R^{3×3}$
+$T(\mathbf{x}) = \mathbf{R} \mathbf{x} + \mathbf{t}$ for some rotation matrix $\mathbf{R} \in  SO(3) ⊂ \mathbf{R}^{3\times 3}$
 (i.e., an [orthogonal matrix with determinant
 1](https://en.wikipedia.org/wiki/Rotation_group_SO(3))) and translation vector
-$\t∈\R³$.
+$\mathbf{t}\in \mathbf{R}^3 $.
 
 Our matching problem can be written as an optimization problem to find the best
-possible rotation $\Rot$ and translation $\t$ that match surface $X$ to surface
+possible rotation $\mathbf{R}$ and translation $\mathbf{t}$ that match surface $X$ to surface
 $Y$:
 
-\\[
-\mathop{\text{minimize}}_{\t∈\R³,\ \Rot ∈ SO(3)} 
-  ∫\limits_{\x∈X} ‖\Rot \x + \t - P_Y(T(\x)) ‖² \;dA
-\\]
+$$
+\mathop{\text{minimize}}_{\mathbf{t}\in \mathbf{R}^3 ,\ \mathbf{R} \in  SO(3)} 
+  \int \limits_{\mathbf{x}\in X} \| \mathbf{R} \mathbf{x} + \mathbf{t} - P_Y(T(\mathbf{x})) \| ^2  \;dA
+$$
+
 
 Even if $X$ is a triangle mesh, it is difficult to _integrate_ over _all_
 points on the surface of $X$. _At any point_, we can approximate this energy by
 _summing_ over a point-sampling of $X$:
 
-\\[
-\mathop{\text{minimize}}_{\t∈\R³,\ \Rot ∈ SO(3)} 
-  ∑_{i=1}^k ‖\Rot \x_i + \t - P_Y(T(\x_i)) ‖²,
-\\]
+$$
+\mathop{\text{minimize}}_{\mathbf{t}\in \mathbf{R}^3 ,\ \mathbf{R} \in  SO(3)} 
+  \Sigma _{i=1}^k \| \mathbf{R} \mathbf{x}_i + \mathbf{t} - P_Y(T(\mathbf{x}_i)) \| ^2 ,
+$$
 
-where $\X ∈ \R^{k×3}$ is a set of $k$ points on $X$ so that each point $\x_i$
+
+where $\mathbf{X} \in  \mathbf{R}^{k\times 3}$ is a set of $k$ points on $X$ so that each point $\mathbf{x}_i$
 might lie at a vertex, along an edge, or inside a triangle. We defer discussion
 of _how_ to sample a triangle mesh surface.
 
 ### Pseudocode
 
 As the name implies, the method proceeds by iteratively finding the closest
-point on $Y$ to the current rigid transformation $\Rot \x + \t$ of each sample
-point $\x$ in $\X$ and then minimizing the _linearized_ energy to update the
-rotation $\Rot$ and translation $\t$. 
+point on $Y$ to the current rigid transformation $\mathbf{R} \mathbf{x} + \mathbf{t}$ of each sample
+point $\mathbf{x}$ in $\mathbf{X}$ and then minimizing the _linearized_ energy to update the
+rotation $\mathbf{R}$ and translation $\mathbf{t}$. 
 
 If $V_X$ and $F_X$ are the vertices and faces of a triangle mesh surface $X$
 (and correspondingly for $Y$), then we can summarize a generic ICP algorithm in
@@ -334,19 +348,19 @@ pseudocode:
 
 ```
 icp V_X, F_X, V_Y, F_Y
-  R,t ← initialize (e.g., set to identity transformation)
+  R,t \Leftarrow  initialize (e.g., set to identity transformation)
   repeat until convergence
-    X ← sample source mesh (V_X,F_X)
-    P0 ← project all X onto target mesh (V_Y,F_Y)
-    R,t ← update rigid transform to best match X and P0
-    V_X ← rigidly transform original source mesh by R and t
+    X \Leftarrow  sample source mesh (V_X,F_X)
+    P0 \Leftarrow  project all X onto target mesh (V_Y,F_Y)
+    R,t \Leftarrow  update rigid transform to best match X and P0
+    V_X \Leftarrow  rigidly transform original source mesh by R and t
 ```
 
 ### Updating the rigid transformation
 
-We would like to find the rotation matrix $\Rot ∈ SO(3) ⊂ \R^{3×3}$ and
-translation vector $\t∈\R³$ that _best_ aligns a given a set of points $\X ∈
-\R^{k×3}$ on the source mesh and their current closest points $\P ∈ \P^{k×3}$
+We would like to find the rotation matrix $\mathbf{R} \in  SO(3) ⊂ \mathbf{R}^{3\times 3}$ and
+translation vector $\mathbf{t}\in \mathbf{R}^3 $ that _best_ aligns a given a set of points $\mathbf{X} \in 
+\mathbf{R}^{k\times 3}$ on the source mesh and their current closest points $\mathbf{P} \in  \mathbf{P}^{k\times 3}$
 on the target mesh. We have two choices for _linearizing_ our matching energy:
 point-to-point (gradient descent) and point-to-plane (Gauss-Newton).
 
@@ -360,112 +374,118 @@ In either case, this is still a non-linear optimization problem. This time due
 to the [constraints](https://en.wikipedia.org/wiki/Constrained_optimization)
 rather than the energy term. 
 
-We require that $\Rot$ is not just any 3×3 matrix, but a rotation matrix. We
-can _linearize_ this constraint, by assuming that the rotation in $\Rot$ will
-be very small and thus well approximated by the identity matrix $\I$ plus a
+We require that $\mathbf{R}$ is not just any 3\times 3 matrix, but a rotation matrix. We
+can _linearize_ this constraint, by assuming that the rotation in $\mathbf{R}$ will
+be very small and thus well approximated by the identity matrix $\mathbf{I}$ plus a
 skew-symmetric matrix:
 
-\\[
-\Rot \approx \I + 
+$$
+\mathbf{R} \approx \mathbf{I} + 
   \left(\begin{array}{ccc}
    0 & -γ &  β \\
    γ &  0 & -α \\
   -β &  α &  0 \\
   \end{array}\right)
-\\]
+$$
+
 
 where we can now work directly with the three scalar unknowns $α$, $β$ and $γ$.
 
 ### Approximate point-to-point minimizer
 
-If we apply our linearization of $\Rot$ to the **point-to-point** distance
+If we apply our linearization of $\mathbf{R}$ to the **point-to-point** distance
 linearization of the matching energy, our minimization becomes:
 
-\\[
-\mathop{\text{minimize}}_{\t∈\R³, α, β, γ} 
-  ∑_{i=1}^k \left\|
+$$
+\mathop{\text{minimize}}_{\mathbf{t}\in \mathbf{R}^3 , α, β, γ} 
+  \Sigma _{i=1}^k \left\|
   \left(\begin{array}{ccc}
    0 & -γ &  β \\
    γ &  0 & -α \\
   -β &  α &  0 \\
   \end{array}\right)
-  \x_i + \t - \p_i \right\|^2.
-\\]
+  \mathbf{x}_i + \mathbf{t} - \mathbf{p}_i \right\|^2.
+$$
 
-This energy is quadratic in the translation vector $\t$ and the linearized
+
+This energy is quadratic in the translation vector $\mathbf{t}$ and the linearized
 rotation angles $α$, $β$ and $γ$. Let's gather these degrees of freedom into a
-vector of unknowns: $\u = [α β γ \t^\transpose] ∈ \R⁶$. Then we can write our
+vector of unknowns: $\mathbf{u} = [α β γ \mathbf{t}^{\mathsf T}] \in  \mathbf{R}⁶$. Then we can write our
 problem in summation form as:
 
-\\[
-\mathop{\text{minimize}}_{\u∈\R⁶}
-  ∑_{i=1}^k \left\| 
+$$
+\mathop{\text{minimize}}_{\mathbf{u}\in \mathbf{R}⁶}
+  \Sigma _{i=1}^k \left\| 
   \left(\begin{array}{cccccc}
          0 &  x_{i,3} & -x_{i,2} & 1 & 0 & 0 \\
   -x_{i,3} &        0 &  x_{i,1} & 0 & 1 & 0 \\
    x_{i,2} & -x_{i,1} &        0 & 0 & 0 & 1
-  \end{array}\right) \u +
-  \x_i - \p_i \right\|^2.
-\\]
+  \end{array}\right) \mathbf{u} +
+  \mathbf{x}_i - \mathbf{p}_i \right\|^2.
+$$
+
 
 This can be written compactly in matrix form as:
 
-\\[
-\mathop{\text{minimize}}_{\u∈\R⁶}
+$$
+\mathop{\text{minimize}}_{\mathbf{u}\in \mathbf{R}⁶}
   \left\|
   \underbrace{
   \left(\begin{array}{cccccc}
-      0 &  \X_3 & -\X_2 & \One & 0    & 0 \\
-  -\X_3 &     0 &  \X_1 & 0    & \One & 0 \\
-   \X_2 & -\X_1 &     0 & 0    & 0    & \One
+      0 &  \mathbf{X}_3 & -\mathbf{X}_2 & \mathbf{1} & 0    & 0 \\
+  -\mathbf{X}_3 &     0 &  \mathbf{X}_1 & 0    & \mathbf{1} & 0 \\
+   \mathbf{X}_2 & -\mathbf{X}_1 &     0 & 0    & 0    & \mathbf{1}
   \end{array}\right)
-  }_{\A}
-  \u +
+  }_{\mathbf{A}}
+  \mathbf{u} +
 \left[\begin{array}{c}
-  \X_1-\P_1 \\
-  \X_2-\P_2 \\
-  \X_3-\P_3
+  \mathbf{X}_1-\mathbf{P}_1 \\
+  \mathbf{X}_2-\mathbf{P}_2 \\
+  \mathbf{X}_3-\mathbf{P}_3
 \end{array}\right]
   \right\|_F^2,
-\\]
-where we introduce the matrix $\A ∈ \R^{3k × 6}$ that gathers the columns
-$\X_i$ of $\X$ and columns of ones $\One ∈ \R^k$.
+$$
+
+where we introduce the matrix $\mathbf{A} \in  \mathbf{R}^{3k \times  6}$ that gathers the columns
+$\mathbf{X}_i$ of $\mathbf{X}$ and columns of ones $\mathbf{1} \in  \mathbf{R}^k$.
 
 This quadratic energy is minimized with its partial derivatives with respect to
-entries in $\u$ are all zero:
+entries in $\mathbf{u}$ are all zero:
 
-\\[
+$$
 \begin{align}
-\A^\transpose \A \u & = -\A^\transpose 
+\mathbf{A}^{\mathsf T} \mathbf{A} \mathbf{u} & = -\mathbf{A}^{\mathsf T} 
 \left[\begin{array}{c}
-  \X_1-\P_1 \\
-  \X_2-\P_2 \\
-  \X_3-\P_3
+  \mathbf{X}_1-\mathbf{P}_1 \\
+  \mathbf{X}_2-\mathbf{P}_2 \\
+  \mathbf{X}_3-\mathbf{P}_3
 \end{array}\right]
 , \\
-\u & = \left(\A^\transpose \A\right)^{-1} \left(-\A^\transpose
+\mathbf{u} & = \left(\mathbf{A}^{\mathsf T} \mathbf{A}\right)^{-1} \left(-\mathbf{A}^\transpose
 \left[\begin{array}{c}
-  \X_1-\P_1 \\
-  \X_2-\P_2 \\
-  \X_3-\P_3
+  \mathbf{X}_1-\mathbf{P}_1 \\
+  \mathbf{X}_2-\mathbf{P}_2 \\
+  \mathbf{X}_3-\mathbf{P}_3
 \end{array}\right]
 \right),
 \end{align}
-\\]
+$$
 
-Solving this small 6×6 system gives us our translation vector $\t$ and the
+
+Solving this small 6\times 6 system gives us our translation vector $\mathbf{t}$ and the
 linearized rotation angles $α$, $β$ and $γ$. If we simply assign 
 
-\\[
-\Rot ←  \M := \I + 
+$$
+\mathbf{R} \Leftarrow   \mathbf{M} := \mathbf{I} + 
   \left(\begin{array}{ccc}
    0 & -γ &  β \\
    γ &  0 & -α \\
   -β &  α &  0 \\
   \end{array}\right)
-\\]
+$$
 
-then our transformation will _not_ be rigid. Instead, we should project $\M$
+
+then our transformation will _not_ be rigid. Instead, we should project $\mathbf{M}$
 onto the space of rotation matrices.
 
 #### Recovering a pure rotation from its linearization
@@ -478,281 +498,298 @@ onto the space of rotation matrices.
 If $α$, $β$ and $γ$ are all small, then it may be safe to _interpret_ these
 values as rotation angles about the $x$, $y$, and $z$ axes respectively.
 
-In general, it is better to find the closest rotation matrix to $\M$. In other
+In general, it is better to find the closest rotation matrix to $\mathbf{M}$. In other
 words, we'd like to solve the small optimization problem:
 
-\\[
-\Rot^* = \argmin_{\Rot ∈ SO(3)} \left\| \Rot - \M \right\|_F^2,
-\\]
-where $\|\X\|_F^2$ computes the squared [Frobenius
+$$
+\mathbf{R}^* = \mathop{\text{argmin}}_{\mathbf{R} \in  SO(3)} \left\| \mathbf{R} - \mathbf{M} \right\|_F^2,
+$$
+
+where $\|\mathbf{X}\|_F^2$ computes the squared [Frobenius
 norm](https://en.wikipedia.org/wiki/Matrix_norm#Frobenius_norm) of the matrix
-$\X$ (i.e., the sum of all squared element values. In MATLAB syntax:
+$\mathbf{X}$ (i.e., the sum of all squared element values. In MATLAB syntax:
 `sum(sum(A.^2))`). We can expand the norm by taking advantage of the [associativity
 property](https://en.wikipedia.org/wiki/Associative_property) of the Frobenius
 norm:
-\\[
-\Rot^* = \argmin_{\Rot ∈ SO(3)} \left\| \M \right\|_F^2 + \left\| \Rot
-\right\|_F^2 - 2 \left<\Rot, \M \right>_F,
-\\]
-where $\left<\A, \B \right>_F$ is the
+$$
+\mathbf{R}^* = \mathop{\text{argmin}}_{\mathbf{R} \in  SO(3)} \left\| \mathbf{M} \right\|_F^2 + \left\| \Rot
+\right\|_F^2 - 2 \left<\mathbf{R}, \mathbf{M} \right>_F,
+$$
+
+where $\left<\mathbf{A}, \mathbf{B} \right>_F$ is the
 [Frobenius inner
-product](https://en.wikipedia.org/wiki/Frobenius_inner_product) of  $\A$ and
-$\B$ (i.e., the sum of all per-element products. In MATLAB syntax:
+product](https://en.wikipedia.org/wiki/Frobenius_inner_product) of  $\mathbf{A}$ and
+$\mathbf{B}$ (i.e., the sum of all per-element products. In MATLAB syntax:
 `sum(sum(A.*B))`). We can drop the Frobenius norm
-of $\M$ term ($\left\| \M
+of $\mathbf{M}$ term ($\left\| \mathbf{M}
 \right\|_F^2$) because it is constant with respect to the unknown rotation
-matrix $\Rot$. We can also drop the Frobenius norm of $\Rot$ term because it
+matrix $\mathbf{R}$. We can also drop the Frobenius norm of $\mathbf{R}$ term because it
 must equal one ($\left\|
-\Rot\right\|_F^2 = 1$) since $\Rot$ is required to be a orthonormal matrix
-($\Rot ∈ SO(3)$). We can drop the factor of $2$ and flip the minus sign to
+\mathbf{R}\right\|_F^2 = 1$) since $\mathbf{R}$ is required to be a orthonormal matrix
+($\mathbf{R} \in  SO(3)$). We can drop the factor of $2$ and flip the minus sign to
 change our _minimization_ problem into a _maximization_ problem:
-\\[
-\Rot^* = \argmax_{\Rot ∈ SO(3)} \left<\Rot, \M \right>_F
-\\]
+$$
+\mathbf{R}^* = \mathop{\text{argmax}}_{\mathbf{R} \in  SO(3)} \left<\mathbf{R}, \mathbf{M} \right>_F
+$$
+
 
 We now take advantage of the [singular value
 decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) of
-$\M = \U Σ \V^\transpose$, where $\U, \V ∈ \R^{3×3}$ are orthonormal matrices
-and $Σ∈\R^{3×3}$ is a non-negative diagonal matrix:
+$\mathbf{M} = \mathbf{U} \sigma  \mathbf{V}^{\mathsf T}$, where $\mathbf{U}, \mathbf{V} \in  \mathbf{R}^{3\times 3}$ are orthonormal matrices
+and $\sigma \in \mathbf{R}^{3\times 3}$ is a non-negative diagonal matrix:
 
-\\[
-\Rot^* = \argmax_{\Rot ∈ SO(3)} \left<\Rot,\U Σ \V^\transpose \right>_F.
-\\]
+$$
+\mathbf{R}^* = \mathop{\text{argmax}}_{\mathbf{R} \in  SO(3)} \left<\mathbf{R},\mathbf{U} \sigma  \mathbf{V}^{\mathsf T} \right>_F.
+$$
 
-The Frobenius inner product will let us move the products by $\V$ and $\U$ from
+
+The Frobenius inner product will let us move the products by $\mathbf{V}$ and $\mathbf{U}$ from
 the right argument to the left argument:
 
 > Recall some linear algebra properties:
 > 
 >  1. Matrix multiplication (on the left) can be understood as _acting_ on each
->    column: $\A \B = \A [\B_1 \  \B_2 \ … \ \B_n] = [\A \B_1 \  \A \B_2 \  … \
->    \A \B_n]$,
+>    column: $\mathbf{A} \mathbf{B} = \mathbf{A} [\mathbf{B}_1 \  \mathbf{B}_2 \ \ldots  \ \mathbf{B}_n] = [\mathbf{A} \mathbf{B}_1 \  \mathbf{A} \mathbf{B}_2 \  \ldots  \
+>    \mathbf{A} \mathbf{B}_n]$,
 >  4. The [Kronecker product](https://en.wikipedia.org/wiki/Kronecker_product)
->    $\I ꕕ \A$ of the identity matrix $\I$ of size $k$ and a matrix $\A$ simply
->    repeats $\A$ along the diagonal k times. In MATLAB, `repdiag(A,k)`,
+>    $\mathbf{I} ꕕ \mathbf{A}$ of the identity matrix $\mathbf{I}$ of size $k$ and a matrix $\mathbf{A}$ simply
+>    repeats $\mathbf{A}$ along the diagonal k times. In MATLAB, `repdiag(A,k)`,
 >  3. Properties 1. and 2. imply that the vectorization of a matrix product
->    $\B\C$ can be written as the Kronecker product of the #-columns-in-$\C$
->    identity matrix and $\B$ times the vectorization of $\C$:
->    $\text{vec}(\B\C) = (\I ꕕ \B)\text{vec}(\C)$,
+>    $\mathbf{B}\mathbf{C}$ can be written as the Kronecker product of the #-columns-in-$\mathbf{C}$
+>    identity matrix and $\mathbf{B}$ times the vectorization of $\mathbf{C}$:
+>    $\text{vec}(\mathbf{B}\mathbf{C}) = (\mathbf{I} ꕕ \mathbf{B})\text{vec}(\mathbf{C})$,
 >  4. The transpose of a Kronecker product is the Kronecker product of
->    transposes: $(\A ꕕ \B)^\transpose = \A^\transpose ꕕ \B^\transpose$,
+>    transposes: $(\mathbf{A} ꕕ \mathbf{B})^{\mathsf T} = \mathbf{A}^{\mathsf T} ꕕ \mathbf{B}^{\mathsf T}$,
 >  5. The Frobenius inner product can be written as a [dot
 >    product](://en.wikipedia.org/wiki/Dot_product) of
 >    [vectorized](https://en.wikipedia.org/wiki/Vectorization_(mathematics))
->    matrices: $<\A,\B>_F = \text{vec}(\A) ⋅ \text{vec}(\B) =
->    \text{vec}(\A)^\transpose \text{vec}(\B)$,
+>    matrices: $<\mathbf{A},\mathbf{B}>_F = \text{vec}(\mathbf{A}) \cdot  \text{vec}(\mathbf{B}) =
+>    \text{vec}(\mathbf{A})^{\mathsf T} \text{vec}(\mathbf{B})$,
 >  6. Properties 3., 4., and 5. imply that Frobenius inner product of a matrix
->    $\A$ and the matrix product of matrix $\B$ and $\C$ is equal to the
->    Frobenius inner product of the matrix product of the transpose of $\B$ and
->    $\A$  and the matrix $\C$:
->    $<\A,\B\C>_F = \text{vec}(\A)^\transpose \text{vec}(\B\C) =
->    \text{vec}(\A)^\transpose (\I ꕕ \B)\text{vec}(\C) = 
->    \text{vec}(\A)^\transpose (\I ꕕ \B^\transpose)^\transpose \text{vec}(\C) = 
->    \text{vec}(\B^\transpose\A)^\transpose \text{vec}(\C) = 
->    <\B^\transpose \A,\C>_F$.
+>    $\mathbf{A}$ and the matrix product of matrix $\mathbf{B}$ and $\mathbf{C}$ is equal to the
+>    Frobenius inner product of the matrix product of the transpose of $\mathbf{B}$ and
+>    $\mathbf{A}$  and the matrix $\mathbf{C}$:
+>    $<\mathbf{A},\mathbf{B}\mathbf{C}>_F = \text{vec}(\mathbf{A})^{\mathsf T} \text{vec}(\mathbf{B}\mathbf{C}) =
+>    \text{vec}(\mathbf{A})^{\mathsf T} (\mathbf{I} ꕕ \mathbf{B})\text{vec}(\mathbf{C}) = 
+>    \text{vec}(\mathbf{A})^{\mathsf T} (\mathbf{I} ꕕ \mathbf{B}^{\mathsf T})^{\mathsf T} \text{vec}(\mathbf{C}) = 
+>    \text{vec}(\mathbf{B}^{\mathsf T}\mathbf{A})^{\mathsf T} \text{vec}(\mathbf{C}) = 
+>    <\mathbf{B}^{\mathsf T} \mathbf{A},\mathbf{C}>_F$.
 >  
 
-\\[
-\Rot^* = \argmax_{\Rot ∈ SO(3)} \left<\U^\transpose \Rot \V, Σ \right>_F.
-\\]
+$$
+\mathbf{R}^* = \mathop{\text{argmax}}_{\mathbf{R} \in  SO(3)} \left<\mathbf{U}^{\mathsf T} \mathbf{R} \mathbf{V}, \sigma  \right>_F.
+$$
 
-Now, $\U$ and $\V$ are both
+
+Now, $\mathbf{U}$ and $\mathbf{V}$ are both
 [orthonormal](https://en.wikipedia.org/wiki/Orthogonal_matrix), so multiplying
-them against a rotation matrix $\Rot$ does not change its orthonormality. We can
+them against a rotation matrix $\mathbf{R}$ does not change its orthonormality. We can
 pull them out of the maximization if we account for the reflection they _might_
-incur: introduce $Ω = \U^T\Rot\V ∈ O(3)$ with $\det{Ω} = \det{\U\V^\transpose}$.
+incur: introduce ${\Omega} = \mathbf{U}^T\mathbf{R}\mathbf{V} \in  O(3)$ with $\det{{\Omega}} = \det{\mathbf{U}\mathbf{V}^{\mathsf T}}$.
 This implies that the optimal rotation for the original probklem is recovered
-via $\Rot^* = \U Ω^* \V^\transpose$.  When we move the $\argmax$ inside, we now
-look for an orthonormal matrix $Ω ∈ O(3)$ that is a reflection (if
-$\det{\U\V^\transpose} = -1$) or a rotation (if $\det{\U\V^\transpose} = 1$):
+via $\mathbf{R}^* = \mathbf{U} {\Omega}^* \mathbf{V}^{\mathsf T}$.  When we move the $\mathop{\text{argmax}}$ inside, we now
+look for an orthonormal matrix ${\Omega} \in  O(3)$ that is a reflection (if
+$\det{\mathbf{U}\mathbf{V}^{\mathsf T}} = -1$) or a rotation (if $\det{\mathbf{U}\mathbf{V}^{\mathsf T}} = 1$):
 
-\\[
-  \Rot^* = \U \left( \argmax_{Ω ∈ O(3),\ \det{Ω} = \det{\U\V^\transpose}} \left<Ω, Σ \right>_F \right) \V^\transpose.
-\\]
+$$
+  \mathbf{R}^* = \mathbf{U} \left( \mathop{\text{argmax}}_{{\Omega} \in  O(3),\ \det{{\Omega}} = \det{\mathbf{U}\mathbf{V}^{\mathsf T}}} \left<{\Omega}, \sigma  \right>_F \right) \mathbf{V}^{\mathsf T}.
+$$
 
-This ensures that as a result $\Rot^*$ will be a rotation: $\det{\Rot^*} = 1$.
 
-> Recall that $Σ∈\R^{3×3}$ is a non-negative diagonal matrix of singular values
+This ensures that as a result $\mathbf{R}^*$ will be a rotation: $\det{\mathbf{R}^*} = 1$.
+
+> Recall that $\sigma \in \mathbf{R}^{3\times 3}$ is a non-negative diagonal matrix of singular values
 > sorted so that the smallest value is in the bottom right corner.
 
-Because $Ω$ is orthonormal, each column (or row) of $Ω$ must have unit norm.
+Because ${\Omega}$ is orthonormal, each column (or row) of ${\Omega}$ must have unit norm.
 Placing a non-zero on the off-diagonal will get "killed" when multiplied by the
-corresponding zero in $Σ$. So the optimal choice of $Ω$ is to set all values to
-zero except on the diagonal. If $\det{\U\V^\transpose} = -1$, then we should set
+corresponding zero in $\sigma $. So the optimal choice of ${\Omega}$ is to set all values to
+zero except on the diagonal. If $\det{\mathbf{U}\mathbf{V}^{\mathsf T}} = -1$, then we should set
 one (and only one) of these values to $-1$. The best choice is the bottom right
-corner since that will multiply against the smallest singular value in $∑$ (add
+corner since that will multiply against the smallest singular value in $\Sigma $ (add
 negatively affect the maximization the least):
 
-\\[
-Ω^*_{ij} = \begin{cases}
+$$
+{\Omega}^*_{ij} = \begin{cases}
 1 & \text{ if $i=j\lt3$} \\\\
-\det{\U\V^\transpose} & \text{ if $i=j=3$} \\\\
+\det{\mathbf{U}\mathbf{V}^{\mathsf T}} & \text{ if $i=j=3$} \\\\
 0 & \text{ otherwise.}
 \end{cases}
-\\]
+$$
+
 
 Finally, we have a formula for our optimal rotation:
 
-\\[
-\Rot = \U Ω^* \V^\transpose.
-\\]
+$$
+\mathbf{R} = \mathbf{U} {\Omega}^* \mathbf{V}^{\mathsf T}.
+$$
+
 
 > ### Closed-form point-to-point minimizer
 >
 > 
-> _Interestingly_, despite the non-linear constraint on $\Rot$ there is actually
+> _Interestingly_, despite the non-linear constraint on $\mathbf{R}$ there is actually
 > a closed-form solution to the point-to-point matching problem:
 > 
-> \\[
-> \mathop{\text{minimize}}_{\t∈\R³,\ \Rot ∈ SO(3)} ∑_{i=1}^k ‖\Rot \x_i + \t - \p_i‖²,
-> \\]
+> $$
+> \mathop{\text{minimize}}_{\mathbf{t}\in \mathbf{R}^3 ,\ \mathbf{R} \in  SO(3)} \Sigma _{i=1}^k \| \mathbf{R} \mathbf{x}_i + \mathbf{t} - \mathbf{p}_i\| ^2 ,
+> $$
+
 > 
 > This is a variant of what's known as a [Procrustes
 > problem](https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem), named
 > after a [mythical psychopath](https://en.wikipedia.org/wiki/Procrustes) who
 > would kidnap people and force them to fit in his bed by stretching them or
-> cutting off their legs. In our case, we are forcing $\Rot$ to be perfectly
+> cutting off their legs. In our case, we are forcing $\mathbf{R}$ to be perfectly
 > orthogonal (no "longer", no "shorter).
 > 
 > #### Substituting out the translation terms
 > 
-> This energy is _quadratic_ in $\t$ and there are no other constraints on
-> $\t$. We can immediately solve for the optimal $\t^*$---leaving $\Rot$ as an unknown---by
-> setting all derivatives with respect to unknowns in $\t$ to zero:
+> This energy is _quadratic_ in $\mathbf{t}$ and there are no other constraints on
+> $\mathbf{t}$. We can immediately solve for the optimal $\mathbf{t}^*$---leaving $\mathbf{R}$ as an unknown---by
+> setting all derivatives with respect to unknowns in $\mathbf{t}$ to zero:
 > 
-> \\[
+> $$
 > \begin{align}
-> \t^*
->   &= \argmin_{\t} ∑_{i=1}^k ‖\Rot \x_i + \t - \p_i‖²  \\\\
->   &= \argmin_\t \left\|\Rot \X^\transpose + \t \One^\transpose - \P^\transpose\right\|^2_F,
+> \mathbf{t}^*
+>   &= \mathop{\text{argmin}}_{\mathbf{t}} \Sigma _{i=1}^k \| \mathbf{R} \mathbf{x}_i + \mathbf{t} - \mathbf{p}_i\| ^2   \\\\
+>   &= \mathop{\text{argmin}}_\mathbf{t} \left\|\mathbf{R} \mathbf{X}^{\mathsf T} + \mathbf{t} \mathbf{1}^{\mathsf T} - \mathbf{P}^{\mathsf T}\right\|^2_F,
 > \end{align}
-> \\]
-> where $\One ∈ \R^{k}$ is a vector ones. Setting the partial derivative with
-> respect to $\t$ of this
+> $$
+
+> where $\mathbf{1} \in  \mathbf{R}^{k}$ is a vector ones. Setting the partial derivative with
+> respect to $\mathbf{t}$ of this
 > quadratic energy to zero finds the minimum:
-> \\[
+> $$
 > \begin{align}
 > 0 
->   &= \frac{∂}{∂\t} \left\|\Rot \X^\transpose + \t \One^\transpose - \P^\transpose\right\|^2_F \\\\
->   &= \One^\transpose \One \t + \Rot \X^\transpose \One - \P^\transpose \One,
+>   &= \frac{\partial }{\partial \mathbf{t}} \left\|\mathbf{R} \mathbf{X}^{\mathsf T} + \mathbf{t} \mathbf{1}^{\mathsf T} - \mathbf{P}^{\mathsf T}\right\|^2_F \\\\
+>   &= \mathbf{1}^{\mathsf T} \mathbf{1} \mathbf{t} + \mathbf{R} \mathbf{X}^{\mathsf T} \mathbf{1} - \mathbf{P}^{\mathsf T} \mathbf{1},
 > \end{align}
-> \\]
+> $$
+
 > 
-> Rearranging terms above reveals that the optimal $\t$ is the vector aligning
-> the [centroids](https://en.wikipedia.org/wiki/Centroid) of the points in $\P$
-> and the points in $\X$ rotated by the---yet-unknown---$\Rot$. Introducing
-> variables for the respective centroids $\hat{\p} = \tfrac{1}{k} ∑_{i=1}^k
-> \p_i$ and $\hat{\x} = \tfrac{1}{k} ∑_{i=1}^k \x_i$, we can write the
-> formula for the optimal  $\t$:
+> Rearranging terms above reveals that the optimal $\mathbf{t}$ is the vector aligning
+> the [centroids](https://en.wikipedia.org/wiki/Centroid) of the points in $\mathbf{P}$
+> and the points in $\mathbf{X}$ rotated by the---yet-unknown---$\mathbf{R}$. Introducing
+> variables for the respective centroids $\widehat{\mathbf{p}} = \tfrac{1}{k} \Sigma _{i=1}^k
+> \mathbf{p}_i$ and $\widehat{\mathbf{x}} = \tfrac{1}{k} \Sigma _{i=1}^k \mathbf{x}_i$, we can write the
+> formula for the optimal  $\mathbf{t}$:
 > 
-> \\[
+> $$
 > \begin{align}
-> \t 
->   &= \frac{\P^\transpose \One - \Rot \X^\transpose \One}{ \One^\transpose \One} \\\\
->   &= \hat{\p} - \Rot \hat{\x}.
+> \mathbf{t} 
+>   &= \frac{\mathbf{P}^{\mathsf T} \mathbf{1} - \mathbf{R} \mathbf{X}^{\mathsf T} \mathbf{1}}{ \mathbf{1}^{\mathsf T} \mathbf{1}} \\\\
+>   &= \widehat{\mathbf{p}} - \mathbf{R} \widehat{\mathbf{x}}.
 > \end{align}
-> \\]
+> $$
+
 > 
-> Now we have a formula for the optimal translation vector $\t$ in terms of the
-> unknown rotation $\Rot$. Let us
+> Now we have a formula for the optimal translation vector $\mathbf{t}$ in terms of the
+> unknown rotation $\mathbf{R}$. Let us
 > [substitute](https://en.wikipedia.org/wiki/Substitution_(algebra)) this formula
-> for all occurrences of $\t$ in our energy written in its original summation
+> for all occurrences of $\mathbf{t}$ in our energy written in its original summation
 > form:
 > 
-> \\[
-> \mathop{\text{minimize}}_{\Rot ∈ SO(3)}  ∑\limits_{i=1}^k \left\| \Rot \x_i + ( \hat{\p} - \Rot\hat{\x}) - \p_i \right\|^2 \\\
-> \mathop{\text{minimize}}_{\Rot ∈ SO(3)}  ∑\limits_{i=1}^k \left\| \Rot (\x_i - \hat{\x}) - (\p_i - \hat{\p}) \right\|^2 \\\\
-> \mathop{\text{minimize}}_{\Rot ∈ SO(3)}  ∑\limits_{i=1}^k \left\| \Rot \overline{\x}_i - \overline{\p}_i \right\|^2 \\\\
-> \mathop{\text{minimize}}_{\Rot ∈ SO(3)}  \left\| \Rot \overline{\X}^\transpose - \overline{\P}^\transpose \right\|_F^2,
-> \\]
+> $$
+> \mathop{\text{minimize}}_{\mathbf{R} \in  SO(3)}  \Sigma \limits_{i=1}^k \left\| \mathbf{R} \mathbf{x}_i + ( \widehat{\mathbf{p}} - \mathbf{R}\widehat{\mathbf{x}}) - \mathbf{p}_i \right\|^2 \\\
+> \mathop{\text{minimize}}_{\mathbf{R} \in  SO(3)}  \Sigma \limits_{i=1}^k \left\| \mathbf{R} (\mathbf{x}_i - \widehat{\mathbf{x}}) - (\mathbf{p}_i - \widehat{\mathbf{p}}) \right\|^2 \\\\
+> \mathop{\text{minimize}}_{\mathbf{R} \in  SO(3)}  \Sigma \limits_{i=1}^k \left\| \mathbf{R} \overline{\mathbf{x}}_i - \overline{\mathbf{p}}_i \right\|^2 \\\\
+> \mathop{\text{minimize}}_{\mathbf{R} \in  SO(3)}  \left\| \mathbf{R} \overline{\mathbf{X}}^{\mathsf T} - \overline{\mathbf{P}}^{\mathsf T} \right\|_F^2,
+> $$
+
 > 
-> where we introduce $\overline{\X} ∈ \R^{k × 3}$ where the ith row contains the
-> _relative position_ of the ith point to the centroid $\hat{\x}$: i.e.,
-> $\overline{\x}_i = (\x_i - \hat{\x})$ (and analagously for $\overline{\P}$).
+> where we introduce $\overline{\mathbf{X}} \in  \mathbf{R}^{k \times  3}$ where the ith row contains the
+> _relative position_ of the ith point to the centroid $\widehat{\mathbf{x}}$: i.e.,
+> $\overline{\mathbf{x}}_i = (\mathbf{x}_i - \widehat{\mathbf{x}})$ (and analagously for $\overline{\mathbf{P}}$).
 > 
 > Now we have the canonical form of the [orthogonal procrustes
 > problem](https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem). To
-> find the optimal rotation matrix $\Rot^*$ we will massage the terms in the
+> find the optimal rotation matrix $\mathbf{R}^*$ we will massage the terms in the
 > _minimization_ until we have a _maximization_ problem involving the [Frobenius
 > inner-product](https://en.wikipedia.org/wiki/Frobenius_inner_product) of the
-> unknown rotation $\Rot$ and [covariance
-> matrix](https://en.wikipedia.org/wiki/Covariance_matrix) of $\X$ and $\P$:
+> unknown rotation $\mathbf{R}$ and [covariance
+> matrix](https://en.wikipedia.org/wiki/Covariance_matrix) of $\mathbf{X}$ and $\mathbf{P}$:
 > 
-> \\[
+> $$
 > \begin{align}
-> \Rot^* 
-> &= \argmin_{\Rot ∈ SO(3)} \left\| \Rot \overline{\X}^\transpose - \overline{\P}^\transpose \right\|_F^2 \\\\
-> &= \argmin_{\Rot ∈ SO(3)} \left<\Rot \overline{\X}^\transpose - \overline{\P}^\transpose , \Rot \overline{\X}^\transpose - \overline{\P}^\transpose \right>_F\\\\
-> &= \argmin_{\Rot ∈ SO(3)} \left\| \overline{\X} \right\|_F^2 + \left\| \overline{\P} \right\|_F^2 - 2 \left<\Rot \overline{\X}^\transpose , \overline{\P}^\transpose \right>_F\\\\
-> &= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\overline{\P}^\transpose\,\overline{\X}\right>_F\\\\
-> &= \argmax_{\Rot ∈ SO(3)} \left<\Rot,\M\right>_F\\
+> \mathbf{R}^* 
+> &= \mathop{\text{argmin}}_{\mathbf{R} \in  SO(3)} \left\| \mathbf{R} \overline{\mathbf{X}}^{\mathsf T} - \overline{\mathbf{P}}^{\mathsf T} \right\|_F^2 \\\\
+> &= \mathop{\text{argmin}}_{\mathbf{R} \in  SO(3)} \left<\mathbf{R} \overline{\mathbf{X}}^{\mathsf T} - \overline{\mathbf{P}}^{\mathsf T} , \mathbf{R} \overline{\mathbf{X}}^{\mathsf T} - \overline{\mathbf{P}}^{\mathsf T} \right>_F\\\\
+> &= \mathop{\text{argmin}}_{\mathbf{R} \in  SO(3)} \left\| \overline{\mathbf{X}} \right\|_F^2 + \left\| \overline{\mathbf{P}} \right\|_F^2 - 2 \left<\mathbf{R} \overline{\mathbf{X}}^{\mathsf T} , \overline{\mathbf{P}}^{\mathsf T} \right>_F\\\\
+> &= \mathop{\text{argmax}}_{\mathbf{R} \in  SO(3)} \left<\mathbf{R},\overline{\mathbf{P}}^{\mathsf T}\,\overline{\mathbf{X}}\right>_F\\\\
+> &= \mathop{\text{argmax}}_{\mathbf{R} \in  SO(3)} \left<\mathbf{R},\mathbf{M}\right>_F\\
 > \end{align}
-> \\]
+> $$
+
 > 
-> Letting $\M = \overline{\P}^\transpose\,\overline{\X}$ we can now follow the
+> Letting $\mathbf{M} = \overline{\mathbf{P}}^{\mathsf T}\,\overline{\mathbf{X}}$ we can now follow the
 > steps above using [singular value
 > decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) to
-> find the optimal $\Rot$.
+> find the optimal $\mathbf{R}$.
 
 ### Approximate point-to-plane minimizer
 
-If we apply our linearization of $\Rot$ to the **point-to-plane** distance
+If we apply our linearization of $\mathbf{R}$ to the **point-to-plane** distance
 linearization of the matching energy, our minimization is:
 
-\\[
-\mathop{\text{minimize}}_{\t∈\R³, α, β, γ} 
-  ∑_{i=1}^k 
+$$
+\mathop{\text{minimize}}_{\mathbf{t}\in \mathbf{R}^3 , α, β, γ} 
+  \Sigma _{i=1}^k 
   \left( 
   \left(
   \left(\begin{array}{ccc}
    0 & -γ &  β \\
    γ &  0 & -α \\
   -β &  α &  0 \\
-  \end{array}\right)\x_i +
-  \x_i + \t - \p_i 
-  \right)⋅\n_i
+  \end{array}\right)\mathbf{x}_i +
+  \mathbf{x}_i + \mathbf{t} - \mathbf{p}_i 
+  \right)\cdot \mathbf{n}_i
   \right)^2.
-\\]
+$$
 
-We can follow similar steps as above. Let's gather a vector of unknowns: $\u =
-[α β γ \t^\transpose] ∈ \R⁶$. Then we can write our problem in summation form
+
+We can follow similar steps as above. Let's gather a vector of unknowns: $\mathbf{u} =
+[α β γ \mathbf{t}^{\mathsf T}] \in  \mathbf{R}⁶$. Then we can write our problem in summation form
 as:
 
-\\[
-\mathop{\text{minimize}}_{\u∈\R⁶}
-  ∑_{i=1}^k \left(\n_i^\transpose 
+$$
+\mathop{\text{minimize}}_{\mathbf{u}\in \mathbf{R}⁶}
+  \Sigma _{i=1}^k \left(\mathbf{n}_i^{\mathsf T} 
   \left(\begin{array}{cccccc}
          0 &  x_{i,3} & -x_{i,2} & 1 & 0 & 0 \\
   -x_{i,3} &        0 &  x_{i,1} & 0 & 1 & 0 \\
    x_{i,2} & -x_{i,1} &        0 & 0 & 0 & 1
-  \end{array}\right) \u +
-  \n_i^\transpose(\x_i - \p_i) \right)^2.
-\\]
+  \end{array}\right) \mathbf{u} +
+  \mathbf{n}_i^{\mathsf T}(\mathbf{x}_i - \mathbf{p}_i) \right)^2.
+$$
+
 
 This can be written compactly in matrix form as:
 
-\\[
-\mathop{\text{minimize}}_{\u∈\R⁶}
+$$
+\mathop{\text{minimize}}_{\mathbf{u}\in \mathbf{R}⁶}
   \left(
-  \left[\begin{array}{ccc} \text{diag}(\N_1) & \text{diag}(\N_2) & \text{diag}(\N_2)\end{array}\right]
+  \left[\begin{array}{ccc} \text{diag}(\mathbf{N}_1) & \text{diag}(\mathbf{N}_2) & \text{diag}(\mathbf{N}_2)\end{array}\right]
   \left( 
-  \A
-  \u +
+  \mathbf{A}
+  \mathbf{u} +
 \left[\begin{array}{c}
-  \X_1-\P_1 \\
-  \X_2-\P_2 \\
-  \X_3-\P_3
+  \mathbf{X}_1-\mathbf{P}_1 \\
+  \mathbf{X}_2-\mathbf{P}_2 \\
+  \mathbf{X}_3-\mathbf{P}_3
 \end{array}\right]\right)
   \right)^2,
-\\]
+$$
 
-where $\N_i$ is the ith column from the matrix of normals $\N ∈ \R^{k × 3}$,
-$\text{diag}(\v)$ [creates a diagonal
+
+where $\mathbf{N}_i$ is the ith column from the matrix of normals $\mathbf{N} \in  \mathbf{R}^{k \times  3}$,
+$\text{diag}(\mathbf{v})$ [creates a diagonal
 matrix](https://en.wikipedia.org/wiki/Diagonal_matrix#Matrix_operations) from a
-vector, and $\A ∈ \R^{3k × 6}$ is the same as above.
+vector, and $\mathbf{A} \in  \mathbf{R}^{3k \times  6}$ is the same as above.
 
-This energy is quadratic in $\u$ and can be solve by setting all partial
-derivatives with respect to $\u$ to zero.
+This energy is quadratic in $\mathbf{u}$ and can be solve by setting all partial
+derivatives with respect to $\mathbf{u}$ to zero.
 
 > ### Closed-form point-to-point minimizer
 >
@@ -770,43 +807,45 @@ integration](https://en.wikipedia.org/wiki/Numerical_integration) is called the
 [Monte Carlo method](https://en.wikipedia.org/wiki/Monte_Carlo_method).
 
 We would like our [random
-variable](https://en.wikipedia.org/wiki/Random_variable) $\x ∈ X$ to have a
+variable](https://en.wikipedia.org/wiki/Random_variable) $\mathbf{x} \in  X$ to have a
 uniform [probability density
-function](https://en.wikipedia.org/wiki/Probability_density_function) $f(\x) =
+function](https://en.wikipedia.org/wiki/Probability_density_function) $f(\mathbf{x}) =
 1/A_X$, where $A_X$ is the [surface
 area](https://en.wikipedia.org/wiki/Surface_area) of the triangle mesh $X$. We
 can achieve this by breaking the problem into two steps: uniformly sampling in
 a single triangle and sampling triangles non-uniformly according to their
 area.
 
-Suppose we have a way to evaluate a continuous random point $\x$ in a triangle
-$T$ with uniform probability density function $g_T(\x) = 1/A_T$ _and_ we have a
-away to evaluate a discrete random triangle index $T ∈ \{1,2,‥,m\}$ with [discrete
+Suppose we have a way to evaluate a continuous random point $\mathbf{x}$ in a triangle
+$T$ with uniform probability density function $g_T(\mathbf{x}) = 1/A_T$ _and_ we have a
+away to evaluate a discrete random triangle index $T \in  \{1,2,‥,m\}$ with [discrete
 probability
 distribution](https://en.wikipedia.org/wiki/Probability_distribution#Discrete_probability_distribution)
 $h(T) = A_T/A_X$, then the joint probability of evaluating a certain triangle
-index $T$ and then uniformly random point in that triangle $\x$ is indeed
+index $T$ and then uniformly random point in that triangle $\mathbf{x}$ is indeed
 uniform over the surface:
 
-\\[
-h(T) g_T(\x) = \frac{A_T}{A_X} \frac{1}{A_T} = \frac{1}{A_X} = f(\x).
-\\]
+$$
+h(T) g_T(\mathbf{x}) = \frac{A_T}{A_X} \frac{1}{A_T} = \frac{1}{A_X} = f(\mathbf{x}).
+$$
+
 
 ### Uniform random sampling of a single triangle
 
-In order to pick a point uniformly randomly in a triangle with corners $\v_1,
-\v_2, \v_3 ∈ \R^3$ we will _first_ pick a point uniformly randomly in the
+In order to pick a point uniformly randomly in a triangle with corners $\mathbf{v}_1,
+\mathbf{v}_2, \mathbf{v}_3 \in  \mathbf{R}^3$ we will _first_ pick a point uniformly randomly in the
 [parallelogram](https://en.wikipedia.org/wiki/Parallelogram) formed by
-reflecting $\v_1$ across the line $\overline{\v_2\v_3}$:
+reflecting $\mathbf{v}_1$ across the line $\overline{\mathbf{v}_2\mathbf{v}_3}$:
 
-\\[
-\x = \v_1 + α (\v_2-\v_1) + β (\v_3 - \v_1)
-\\]
+$$
+\mathbf{x} = \mathbf{v}_1 + α (\mathbf{v}_2-\mathbf{v}_1) + β (\mathbf{v}_3 - \mathbf{v}_1)
+$$
+
 
 where $α,β$ are uniformly sampled from the unit interval $[0,1]$. If $α+β > 1$
-then the point $\x$ above will lie in the reflected triangle rather than the
-original one. In this case, preprocess $α$ and $β$ by setting $α←1-α$ and
-$β←1-β$ to reflect the point $\x$ back into the original triangle.
+then the point $\mathbf{x}$ above will lie in the reflected triangle rather than the
+original one. In this case, preprocess $α$ and $β$ by setting $α\Leftarrow 1-α$ and
+$β\Leftarrow 1-β$ to reflect the point $\mathbf{x}$ back into the original triangle.
 
 ### Area-weighted random sampling of triangles
 
@@ -816,15 +855,16 @@ triangle index $T$ from the sequence ${1,‥,m}$ with likelihood proportional to
 the relative area of each triangle in the mesh.
 
 We can achieve this by first computing the [cumulative
-sum](https://en.wikipedia.org/wiki/Running_total) $\C ∈ \R^{m}$ of the relative
+sum](https://en.wikipedia.org/wiki/Running_total) $\mathbf{C} \in  \mathbf{R}^{m}$ of the relative
 areas:
 
-\\[
-C_i = ∑_{j=1}^i \frac{A_j}{A_X},
-\\]
+$$
+C_i = \Sigma _{j=1}^i \frac{A_j}{A_X},
+$$
 
-Then our random index is found by identifying the first entry in $\C$ whose
-value is greater than a uniform random variable $γ$. Since $\C$ is sorted,
+
+Then our random index is found by identifying the first entry in $\mathbf{C}$ whose
+value is greater than a uniform random variable $γ$. Since $\mathbf{C}$ is sorted,
 locating this entry can be done in $O(\log m)$
 [time](https://en.wikipedia.org/wiki/Big_O_notation).
 
@@ -899,7 +939,7 @@ Compute a lower bound on the _directed_ Hausdorff distance from a given mesh
 randomly sampling the $X$ mesh.
 
 ### `src/closest_rotation.cpp`
-Given a 3×3 matrix `M`, find the closest rotation matrix `R`.
+Given a 3\times 3 matrix `M`, find the closest rotation matrix `R`.
 
 ### `src/point_to_point_rigid_matching.cpp`
 Given a set of source points X and corresponding target points P, find the
