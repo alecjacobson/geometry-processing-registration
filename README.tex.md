@@ -109,7 +109,6 @@ $$
 D_{\overrightarrow{H}}(X,Y) = \sup_{\mathbf{x} \in  X} \| \mathbf{x} - P_Y(\mathbf{x})\| .
 $$
 
-
 This surface-to-surface distance measure is called the _directed_ [Hausdorff
 distance](https://en.wikipedia.org/wiki/Hausdorff_distance). We may interpret
 this as taking the worst of the best: we 
