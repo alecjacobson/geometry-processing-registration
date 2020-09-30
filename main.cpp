@@ -20,7 +20,7 @@ int main(int argc, char *argv[])
 
   int num_samples = 100;
   bool show_samples = true;
-  ICPMethod method = ICP_METHOD_POINT_TO_POINT;
+  ICPMethod method = ICP_METHOD_POINT_TO_PLANE;
 
   igl::opengl::glfw::Viewer viewer;
   std::cout<<R"(
@@ -33,9 +33,12 @@ int main(int argc, char *argv[])
   s        halve number of samples
 )";
 
+
   // predefined colors
   const Eigen::RowVector3d orange(1.0,0.7,0.2);
   const Eigen::RowVector3d blue(0.2,0.3,0.8);
+
+  // sets X, Y surface, i.e. V = [VX, VY], F = [FX, FY], and C
   const auto & set_meshes = [&]()
   {
     // Concatenate meshes into one big mesh
@@ -51,6 +54,9 @@ int main(int argc, char *argv[])
     C.bottomLeftCorner(FY.rows(),3).rowwise() = blue;
     viewer.data().set_colors(C);
   };
+  // sets X, P where
+  //  X are randomly sampled points
+  //  P are closest point from X to Y
   const auto & set_points = [&]()
   {
     Eigen::MatrixXd X,P;
@@ -85,7 +91,7 @@ int main(int argc, char *argv[])
       Eigen::RowVector3d t;
       icp_single_iteration(VX,FX,VY,FY,num_samples,method,R,t);
       // Apply transformation to source mesh
-      VX = ((VX*R).rowwise() + t).eval();
+      VX = ((VX*R.transpose()).rowwise() + t).eval();
       set_meshes();
       if(show_samples)
       {
