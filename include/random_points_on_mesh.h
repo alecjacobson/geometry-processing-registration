@@ -10,6 +10,18 @@
 // Outputs:
 //   X  n by 3 list of random points on (V,F)
 //
+// int binarySearch(
+// 	const Eigen::VectorXd &CDF, 
+// 	int startIdx,
+// 	int endIdx,
+// 	double searchVal);
+
+// int searchIdx(
+// 	const Eigen::VectorXd &CDF, 
+// 	int startIdx,
+// 	int endIdx,
+// 	double searchVal);
+
 void random_points_on_mesh(
   const int n,
   const Eigen::MatrixXd & V,
