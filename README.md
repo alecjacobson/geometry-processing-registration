@@ -325,7 +325,7 @@ icp V_X, F_X, V_Y, F_Y
 ### Updating the rigid transformation
 
 We would like to find the rotation matrix <img src="./tex/43b9b5d6dee02a08443aa04710f133ad.svg?invert_in_darkmode" align=middle width=136.46551874999997pt height=26.76175259999998pt/> and
-translation vector <img src="./tex/4835152d95e6468a4f5aaf85cd0e3fed.svg?invert_in_darkmode" align=middle width=45.86742269999999pt height=26.76175259999998pt/> that _best_ aligns a given a set of points <img src="./tex/c6fb0a239d93250461ae9e9483290505.svg?invert_in_darkmode" align=middle width=70.34808pt height=27.91243950000002pt/> on the source mesh and their current closest points <img src="./tex/3f351cddeb3ad7497953e6d06635431f.svg?invert_in_darkmode" align=middle width=70.02835124999999pt height=27.91243950000002pt/>
+translation vector <img src="./tex/4835152d95e6468a4f5aaf85cd0e3fed.svg?invert_in_darkmode" align=middle width=45.86742269999999pt height=26.76175259999998pt/> that _best_ aligns a given a set of points <img src="./tex/c6fb0a239d93250461ae9e9483290505.svg?invert_in_darkmode" align=middle width=70.34808pt height=27.91243950000002pt/> on the source mesh and their current closest points <img src="./tex/ed46e92825f1e61b4b5e43667657ffb2.svg?invert_in_darkmode" align=middle width=68.97822194999999pt height=27.91243950000002pt/>
 on the target mesh. We have two choices for _linearizing_ our matching energy:
 point-to-point (gradient descent) and point-to-plane (Gauss-Newton).
 
@@ -341,11 +341,9 @@ rather than the energy term.
 
 ### Closed-form solution for point-to-point rigid matching
 
-Given <img src="./tex/63bb9849783d01d91403bc9a5fea12a2.svg?invert_in_darkmode" align=middle width=9.075367949999992pt height=22.831056599999986pt/> samples 
-<img src="./tex/ed8a6f1946513f89740f954832164466.svg?invert_in_darkmode" align=middle width=70.34808pt height=27.91243950000002pt/> on the current source <img src="./tex/cbfb1b2a33b28eab8a3e59464768e810.svg?invert_in_darkmode" align=middle width=14.908688849999992pt height=22.465723500000017pt/> and corresponding closest points 
-<img src="./tex/863eaca003d7486dd9f3e7a92312e741.svg?invert_in_darkmode" align=middle width=48.88708439999999pt height=27.91243950000002pt/> on the target <img src="./tex/91aac9730317276af725abd8cef04ca9.svg?invert_in_darkmode" align=middle width=13.19638649999999pt height=22.465723500000017pt/>, the point-to-point (gradient descent) rigid matching method seeks to find the best rotation matrix <img src="./tex/9e4cf51ecede66c3273d12a66d04ed76.svg?invert_in_darkmode" align=middle width=147.4244607pt height=26.76175259999998pt/> and translation vector <img src="./tex/bc48724c8f0baf576bb0a62bad88bd87.svg?invert_in_darkmode" align=middle width=45.86742269999999pt height=26.76175259999998pt/>:
+The point-to-point (gradient descent) rigid matching problem solves:
 
-<p align="center"><img src="./tex/38629be1b4c87e1d59ffee60cd6cf431.svg?invert_in_darkmode" align=middle width=397.08075825pt height=15.247923899999998pt/></p>
+<p align="center"><img src="./tex/36c2a52015b1b58bf8991631162bd0ee.svg?invert_in_darkmode" align=middle width=455.80498919999997pt height=17.7821556pt/></p>
 
 
 ### Iterative linearization for point-to-plane rigid matching
