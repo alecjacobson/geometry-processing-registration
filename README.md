@@ -462,8 +462,16 @@ Finally, we have a formula for our optimal rotation:
 
 <p align="center"><img src="./tex/4ee960ed89d4b6ef9aa933ba448fa2e5.svg?invert_in_darkmode" align=middle width=100.28508765pt height=14.77813755pt/></p>
 
-
 ### Iterative linearization for point-to-plane rigid matching
+
+The point-to-plane (Gauss-Newton) rigid matching problem solves:
+
+<p align="center"><img src="./tex/9464f64a532aa0afa86e83d7cf324251.svg?invert_in_darkmode" align=middle width=290.03986769999995pt height=47.93392394999999pt/></p>
+
+where <img src="./tex/248c260a57c30bb1b2a031ed6d865a92.svg?invert_in_darkmode" align=middle width=54.490888649999995pt height=26.76175259999998pt/> is the unit normal at the located closest point <img src="./tex/f13e5bc0860402c82f869bcf883eb8b0.svg?invert_in_darkmode" align=middle width=15.15312644999999pt height=14.611878600000017pt/>. Since <img src="./tex/07ab2118b88a22ebb81d6e76fbe187b8.svg?invert_in_darkmode" align=middle width=10.502226899999991pt height=23.28771720000001pt/> is a unit vector the norm is only measuring the proceeding term <img src="./tex/4b5bc7625841fe32bd4ec7afef479830.svg?invert_in_darkmode" align=middle width=126.55470959999998pt height=24.65753399999998pt/>, so we can reduce this problem to:
+
+<p align="center"><img src="./tex/29619b9c0474dbb8d69bbcd42fce43d5.svg?invert_in_darkmode" align=middle width=267.67220039999995pt height=47.93392394999999pt/></p>
+
 
 We require that <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> is not just any <img src="./tex/46e42d6ebfb1f8b50fe3a47153d01cd2.svg?invert_in_darkmode" align=middle width=36.52961069999999pt height=21.18721440000001pt/> matrix, but a rotation matrix. If we simply optimize the 9 matrix entries of <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> directly, the result will be far from a rotation matrix. Instead, we _linearize_ the constraint that <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> stays a rotation matrix and work with a reduced set of variables.
 
@@ -480,11 +488,11 @@ where <img src="./tex/c09091921b6bc51fd934869690606bfe.svg?invert_in_darkmode" a
 
 In this form, we can linearize by considering a small change in <img src="./tex/27e556cf3caa0673ac49a8f0de3c73ca.svg?invert_in_darkmode" align=middle width=8.17352744999999pt height=22.831056599999986pt/> and <img src="./tex/522c69add21191fefe7da3f76ad92547.svg?invert_in_darkmode" align=middle width=13.91546639999999pt height=23.28771720000001pt/>:
 
-<p align="center"><img src="./tex/7f7877cc3239356dcc4f92ef547f2159.svg?invert_in_darkmode" align=middle width=218.50181924999998pt height=59.1786591pt/></p>
+<p align="center"><img src="./tex/262037185a6fe25d4c5a80affc39e13c.svg?invert_in_darkmode" align=middle width=245.76193455pt height=59.1786591pt/></p>
 
 By defining <img src="./tex/c1d4dd9f8ef43f6ae2f3d7c1d37ace0e.svg?invert_in_darkmode" align=middle width=53.19605774999998pt height=23.28771720000001pt/>, we can write this in terms of only three simple scalar variables:
 
-<p align="center"><img src="./tex/872476e5e4054f2b8c9267a3427db08a.svg?invert_in_darkmode" align=middle width=184.74316574999997pt height=59.1786591pt/></p>
+<p align="center"><img src="./tex/fa51cafb4c1a3daf9842621a426e1962.svg?invert_in_darkmode" align=middle width=212.00328105pt height=59.1786591pt/></p>
 
 
 ### Approximate point-to-point minimizer
