@@ -499,7 +499,7 @@ one (and only one) of these values to <img src="./tex/e11a8cfcf953c683196d7a4867
 corner since that will multiply against the smallest singular value in <img src="./tex/9f695bec305c31490f90808856401395.svg?invert_in_darkmode" align=middle width=17.35165739999999pt height=24.657735299999988pt/> (add
 negatively affect the maximization the least):
 
-<p align="center"><img src="./tex/7ad06d716b75a8b1277f63a25ba21499.svg?invert_in_darkmode" align=middle width=228.15813734999998pt height=118.35736770000001pt/></p>
+<p align="center"><img src="./tex/5139e59b19ff94e1325784ad8331b884.svg?invert_in_darkmode" align=middle width=228.15813734999998pt height=118.35736770000001pt/></p>
 
 
 Finally, we have a formula for our optimal rotation:
@@ -591,7 +591,7 @@ as:
 
 This can be written compactly in matrix form as:
 
-<p align="center"><img src="./tex/2717b067b56472023341743a847aa92d.svg?invert_in_darkmode" align=middle width=546.11870775pt height=62.53027769999999pt/></p>
+<p align="center"><img src="./tex/3d04698e460f14851ead5bf5b511e4af.svg?invert_in_darkmode" align=middle width=529.68035175pt height=62.53027769999999pt/></p>
 
 
 where <img src="./tex/d215374485dd1f9e71eba3fa2f247afe.svg?invert_in_darkmode" align=middle width=19.44535064999999pt height=22.55708729999998pt/> is the ith column from the matrix of normals <img src="./tex/5e65e079e680711d68cb1f973f9b02d9.svg?invert_in_darkmode" align=middle width=70.85036639999998pt height=27.91243950000002pt/>,
