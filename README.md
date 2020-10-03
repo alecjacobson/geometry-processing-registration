@@ -380,7 +380,7 @@ unknown rotation <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_
 for all occurrences of <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> in our energy written in its original summation
 form:
 
-<p align="center"><img src="./tex/a8f8df4e1e60a89668875592f73dc767.svg?invert_in_darkmode" align=middle width=995.1131322pt height=36.50245665pt/></p>
+<p align="center"><img src="./tex/00e00e26b2f40f54d1d1806f9d448fc6.svg?invert_in_darkmode" align=middle width=496.79341800000003pt height=167.46168615pt/></p>
 
 
 where we introduce <img src="./tex/0666e59c3940e6bce1da734268343091.svg?invert_in_darkmode" align=middle width=70.34807339999999pt height=27.91243950000002pt/> where the ith row contains the
