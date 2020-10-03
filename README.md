@@ -355,6 +355,50 @@ setting all derivatives with respect to unknowns in <img src="./tex/f40598ec49a9
 
 <p align="center"><img src="./tex/7d9e531db70d52a78e322246129c5344.svg?invert_in_darkmode" align=middle width=479.1395680499999pt height=74.02030679999999pt/></p>
 
+where <img src="./tex/2ac7c6ff1056fe3737fa4395e2efb6c5.svg?invert_in_darkmode" align=middle width=48.68135084999999pt height=27.91243950000002pt/> is a vector ones. Setting the partial derivative with
+respect to <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> of this
+quadratic energy to zero finds the minimum:
+<p align="center"><img src="./tex/a44985133f71fb91a8b6d9e7a882497a.svg?invert_in_darkmode" align=middle width=213.85093949999998pt height=58.361920649999995pt/></p>
+
+
+Rearranging terms above reveals that the optimal <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> is the vector aligning
+the [centroids](https://en.wikipedia.org/wiki/Centroid) of the points in <img src="./tex/384591906555413c452c93e493b2d4ec.svg?invert_in_darkmode" align=middle width=12.92230829999999pt height=22.55708729999998pt/>
+and the points in <img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> rotated by the — yet-unknown — <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/>. Introducing
+variables for the respective centroids <img src="./tex/6adbc07080127bb655b2d2f1d94ae14b.svg?invert_in_darkmode" align=middle width=98.25256484999997pt height=32.51169900000002pt/> and <img src="./tex/00085c1c3a7306fc9ff9974f9fe861dc.svg?invert_in_darkmode" align=middle width=97.20234314999998pt height=32.51169900000002pt/>, we can write the
+formula for the optimal  <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/>:
+
+<p align="center"><img src="./tex/3e9143830b1d465b221cd6ad39adf7e2.svg?invert_in_darkmode" align=middle width=133.8212997pt height=59.93265464999999pt/></p>
+
+
+Now we have a formula for the optimal translation vector <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> in terms of the
+unknown rotation <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/>. Let us
+[substitute](https://en.wikipedia.org/wiki/Substitution_(algebra)) this formula
+for all occurrences of <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> in our energy written in its original summation
+form:
+
+<p align="center"><img src="./tex/80b1c9d212d824c137a66da199f2e2de.svg?invert_in_darkmode" align=middle width=995.1131322pt height=36.50245665pt/></p>
+
+
+where we introduce <img src="./tex/0666e59c3940e6bce1da734268343091.svg?invert_in_darkmode" align=middle width=70.34807339999999pt height=27.91243950000002pt/> where the ith row contains the
+_relative position_ of the ith point to the centroid <img src="./tex/9a741103081d04ca0a4a97a8e6c28ce6.svg?invert_in_darkmode" align=middle width=9.97711604999999pt height=24.200985600000003pt/>: i.e.,
+<img src="./tex/049a4d4763f53136c65dd204d7dca240.svg?invert_in_darkmode" align=middle width=95.67119594999998pt height=24.65753399999998pt/> (and analagously for <img src="./tex/12096d414736789db645c9547a5804cc.svg?invert_in_darkmode" align=middle width=12.92230829999999pt height=27.817082700000007pt/>).
+
+Now we have the canonical form of the [orthogonal procrustes
+problem](https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem). To
+find the optimal rotation matrix <img src="./tex/7418159b714ed42bd664b73099a6311f.svg?invert_in_darkmode" align=middle width=20.913202199999986pt height=22.63846199999998pt/> we will massage the terms in the
+_minimization_ until we have a _maximization_ problem involving the [Frobenius
+inner-product](https://en.wikipedia.org/wiki/Frobenius_inner_product) of the
+unknown rotation <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> and [covariance
+matrix](https://en.wikipedia.org/wiki/Covariance_matrix) of <img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and <img src="./tex/384591906555413c452c93e493b2d4ec.svg?invert_in_darkmode" align=middle width=12.92230829999999pt height=22.55708729999998pt/>:
+
+<p align="center"><img src="./tex/fd133523cca20637d7fba062958b7acd.svg?invert_in_darkmode" align=middle width=340.00603725pt height=212.86798829999998pt/></p>
+
+
+Letting <img src="./tex/818e261a8ac45a73aabd65ba9bba3a1b.svg?invert_in_darkmode" align=middle width=80.91279569999999pt height=36.98604359999998pt/> we can now follow the
+steps above using [singular value
+decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) to
+find the optimal <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/>.
+
 
 ### Iterative linearization for point-to-plane rigid matching
 
