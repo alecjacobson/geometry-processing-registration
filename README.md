@@ -91,7 +91,6 @@ _infimum_ of _point-to-projection_ distances over all points <img src="./tex/b0e
 
 <p align="center"><img src="./tex/91f6adf2b92c5fb76354ca7fcb38f619.svg?invert_in_darkmode" align=middle width=225.58776239999997pt height=23.802282899999998pt/></p>
 
-
 but this will not be useful for registering two surfaces: it will measure zero
 if even just a single point of <img src="./tex/b0ea07dc5c00127344a1cad40467b8de.svg?invert_in_darkmode" align=middle width=9.97711604999999pt height=14.611878600000017pt/> happens to lie on <img src="./tex/91aac9730317276af725abd8cef04ca9.svg?invert_in_darkmode" align=middle width=13.19638649999999pt height=22.465723500000017pt/>. Imagine the noses of
 two faces touching at their tips.
@@ -218,10 +217,10 @@ descent](https://en.wikipedia.org/wiki/Gradient_descent) and the
 
 ```
 minimize f(z)^{2}
-  z_{0} \Leftarrow  initial guess
+  z_{0} ← initial guess
   repeat until convergence
-    f_{0} \Leftarrow  linearize f(z) around z_{0}
-    z_{0} \Leftarrow  minimize f_{0}(z)^{2}
+    f_{0} ←  linearize f(z) around z_{0}
+    z_{0} ←  minimize f_{0}(z)^{2}
 ```
 
 Since our <img src="./tex/47b0192f8f0819d64bce3612c46d15ea.svg?invert_in_darkmode" align=middle width=7.56844769999999pt height=22.831056599999986pt/> is a geometric function, we can derive its linearizations
