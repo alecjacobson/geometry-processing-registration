@@ -396,7 +396,7 @@ unknown rotation <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_
 matrix](https://en.wikipedia.org/wiki/Covariance_matrix) of <img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and <img src="./tex/384591906555413c452c93e493b2d4ec.svg?invert_in_darkmode" align=middle width=12.92230829999999pt height=22.55708729999998pt/>:
 
 
-<p align="center"><img src="./tex/3ec6573432d28d93443f1fbfc7412eae.svg?invert_in_darkmode" align=middle width=745.30956555pt height=260.37477675pt/></p>
+<p align="center"><img src="./tex/2ad261f22279476df7fd3bec7f3e8727.svg?invert_in_darkmode" align=middle width=557.7201828pt height=283.5712308pt/></p>
 
 Letting <img src="./tex/818e261a8ac45a73aabd65ba9bba3a1b.svg?invert_in_darkmode" align=middle width=80.91279569999999pt height=36.98604359999998pt/>. We can understand this problem as _projecting_ the matrix <img src="./tex/e6bb22a58889cb2e58f4fce2f3a80e02.svg?invert_in_darkmode" align=middle width=17.94511949999999pt height=22.55708729999998pt/> to the nearest rotation matrix <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/>.
 
