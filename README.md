@@ -683,9 +683,6 @@ Given a set of source points X and corresponding target points P, find the
 optimal rigid transformation (R,t) that aligns X to P, minimizing the
 point-to-point matching energy.
 
-You may implement either that "Approximate" solution via linearizing the
-rotation matrix or the "closed form" solution
-
 ### `src/point_to_plane_rigid_matching.cpp`
 Given a set of source points `X` and corresponding target points `P` and their
 normals `N`, find the optimal rigid transformation (`R`,`t`) that aligns `X` to
