@@ -396,7 +396,7 @@ unknown rotation <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_
 matrix](https://en.wikipedia.org/wiki/Covariance_matrix) of <img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and <img src="./tex/384591906555413c452c93e493b2d4ec.svg?invert_in_darkmode" align=middle width=12.92230829999999pt height=22.55708729999998pt/>:
 
 
-<p align="center"><img src="./tex/423dd647879c621fda9ad0aedc285fdb.svg?invert_in_darkmode" align=middle width=520.55095125pt height=239.00491394999997pt/></p>
+<p align="center"><img src="./tex/d2cc5d7995e7c35f4356100a56b3483f.svg?invert_in_darkmode" align=middle width=700.27401675pt height=114.5669778pt/></p>
 
 Letting <img src="./tex/818e261a8ac45a73aabd65ba9bba3a1b.svg?invert_in_darkmode" align=middle width=80.91279569999999pt height=36.98604359999998pt/>. We can understand this problem as _projecting_ the matrix <img src="./tex/e6bb22a58889cb2e58f4fce2f3a80e02.svg?invert_in_darkmode" align=middle width=17.94511949999999pt height=22.55708729999998pt/> to the nearest rotation matrix <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/>.
 
@@ -406,9 +406,6 @@ Letting <img src="./tex/818e261a8ac45a73aabd65ba9bba3a1b.svg?invert_in_darkmode"
 > SVD" [Sorkine 2009], this derivation purposefully _avoids_ the [trace
 > operator](https://en.wikipedia.org/wiki/Trace_(linear_algebra)) and its
 > various nice properties.
-
-If <img src="./tex/eec04193aead51ded846dbae8c3b4953.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/>, <img src="./tex/86ef8ef82733de9ba07432e88dd9757e.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/> and <img src="./tex/86ef8ef82733de9ba07432e88dd9757e.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/> are all small, then it may be safe to _interpret_ these
-values as rotation angles about the <img src="./tex/332cc365a4987aacce0ead01b8bdcc0b.svg?invert_in_darkmode" align=middle width=9.39498779999999pt height=14.15524440000002pt/>, <img src="./tex/deceeaf6940a8c7a5a02373728002b0f.svg?invert_in_darkmode" align=middle width=8.649225749999989pt height=14.15524440000002pt/>, and <img src="./tex/f93ce33e511096ed626b4719d50f17d2.svg?invert_in_darkmode" align=middle width=8.367621899999993pt height=14.15524440000002pt/> axes respectively.
 
 In general, it is better to find the closest rotation matrix to <img src="./tex/e6bb22a58889cb2e58f4fce2f3a80e02.svg?invert_in_darkmode" align=middle width=17.94511949999999pt height=22.55708729999998pt/>. In other
 words, we'd like to solve the small optimization problem:
