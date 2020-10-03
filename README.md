@@ -343,12 +343,14 @@ We require that <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_d
 
 Any rotation <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> in 3D can be written as scalar rotation angle <img src="./tex/27e556cf3caa0673ac49a8f0de3c73ca.svg?invert_in_darkmode" align=middle width=8.17352744999999pt height=22.831056599999986pt/> around a rotation axis defined by a unit vector <img src="./tex/38b405fb29be61635751df6f2ad66799.svg?invert_in_darkmode" align=middle width=52.431327299999985pt height=26.76175259999998pt/>.
 
-If <img src="./tex/41872dbb4f4a0b13684d067aebc62846.svg?invert_in_darkmode" align=middle width=84.23493704999998pt height=24.65753399999998pt/>, we know that a rotation by <img src="./tex/27e556cf3caa0673ac49a8f0de3c73ca.svg?invert_in_darkmode" align=middle width=8.17352744999999pt height=22.831056599999986pt/> can be written as:
+If <img src="./tex/96c3741f62813242aaf853b649cf3780.svg?invert_in_darkmode" align=middle width=114.55434869999998pt height=24.65753399999998pt/>, we know that a rotation by <img src="./tex/27e556cf3caa0673ac49a8f0de3c73ca.svg?invert_in_darkmode" align=middle width=8.17352744999999pt height=22.831056599999986pt/> can be written as:
 
 <p align="center"><img src="./tex/db60da1aeacc11d5cb8c2d8ed2486a28.svg?invert_in_darkmode" align=middle width=214.36958565pt height=59.1786591pt/></p>
 
 For a general, rotation axis <img src="./tex/522c69add21191fefe7da3f76ad92547.svg?invert_in_darkmode" align=middle width=13.91546639999999pt height=23.28771720000001pt/>, we can write a generalized formula:
-<p align="center"><img src="./tex/fe0d2f8ecc438fa22bc822b0909e166d.svg?invert_in_darkmode" align=middle width=155.55583395pt height=59.1786591pt/></p>
+<p align="center"><img src="./tex/f0c8086526cdff11758767d8716a8233.svg?invert_in_darkmode" align=middle width=609.4774620000001pt height=85.00052385000001pt/></p>
+
+where <img src="./tex/c09091921b6bc51fd934869690606bfe.svg?invert_in_darkmode" align=middle width=75.14827979999998pt height=26.76175259999998pt/> is the [skew-symmetric](https://en.wikipedia.org/wiki/Skew-symmetric_matrix) [cross product matrix](https://en.wikipedia.org/wiki/Cross_product#Conversion_to_matrix_multiplication) of <img src="./tex/522c69add21191fefe7da3f76ad92547.svg?invert_in_darkmode" align=middle width=13.91546639999999pt height=23.28771720000001pt/> so that <img src="./tex/dd8d347bc29ac2275a6105fbc8615132.svg?invert_in_darkmode" align=middle width=95.42179679999998pt height=23.28771720000001pt/>
 
 
 We can _linearize_ this constraint, by assuming that the rotation in <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> will be very small. Any 3D rotation can be written 
