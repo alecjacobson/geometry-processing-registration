@@ -342,8 +342,10 @@ rather than the energy term.
 ### Closed-form solution for point-to-point rigid matching
 
 Given <img src="./tex/63bb9849783d01d91403bc9a5fea12a2.svg?invert_in_darkmode" align=middle width=9.075367949999992pt height=22.831056599999986pt/> samples 
-<img src="./tex/ed8a6f1946513f89740f954832164466.svg?invert_in_darkmode" align=middle width=70.34808pt height=27.91243950000002pt/> on <img src="./tex/cbfb1b2a33b28eab8a3e59464768e810.svg?invert_in_darkmode" align=middle width=14.908688849999992pt height=22.465723500000017pt/> and corresponding closest points 
-<img src="./tex/567cb905c5376597ded32cd84edf9948.svg?invert_in_darkmode" align=middle width=68.97822194999999pt height=27.91243950000002pt/> on <img src="./tex/91aac9730317276af725abd8cef04ca9.svg?invert_in_darkmode" align=middle width=13.19638649999999pt height=22.465723500000017pt/>, the point-to-point (gradient descent) rigid matching method seeks to find the best rotation matrix <img src="./tex/cdc1c3863a4fa59460b49dbb8dc69b38.svg?invert_in_darkmode" align=middle width=69.52043834999999pt height=26.76175259999998pt/> and translation vector <img src="./tex/bc48724c8f0baf576bb0a62bad88bd87.svg?invert_in_darkmode" align=middle width=45.86742269999999pt height=26.76175259999998pt/>:
+<img src="./tex/ed8a6f1946513f89740f954832164466.svg?invert_in_darkmode" align=middle width=70.34808pt height=27.91243950000002pt/> on the current source <img src="./tex/cbfb1b2a33b28eab8a3e59464768e810.svg?invert_in_darkmode" align=middle width=14.908688849999992pt height=22.465723500000017pt/> and corresponding closest points 
+<img src="./tex/863eaca003d7486dd9f3e7a92312e741.svg?invert_in_darkmode" align=middle width=48.88708439999999pt height=27.91243950000002pt/> on the target <img src="./tex/91aac9730317276af725abd8cef04ca9.svg?invert_in_darkmode" align=middle width=13.19638649999999pt height=22.465723500000017pt/>, the point-to-point (gradient descent) rigid matching method seeks to find the best rotation matrix <img src="./tex/9e4cf51ecede66c3273d12a66d04ed76.svg?invert_in_darkmode" align=middle width=147.4244607pt height=26.76175259999998pt/> and translation vector <img src="./tex/bc48724c8f0baf576bb0a62bad88bd87.svg?invert_in_darkmode" align=middle width=45.86742269999999pt height=26.76175259999998pt/>:
+
+<p align="center"><img src="./tex/38629be1b4c87e1d59ffee60cd6cf431.svg?invert_in_darkmode" align=middle width=397.08075825pt height=15.247923899999998pt/></p>
 
 
 ### Iterative linearization for point-to-plane rigid matching
