@@ -5,7 +5,7 @@
 // normals `N`, find the optimal rigid transformation (`R`,`t`) that aligns `X`
 // to `P`, minimizing the matching energy:
 //
-//   (R X' - t' 1' - P')²
+//   ∑ ( ( R xi + t - pi)⋅ni )²
 //
 // Inputs:
 //   X  #X by 3 set of source points
