@@ -355,9 +355,7 @@ setting all derivatives with respect to unknowns in <img src="./tex/f40598ec49a9
 
 <p align="center"><img src="./tex/dff2d51dc0bc2208fabf381da1ee9054.svg?invert_in_darkmode" align=middle width=479.1395680499999pt height=87.52486215pt/></p>
 
-where <img src="./tex/2ac7c6ff1056fe3737fa4395e2efb6c5.svg?invert_in_darkmode" align=middle width=48.68135084999999pt height=27.91243950000002pt/> is a vector ones. Setting the partial derivative with
-respect to <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> of this
-quadratic energy to zero finds the minimum:
+where <img src="./tex/2ac7c6ff1056fe3737fa4395e2efb6c5.svg?invert_in_darkmode" align=middle width=48.68135084999999pt height=27.91243950000002pt/> is a vector ones and <img src="./tex/1f2a0ec2ecb40db723721c1512f99c66.svg?invert_in_darkmode" align=middle width=40.83682679999999pt height=26.76175259999998pt/> computes the squared [Frobenius norm](https://en.wikipedia.org/wiki/Matrix_norm#Frobenius_norm) of the matrix <img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> (i.e., the sum of all squared element values. In MATLAB syntax: `sum(sum(A.^2))`).  Setting the partial derivative with respect to <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> of this quadratic energy to zero finds the minimum:
 
 <p align="center"><img src="./tex/9d06bb65b0ec4d34e2278e2593224b6a.svg?invert_in_darkmode" align=middle width=457.47342464999997pt height=59.27515935pt/></p>
 
@@ -387,17 +385,11 @@ where we introduce <img src="./tex/0666e59c3940e6bce1da734268343091.svg?invert_i
 _relative position_ of the ith point to the centroid <img src="./tex/c28a7e764fb3e1d562204f0d05b4ec04.svg?invert_in_darkmode" align=middle width=9.97711604999999pt height=19.871860799999983pt/>: i.e.,
 <img src="./tex/69f39cdb5b0d045862c4b5e8172d7988.svg?invert_in_darkmode" align=middle width=95.67119594999998pt height=24.65753399999998pt/> (and analagously for <img src="./tex/12096d414736789db645c9547a5804cc.svg?invert_in_darkmode" align=middle width=12.92230829999999pt height=27.817082700000007pt/>).
 
-Now we have the canonical form of the [orthogonal procrustes
-problem](https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem). To
-find the optimal rotation matrix <img src="./tex/7418159b714ed42bd664b73099a6311f.svg?invert_in_darkmode" align=middle width=20.913202199999986pt height=22.63846199999998pt/> we will massage the terms in the
-_minimization_ until we have a _maximization_ problem involving the [Frobenius
-inner-product](https://en.wikipedia.org/wiki/Frobenius_inner_product) of the
-unknown rotation <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> and [covariance
-matrix](https://en.wikipedia.org/wiki/Covariance_matrix) of <img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and <img src="./tex/384591906555413c452c93e493b2d4ec.svg?invert_in_darkmode" align=middle width=12.92230829999999pt height=22.55708729999998pt/>:
-
+Now we have the canonical form of the [orthogonal procrustes problem](https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem). To find the optimal rotation matrix <img src="./tex/7418159b714ed42bd664b73099a6311f.svg?invert_in_darkmode" align=middle width=20.913202199999986pt height=22.63846199999998pt/>, using the [associativity property](https://en.wikipedia.org/wiki/Associative_property) of the Frobenius norm, we will massage the terms in the _minimization_ until we have a _maximization_ problem involving the [Frobenius inner-product](https://en.wikipedia.org/wiki/Frobenius_inner_product) of the unknown rotation <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> and [covariance matrix](https://en.wikipedia.org/wiki/Covariance_matrix) of <img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and <img src="./tex/384591906555413c452c93e493b2d4ec.svg?invert_in_darkmode" align=middle width=12.92230829999999pt height=22.55708729999998pt/>:
 
 <p align="center"><img src="./tex/06667758b5dd0cc55d54c099049e9e42.svg?invert_in_darkmode" align=middle width=700.2739854pt height=336.1574403pt/></p>
 
+where <img src="./tex/98a03379352cf0fa6a6609d8d3ac6c5c.svg?invert_in_darkmode" align=middle width=57.937128149999985pt height=24.65753399999998pt/> is the [Frobenius inner product](https://en.wikipedia.org/wiki/Frobenius_inner_product) of  <img src="./tex/96458543dc5abd380904d95cae6aa2bc.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and <img src="./tex/ff44d867a998c08241beb49b30148782.svg?invert_in_darkmode" align=middle width=13.44741914999999pt height=22.55708729999998pt/> (i.e., the sum of all per-element products. In MATLAB syntax: `sum(sum(A.*B))`). 
 
 Letting <img src="./tex/818e261a8ac45a73aabd65ba9bba3a1b.svg?invert_in_darkmode" align=middle width=80.91279569999999pt height=36.98604359999998pt/>. We can understand this problem as _projecting_ the matrix <img src="./tex/e6bb22a58889cb2e58f4fce2f3a80e02.svg?invert_in_darkmode" align=middle width=17.94511949999999pt height=22.55708729999998pt/> to the nearest rotation matrix <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/>.
 
@@ -413,12 +405,6 @@ words, we'd like to solve the small optimization problem:
 
 <p align="center"><img src="./tex/842739ed55ed0979a3a9c4178899b2d7.svg?invert_in_darkmode" align=middle width=189.06322544999998pt height=33.1233078pt/></p>
 
-where <img src="./tex/1f2a0ec2ecb40db723721c1512f99c66.svg?invert_in_darkmode" align=middle width=40.83682679999999pt height=26.76175259999998pt/> computes the squared [Frobenius
-norm](https://en.wikipedia.org/wiki/Matrix_norm#Frobenius_norm) of the matrix
-<img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> (i.e., the sum of all squared element values. In MATLAB syntax:
-`sum(sum(A.^2))`). We can expand the norm by taking advantage of the [associativity
-property](https://en.wikipedia.org/wiki/Associative_property) of the Frobenius
-norm:
 <p align="center"><img src="./tex/5b23fe2de73cdb5d0b9da4b94718794d.svg?invert_in_darkmode" align=middle width=310.62239999999997pt height=33.1233078pt/></p>
 
 where <img src="./tex/98a03379352cf0fa6a6609d8d3ac6c5c.svg?invert_in_darkmode" align=middle width=57.937128149999985pt height=24.65753399999998pt/> is the
