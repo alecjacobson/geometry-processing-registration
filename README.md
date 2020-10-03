@@ -496,20 +496,27 @@ In this form, we can linearize by considering a small change in <img src="./tex/
 
 By defining <img src="./tex/c1d4dd9f8ef43f6ae2f3d7c1d37ace0e.svg?invert_in_darkmode" align=middle width=53.19605774999998pt height=23.28771720000001pt/>, we can write this in terms of only three simple scalar variables:
 
-<p align="center"><img src="./tex/fa51cafb4c1a3daf9842621a426e1962.svg?invert_in_darkmode" align=middle width=212.00328105pt height=59.1786591pt/></p>
+<p align="center"><img src="./tex/202714b551fbe5cebdf324dd7d5fa058.svg?invert_in_darkmode" align=middle width=212.00328105pt height=59.1786591pt/></p>
+
+or written in terms of its action on a vector <img src="./tex/b0ea07dc5c00127344a1cad40467b8de.svg?invert_in_darkmode" align=middle width=9.97711604999999pt height=14.611878600000017pt/>, we can simply write in terms of the cross product:
+
+<p align="center"><img src="./tex/672fe6509569ec1528d5c936b2254f1e.svg?invert_in_darkmode" align=middle width=119.96502539999999pt height=12.6484182pt/></p>
 
 If we apply our linearization of <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> to the **point-to-plane** distance
 linearization of the matching energy, our minimization is:
 
-<p align="center"><img src="./tex/a210a372dddce4251d005af80bfe1a79.svg?invert_in_darkmode" align=middle width=515.01854415pt height=62.53027769999999pt/></p>
+<p align="center"><img src="./tex/a5ba862c913d03abca219b9e65735abd.svg?invert_in_darkmode" align=middle width=345.7543947pt height=34.7489472pt/></p>
+
+Let's gather a vector of unknowns: <img src="./tex/60fefaee94c65c2d824c2281080bc0cd.svg?invert_in_darkmode" align=middle width=129.89690835pt height=27.91243950000002pt/>. Then we can use properties of the [triple product](https://en.wikipedia.org/wiki/Triple_product) to rewrite our problem as:
 
 
-Let's gather a vector of unknowns: <img src="./tex/fe8a5e940c33f14b470d92307ba440fb.svg?invert_in_darkmode" align=middle width=118.80099329999999pt height=27.91243950000002pt/>. Then we can write our problem in summation form
-as:
+<p align="center"><img src="./tex/e0920b6c0b2db0d498781dff3afa11c6.svg?invert_in_darkmode" align=middle width=422.50132154999994pt height=42.80407395pt/></p>
 
+
+-----------------
 <p align="center"><img src="./tex/a5c0b6da39a1b42df1dfcca983aece61.svg?invert_in_darkmode" align=middle width=569.58322245pt height=62.53027769999999pt/></p>
 
-This can be written compactly in matrix form as:
+This can be written in matrix form as:
 
 <p align="center"><img src="./tex/b1364780f671327d7c537546f385b18b.svg?invert_in_darkmode" align=middle width=777.2373147pt height=111.8458473pt/></p>
 
