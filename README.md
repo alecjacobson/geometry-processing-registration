@@ -358,7 +358,9 @@ setting all derivatives with respect to unknowns in <img src="./tex/f40598ec49a9
 where <img src="./tex/2ac7c6ff1056fe3737fa4395e2efb6c5.svg?invert_in_darkmode" align=middle width=48.68135084999999pt height=27.91243950000002pt/> is a vector ones. Setting the partial derivative with
 respect to <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> of this
 quadratic energy to zero finds the minimum:
-<p align="center"><img src="./tex/a44985133f71fb91a8b6d9e7a882497a.svg?invert_in_darkmode" align=middle width=213.85093949999998pt height=58.361920649999995pt/></p>
+
+<p align="center"><img src="./tex/9d06bb65b0ec4d34e2278e2593224b6a.svg?invert_in_darkmode" align=middle width=457.47342464999997pt height=59.27515935pt/></p>
+
 
 
 Rearranging terms above reveals that the optimal <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> is the vector aligning
@@ -367,7 +369,9 @@ and the points in <img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in
 variables for the respective centroids <img src="./tex/6adbc07080127bb655b2d2f1d94ae14b.svg?invert_in_darkmode" align=middle width=98.25256484999997pt height=32.51169900000002pt/> and <img src="./tex/00085c1c3a7306fc9ff9974f9fe861dc.svg?invert_in_darkmode" align=middle width=97.20234314999998pt height=32.51169900000002pt/>, we can write the
 formula for the optimal  <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/>:
 
-<p align="center"><img src="./tex/3e9143830b1d465b221cd6ad39adf7e2.svg?invert_in_darkmode" align=middle width=133.8212997pt height=59.93265464999999pt/></p>
+
+<p align="center"><img src="./tex/804930dfbabd86d2bfee5936df7caf89.svg?invert_in_darkmode" align=middle width=418.03393665pt height=60.845893350000004pt/></p>
+
 
 
 Now we have a formula for the optimal translation vector <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> in terms of the
@@ -391,7 +395,9 @@ inner-product](https://en.wikipedia.org/wiki/Frobenius_inner_product) of the
 unknown rotation <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> and [covariance
 matrix](https://en.wikipedia.org/wiki/Covariance_matrix) of <img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and <img src="./tex/384591906555413c452c93e493b2d4ec.svg?invert_in_darkmode" align=middle width=12.92230829999999pt height=22.55708729999998pt/>:
 
-<p align="center"><img src="./tex/fd133523cca20637d7fba062958b7acd.svg?invert_in_darkmode" align=middle width=340.00603725pt height=212.86798829999998pt/></p>
+
+<p align="center"><img src="./tex/423dd647879c621fda9ad0aedc285fdb.svg?invert_in_darkmode" align=middle width=520.55095125pt height=239.00491394999997pt/></p>
+
 
 
 Letting <img src="./tex/818e261a8ac45a73aabd65ba9bba3a1b.svg?invert_in_darkmode" align=middle width=80.91279569999999pt height=36.98604359999998pt/> we can now follow the
@@ -450,7 +456,9 @@ where we introduce the matrix <img src="./tex/7eab9509bd92f8ab739bdfe4383e7249.s
 This quadratic energy is minimized with its partial derivatives with respect to
 entries in <img src="./tex/129c5b884ff47d80be4d6261a476e9f1.svg?invert_in_darkmode" align=middle width=10.502226899999991pt height=14.611878600000017pt/> are all zero:
 
-<p align="center"><img src="./tex/80d44b4658f7428a43738d557d189958.svg?invert_in_darkmode" align=middle width=324.6340383pt height=124.93263584999998pt/></p>
+
+<p align="center"><img src="./tex/45519f9d7e16159f36db93e8bf18b945.svg?invert_in_darkmode" align=middle width=512.4540267pt height=124.93263584999998pt/></p>
+
 
 
 Solving this small <img src="./tex/6d89de257f7655e1691ec48411787787.svg?invert_in_darkmode" align=middle width=36.52961069999999pt height=21.18721440000001pt/> system gives us our translation vector <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> and the
