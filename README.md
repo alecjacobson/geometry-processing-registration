@@ -408,7 +408,7 @@ Letting <img src="./tex/818e261a8ac45a73aabd65ba9bba3a1b.svg?invert_in_darkmode"
 
 > **Question:** How can we prove that <img src="./tex/c612cd89dfcf6bcbfc2b951109b82190.svg?invert_in_darkmode" align=middle width=173.60680424999998pt height=37.80850590000001pt/>?
 >
-> **Solution:**
+> **Hint:**
 > Recall some linear algebra properties:
 > 
 >  1. Matrix multiplication (on the left) can be understood as _acting_ on each column: <img src="./tex/c95e1dcdc2327eea865503f5c81f3a3c.svg?invert_in_darkmode" align=middle width=357.27791549999995pt height=24.65753399999998pt/>,
@@ -423,32 +423,8 @@ _Any_ matrix can be written in terms of its [singular value decomposition](https
 
 <p align="center"><img src="./tex/53cafbd2848f7f70d7b4c3f03d9f6c94.svg?invert_in_darkmode" align=middle width=207.59633235pt height=32.2210416pt/></p>
 
-The Frobenius inner product will let us move the products by <img src="./tex/26eb59da31fb48cb17abfe4c6dc80375.svg?invert_in_darkmode" align=middle width=14.554737449999989pt height=22.55708729999998pt/> and <img src="./tex/35531be55273dc37ee90083451d089ff.svg?invert_in_darkmode" align=middle width=14.54330789999999pt height=22.55708729999998pt/> from
+We can use the permutation property of Frobenius inner product again to move the products by <img src="./tex/26eb59da31fb48cb17abfe4c6dc80375.svg?invert_in_darkmode" align=middle width=14.554737449999989pt height=22.55708729999998pt/> and <img src="./tex/35531be55273dc37ee90083451d089ff.svg?invert_in_darkmode" align=middle width=14.54330789999999pt height=22.55708729999998pt/> from
 the right argument to the left argument:
-
-> Recall some linear algebra properties:
-> 
->  1. Matrix multiplication (on the left) can be understood as _acting_ on each
->    column: <img src="./tex/9d3490fe55729135aecebd9021855136.svg?invert_in_darkmode" align=middle width=376.4558853pt height=24.65753399999998pt/>,
->  4. The [Kronecker product](https://en.wikipedia.org/wiki/Kronecker_product)
->    <img src="./tex/f751e30bb968304500a783f95a78637a.svg?invert_in_darkmode" align=middle width=41.55228164999998pt height=22.55708729999998pt/> of the identity matrix <img src="./tex/d8471e559d932f20f66bec32f6002e08.svg?invert_in_darkmode" align=middle width=7.168923299999991pt height=22.55708729999998pt/> of size <img src="./tex/63bb9849783d01d91403bc9a5fea12a2.svg?invert_in_darkmode" align=middle width=9.075367949999992pt height=22.831056599999986pt/> and a matrix <img src="./tex/96458543dc5abd380904d95cae6aa2bc.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> simply
->    repeats <img src="./tex/96458543dc5abd380904d95cae6aa2bc.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> along the diagonal k times. In MATLAB, `repdiag(A,k)`,
->  3. Properties 1. and 2. imply that the vectorization of a matrix product
->    <img src="./tex/9ac7623993ca6d8d5bc9b36cdde3c8ff.svg?invert_in_darkmode" align=middle width=27.10031444999999pt height=22.55708729999998pt/> can be written as the Kronecker product of the #-columns-in-<img src="./tex/12d3ebda1a212bd89197298f60cf3ce1.svg?invert_in_darkmode" align=middle width=13.652895299999988pt height=22.55708729999998pt/>
->    identity matrix and <img src="./tex/ff44d867a998c08241beb49b30148782.svg?invert_in_darkmode" align=middle width=13.44741914999999pt height=22.55708729999998pt/> times the vectorization of <img src="./tex/12d3ebda1a212bd89197298f60cf3ce1.svg?invert_in_darkmode" align=middle width=13.652895299999988pt height=22.55708729999998pt/>:
->    <img src="./tex/4f5a78bb9fa1f74a9ec8f953df314ce5.svg?invert_in_darkmode" align=middle width=187.39681455pt height=24.65753399999998pt/>,
->  4. The transpose of a Kronecker product is the Kronecker product of
->    transposes: <img src="./tex/30732bc83cf909d6edd8de25f2645089.svg?invert_in_darkmode" align=middle width=162.83046779999998pt height=27.91243950000002pt/>,
->  5. The Frobenius inner product can be written as a [dot
->    product](://en.wikipedia.org/wiki/Dot_product) of
->    [vectorized](https://en.wikipedia.org/wiki/Vectorization_(mathematics))
->    matrices: <img src="./tex/018ac9f687643eb5a4d16c0a4ab4bc06.svg?invert_in_darkmode" align=middle width=353.64434324999996pt height=27.91243950000002pt/>,
->  6. Properties 3., 4., and 5. imply that Frobenius inner product of a matrix
->    <img src="./tex/96458543dc5abd380904d95cae6aa2bc.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and the matrix product of matrix <img src="./tex/ff44d867a998c08241beb49b30148782.svg?invert_in_darkmode" align=middle width=13.44741914999999pt height=22.55708729999998pt/> and <img src="./tex/12d3ebda1a212bd89197298f60cf3ce1.svg?invert_in_darkmode" align=middle width=13.652895299999988pt height=22.55708729999998pt/> is equal to the
->    Frobenius inner product of the matrix product of the transpose of <img src="./tex/ff44d867a998c08241beb49b30148782.svg?invert_in_darkmode" align=middle width=13.44741914999999pt height=22.55708729999998pt/> and
->    <img src="./tex/96458543dc5abd380904d95cae6aa2bc.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/>  and the matrix <img src="./tex/12d3ebda1a212bd89197298f60cf3ce1.svg?invert_in_darkmode" align=middle width=13.652895299999988pt height=22.55708729999998pt/>:
->    <img src="./tex/4d9c6a6f9c0e0098e929887dddf57802.svg?invert_in_darkmode" align=middle width=702.93655245pt height=47.671235699999976pt/>.
->  
 
 <p align="center"><img src="./tex/ef54fe83b00bd0937ccf189fac5b7fa3.svg?invert_in_darkmode" align=middle width=205.4958873pt height=32.2210416pt/></p>
 
