@@ -499,7 +499,7 @@ one (and only one) of these values to <img src="./tex/e11a8cfcf953c683196d7a4867
 corner since that will multiply against the smallest singular value in <img src="./tex/9f695bec305c31490f90808856401395.svg?invert_in_darkmode" align=middle width=17.35165739999999pt height=24.657735299999988pt/> (add
 negatively affect the maximization the least):
 
-<p align="center"><img src="./tex/5139e59b19ff94e1325784ad8331b884.svg?invert_in_darkmode" align=middle width=228.15813734999998pt height=118.35736770000001pt/></p>
+<p align="center"><img src="./tex/2f2ebb3bacd43c9e9e6345a28182b942.svg?invert_in_darkmode" align=middle width=228.15813734999998pt height=69.0417981pt/></p>
 
 
 Finally, we have a formula for our optimal rotation:
@@ -529,12 +529,12 @@ Finally, we have a formula for our optimal rotation:
 > <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/>. We can immediately solve for the optimal <img src="./tex/2dbfbbc26f524676be39b3f3df0ad0bc.svg?invert_in_darkmode" align=middle width=14.08675289999999pt height=22.63846199999998pt/>---leaving <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> as an unknown---by
 > setting all derivatives with respect to unknowns in <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> to zero:
 > 
-> <p align="center"><img src="./tex/dcab22af77453479970f4cbe1cccebb9.svg?invert_in_darkmode" align=middle width=342.9363135pt height=100.32167639999999pt/></p>
+> <p align="center"><img src="./tex/9e362387214ebe1af7e853291abc1f78.svg?invert_in_darkmode" align=middle width=342.9363135pt height=74.02030679999999pt/></p>
 
 > where <img src="./tex/2ac7c6ff1056fe3737fa4395e2efb6c5.svg?invert_in_darkmode" align=middle width=48.68135084999999pt height=27.91243950000002pt/> is a vector ones. Setting the partial derivative with
 > respect to <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> of this
 > quadratic energy to zero finds the minimum:
-> <p align="center"><img src="./tex/af6ce5118c6eed8bffc8dda3057e69b9.svg?invert_in_darkmode" align=middle width=284.0789424pt height=84.66329024999999pt/></p>
+> <p align="center"><img src="./tex/b3bb46beb0a710d869c642bc8c1439c2.svg?invert_in_darkmode" align=middle width=284.0789424pt height=58.361920649999995pt/></p>
 
 > 
 > Rearranging terms above reveals that the optimal <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> is the vector aligning
@@ -543,7 +543,7 @@ Finally, we have a formula for our optimal rotation:
 > variables for the respective centroids <img src="./tex/64af2fa219a12c6bb69c25da58441a8f.svg?invert_in_darkmode" align=middle width=120.17019629999999pt height=32.51169900000002pt/> and <img src="./tex/00085c1c3a7306fc9ff9974f9fe861dc.svg?invert_in_darkmode" align=middle width=97.20234314999998pt height=32.51169900000002pt/>, we can write the
 > formula for the optimal  <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/>:
 > 
-> <p align="center"><img src="./tex/e302fc083fec12a98d8c77e5e0775939.svg?invert_in_darkmode" align=middle width=205.19999115pt height=84.59019029999999pt/></p>
+> <p align="center"><img src="./tex/f96a3a519c3060b59063229376b69f86.svg?invert_in_darkmode" align=middle width=205.19999115pt height=59.93265464999999pt/></p>
 
 > 
 > Now we have a formula for the optimal translation vector <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> in terms of the
@@ -552,7 +552,7 @@ Finally, we have a formula for our optimal rotation:
 > for all occurrences of <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> in our energy written in its original summation
 > form:
 > 
-> <p align="center"><img src="./tex/f3ebd81fcdaf7850bb51d6f375bf16c2.svg?invert_in_darkmode" align=middle width=1089.1766258999999pt height=36.50245665pt/></p>
+> <p align="center"><img src="./tex/f63f9caf84eb6506928a49a848fac060.svg?invert_in_darkmode" align=middle width=1085.5236711pt height=36.50245665pt/></p>
 
 > 
 > where we introduce <img src="./tex/0666e59c3940e6bce1da734268343091.svg?invert_in_darkmode" align=middle width=70.34807339999999pt height=27.91243950000002pt/> where the ith row contains the
@@ -567,7 +567,7 @@ Finally, we have a formula for our optimal rotation:
 > unknown rotation <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> and [covariance
 > matrix](https://en.wikipedia.org/wiki/Covariance_matrix) of <img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and <img src="./tex/384591906555413c452c93e493b2d4ec.svg?invert_in_darkmode" align=middle width=12.92230829999999pt height=22.55708729999998pt/>:
 > 
-> <p align="center"><img src="./tex/4c9d288a4bca9ccb957fbe9942e44640.svg?invert_in_darkmode" align=middle width=410.23402035pt height=339.09967244999996pt/></p>
+> <p align="center"><img src="./tex/78e20bbb1884f37158772ccc9d08d39e.svg?invert_in_darkmode" align=middle width=410.23402035pt height=235.53802799999997pt/></p>
 
 > 
 > Letting <img src="./tex/818e261a8ac45a73aabd65ba9bba3a1b.svg?invert_in_darkmode" align=middle width=80.91279569999999pt height=36.98604359999998pt/> we can now follow the
