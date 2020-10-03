@@ -498,11 +498,32 @@ By defining <img src="./tex/c1d4dd9f8ef43f6ae2f3d7c1d37ace0e.svg?invert_in_darkm
 
 <p align="center"><img src="./tex/fa51cafb4c1a3daf9842621a426e1962.svg?invert_in_darkmode" align=middle width=212.00328105pt height=59.1786591pt/></p>
 
+If we apply our linearization of <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> to the **point-to-plane** distance
+linearization of the matching energy, our minimization is:
 
-### Approximate point-to-point minimizer
+<p align="center"><img src="./tex/a210a372dddce4251d005af80bfe1a79.svg?invert_in_darkmode" align=middle width=515.01854415pt height=62.53027769999999pt/></p>
 
-If we apply our linearization of <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> to the **point-to-point** distance
-linearization of the matching energy, our minimization becomes:
+
+Let's gather a vector of unknowns: <img src="./tex/fe8a5e940c33f14b470d92307ba440fb.svg?invert_in_darkmode" align=middle width=118.80099329999999pt height=27.91243950000002pt/>. Then we can write our problem in summation form
+as:
+
+<p align="center"><img src="./tex/a5c0b6da39a1b42df1dfcca983aece61.svg?invert_in_darkmode" align=middle width=569.58322245pt height=62.53027769999999pt/></p>
+
+This can be written compactly in matrix form as:
+
+<p align="center"><img src="./tex/b1364780f671327d7c537546f385b18b.svg?invert_in_darkmode" align=middle width=777.2373147pt height=111.8458473pt/></p>
+
+
+where <img src="./tex/d215374485dd1f9e71eba3fa2f247afe.svg?invert_in_darkmode" align=middle width=19.44535064999999pt height=22.55708729999998pt/> is the ith column from the matrix of normals <img src="./tex/5e65e079e680711d68cb1f973f9b02d9.svg?invert_in_darkmode" align=middle width=70.85036639999998pt height=27.91243950000002pt/>,
+<img src="./tex/13f548e5efa74d654479d62c25ff2fd8.svg?invert_in_darkmode" align=middle width=53.16219644999998pt height=24.65753399999998pt/> [creates a diagonal
+matrix](https://en.wikipedia.org/wiki/Diagonal_matrix#Matrix_operations) from a
+vector, and <img src="./tex/7eab9509bd92f8ab739bdfe4383e7249.svg?invert_in_darkmode" align=middle width=76.90062764999999pt height=27.91243950000002pt/> is the same as above.
+
+This energy is quadratic in <img src="./tex/129c5b884ff47d80be4d6261a476e9f1.svg?invert_in_darkmode" align=middle width=10.502226899999991pt height=14.611878600000017pt/> and can be solve by setting all partial
+derivatives with respect to <img src="./tex/129c5b884ff47d80be4d6261a476e9f1.svg?invert_in_darkmode" align=middle width=10.502226899999991pt height=14.611878600000017pt/> to zero.
+
+
+------------------------
 
 <p align="center"><img src="./tex/fbd893d3494efa498ebd7d964a94a92d.svg?invert_in_darkmode" align=middle width=412.36099079999997pt height=62.53032225pt/></p>
 
@@ -713,33 +734,6 @@ Finally, we have a formula for our optimal rotation:
 > steps above using [singular value
 > decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) to
 > find the optimal <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/>.
-
-### Approximate point-to-plane minimizer
-
-If we apply our linearization of <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> to the **point-to-plane** distance
-linearization of the matching energy, our minimization is:
-
-<p align="center"><img src="./tex/a210a372dddce4251d005af80bfe1a79.svg?invert_in_darkmode" align=middle width=515.01854415pt height=62.53027769999999pt/></p>
-
-
-We can follow similar steps as above. Let's gather a vector of unknowns: <img src="./tex/62521b121b6bcb4b180427b4424827f3.svg?invert_in_darkmode" align=middle width=146.7064203pt height=27.91243950000002pt/>. Then we can write our problem in summation form
-as:
-
-<p align="center"><img src="./tex/a5c0b6da39a1b42df1dfcca983aece61.svg?invert_in_darkmode" align=middle width=569.58322245pt height=62.53027769999999pt/></p>
-
-
-This can be written compactly in matrix form as:
-
-<p align="center"><img src="./tex/3d04698e460f14851ead5bf5b511e4af.svg?invert_in_darkmode" align=middle width=529.68035175pt height=62.53027769999999pt/></p>
-
-
-where <img src="./tex/d215374485dd1f9e71eba3fa2f247afe.svg?invert_in_darkmode" align=middle width=19.44535064999999pt height=22.55708729999998pt/> is the ith column from the matrix of normals <img src="./tex/5e65e079e680711d68cb1f973f9b02d9.svg?invert_in_darkmode" align=middle width=70.85036639999998pt height=27.91243950000002pt/>,
-<img src="./tex/13f548e5efa74d654479d62c25ff2fd8.svg?invert_in_darkmode" align=middle width=53.16219644999998pt height=24.65753399999998pt/> [creates a diagonal
-matrix](https://en.wikipedia.org/wiki/Diagonal_matrix#Matrix_operations) from a
-vector, and <img src="./tex/7eab9509bd92f8ab739bdfe4383e7249.svg?invert_in_darkmode" align=middle width=76.90062764999999pt height=27.91243950000002pt/> is the same as above.
-
-This energy is quadratic in <img src="./tex/129c5b884ff47d80be4d6261a476e9f1.svg?invert_in_darkmode" align=middle width=10.502226899999991pt height=14.611878600000017pt/> and can be solve by setting all partial
-derivatives with respect to <img src="./tex/129c5b884ff47d80be4d6261a476e9f1.svg?invert_in_darkmode" align=middle width=10.502226899999991pt height=14.611878600000017pt/> to zero.
 
 > ### Closed-form point-to-planer minimizer
 >
