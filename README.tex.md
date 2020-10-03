@@ -757,7 +757,7 @@ $\hat{\mathbf{w}} = \mathbf{a}/\theta$ and then update our rotation via the <a
 href=#aa>_**axis-angle to matrix formula**_ above</a>. Because we used a
 linearization of the rotation constraint, we cannot assume that we have
 _successfully_ found the best rigid transformation. To converge on an optimal
-value, must set $\mathbf{x}_i \leftarrow \mathbf{R} \mathbf{x}_i + \mathbf{t}$ and repeat
+value, we must set $\mathbf{x}_i \leftarrow \mathbf{R} \mathbf{x}_i + \mathbf{t}$ and repeat
 this process (usually 5 times or so is sufficient).
 
 ## Uniform random sampling of a triangle mesh

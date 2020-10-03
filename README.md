@@ -541,7 +541,7 @@ axis and angle of rotation from <img src="./tex/41f28962986ecdd9c1dc2af8b83fef84
 href=#aa>_**axis-angle to matrix formula**_ above</a>. Because we used a
 linearization of the rotation constraint, we cannot assume that we have
 _successfully_ found the best rigid transformation. To converge on an optimal
-value, must set <img src="./tex/a9f44fd208f2e3cf5ffb5b068f25fbf2.svg?invert_in_darkmode" align=middle width=98.0911833pt height=22.55708729999998pt/> and repeat
+value, we must set <img src="./tex/a9f44fd208f2e3cf5ffb5b068f25fbf2.svg?invert_in_darkmode" align=middle width=98.0911833pt height=22.55708729999998pt/> and repeat
 this process (usually 5 times or so is sufficient).
 
 ## Uniform random sampling of a triangle mesh
