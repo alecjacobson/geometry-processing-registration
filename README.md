@@ -341,6 +341,11 @@ rather than the energy term.
 
 ### Closed-form solution for point-to-point rigid matching
 
+> In an effort to provide an alternative from "Least-Squares Rigid Motion Using
+> SVD" [Sorkine 2009], this derivation purposefully _avoids_ the [trace
+> operator](https://en.wikipedia.org/wiki/Trace_(linear_algebra)) and its
+> various nice properties.
+
 The point-to-point (gradient descent) rigid matching problem solves:
 
 <p align="center"><img src="./tex/c7b374c6d51338a4900c611c8c44f5f8.svg?invert_in_darkmode" align=middle width=234.43698465pt height=47.93392394999999pt/></p>
@@ -387,22 +392,30 @@ _relative position_ of the ith point to the centroid <img src="./tex/c28a7e764fb
 
 Now we have the canonical form of the [orthogonal procrustes problem](https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem). To find the optimal rotation matrix <img src="./tex/7418159b714ed42bd664b73099a6311f.svg?invert_in_darkmode" align=middle width=20.913202199999986pt height=22.63846199999998pt/>, using the [associativity property](https://en.wikipedia.org/wiki/Associative_property) of the Frobenius norm, we will massage the terms in the _minimization_ until we have a _maximization_ problem involving the [Frobenius inner-product](https://en.wikipedia.org/wiki/Frobenius_inner_product) of the unknown rotation <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> and [covariance matrix](https://en.wikipedia.org/wiki/Covariance_matrix) of <img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and <img src="./tex/384591906555413c452c93e493b2d4ec.svg?invert_in_darkmode" align=middle width=12.92230829999999pt height=22.55708729999998pt/>:
 
-<p align="center"><img src="./tex/2e4ffc0129ea6e24a62ef1da4250464d.svg?invert_in_darkmode" align=middle width=574.112385pt height=154.96835804999998pt/></p>
+<p align="center"><img src="./tex/94704e9f0cf2dff6063bf8db051a7806.svg?invert_in_darkmode" align=middle width=579.66035655pt height=154.96835804999998pt/></p>
 
 where <img src="./tex/98a03379352cf0fa6a6609d8d3ac6c5c.svg?invert_in_darkmode" align=middle width=57.937128149999985pt height=24.65753399999998pt/> is the [Frobenius inner product](https://en.wikipedia.org/wiki/Frobenius_inner_product) of  <img src="./tex/96458543dc5abd380904d95cae6aa2bc.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and <img src="./tex/ff44d867a998c08241beb49b30148782.svg?invert_in_darkmode" align=middle width=13.44741914999999pt height=22.55708729999998pt/> (i.e., the sum of all per-element products. In MATLAB syntax: `sum(sum(A.*B))`).  This can be further reduced:
+
+<p align="center"><img src="./tex/4f1365bedd62467aadecc3260492761b.svg?invert_in_darkmode" align=middle width=520.55095125pt height=62.48408265pt/></p>
 
 > **Question:** what is <img src="./tex/aa2e5468bf5994b9e12739cce97eec19.svg?invert_in_darkmode" align=middle width=39.451928999999986pt height=27.91243950000002pt/>?
 >
 > **Hint:** 👁️
 
-<p align="center"><img src="./tex/bd308f433cb38fb4ca6fdac2127c697c.svg?invert_in_darkmode" align=middle width=520.55095125pt height=146.52063855pt/></p>
-
+<p align="center"><img src="./tex/b32326e1308d474ab8ff82c1186b2148.svg?invert_in_darkmode" align=middle width=448.00195605pt height=75.81739605pt/></p>
 Letting <img src="./tex/818e261a8ac45a73aabd65ba9bba3a1b.svg?invert_in_darkmode" align=middle width=80.91279569999999pt height=36.98604359999998pt/>. We can understand this problem as _projecting_ the [covariance matrix](https://en.wikipedia.org/wiki/Covariance_matrix)  <img src="./tex/e6bb22a58889cb2e58f4fce2f3a80e02.svg?invert_in_darkmode" align=middle width=17.94511949999999pt height=22.55708729999998pt/> to the nearest rotation matrix <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/>.
 
-> In an effort to provide an alternative from "Least-Squares Rigid Motion Using
-> SVD" [Sorkine 2009], this derivation purposefully _avoids_ the [trace
-> operator](https://en.wikipedia.org/wiki/Trace_(linear_algebra)) and its
-> various nice properties.
+> **Question:** How can we prove that <img src="./tex/c612cd89dfcf6bcbfc2b951109b82190.svg?invert_in_darkmode" align=middle width=173.60680424999998pt height=37.80850590000001pt/>?
+> **Solution:**
+> Recall some linear algebra properties:
+> 
+>  1. Matrix multiplication (on the left) can be understood as _acting_ on each column: <img src="./tex/c95e1dcdc2327eea865503f5c81f3a3c.svg?invert_in_darkmode" align=middle width=357.27791549999995pt height=24.65753399999998pt/>,
+>  2. The [Kronecker product](https://en.wikipedia.org/wiki/Kronecker_product)
+    $\mathbf{I} \otimes  \mathbf{A}$ of the identity matrix $\mathbf{I}$ of size $k$ and a matrix $\mathbf{A}$ simply repeats $\mathbf{A}$ along the diagonal k times. In MATLAB, `repdiag(A,k)`,
+>  3. Properties 1. and 2. imply that the vectorization of a matrix product <img src="./tex/9ac7623993ca6d8d5bc9b36cdde3c8ff.svg?invert_in_darkmode" align=middle width=27.10031444999999pt height=22.55708729999998pt/> can be written as the Kronecker product of the #-columns-in-<img src="./tex/12d3ebda1a212bd89197298f60cf3ce1.svg?invert_in_darkmode" align=middle width=13.652895299999988pt height=22.55708729999998pt/> identity matrix and <img src="./tex/ff44d867a998c08241beb49b30148782.svg?invert_in_darkmode" align=middle width=13.44741914999999pt height=22.55708729999998pt/> times the vectorization of <img src="./tex/12d3ebda1a212bd89197298f60cf3ce1.svg?invert_in_darkmode" align=middle width=13.652895299999988pt height=22.55708729999998pt/>: <img src="./tex/4f5a78bb9fa1f74a9ec8f953df314ce5.svg?invert_in_darkmode" align=middle width=187.39681455pt height=24.65753399999998pt/>,
+>  4. The transpose of a Kronecker product is the Kronecker product of transposes: <img src="./tex/30732bc83cf909d6edd8de25f2645089.svg?invert_in_darkmode" align=middle width=162.83046779999998pt height=27.91243950000002pt/>,
+>  5. The Frobenius inner product can be written as a [dot product](://en.wikipedia.org/wiki/Dot_product) of [vectorized](https://en.wikipedia.org/wiki/Vectorization_(mathematics)) matrices: <img src="./tex/b8dd4a623f73ec35bda0e7f7a747ccc1.svg?invert_in_darkmode" align=middle width=340.8589107pt height=27.91243950000002pt/>,
+>  6. Properties 3., 4., and 5. imply that Frobenius inner product of a matrix <img src="./tex/96458543dc5abd380904d95cae6aa2bc.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and the matrix product of matrix <img src="./tex/ff44d867a998c08241beb49b30148782.svg?invert_in_darkmode" align=middle width=13.44741914999999pt height=22.55708729999998pt/> and <img src="./tex/12d3ebda1a212bd89197298f60cf3ce1.svg?invert_in_darkmode" align=middle width=13.652895299999988pt height=22.55708729999998pt/> is equal to the Frobenius inner product of the matrix product of the transpose of <img src="./tex/ff44d867a998c08241beb49b30148782.svg?invert_in_darkmode" align=middle width=13.44741914999999pt height=22.55708729999998pt/> and <img src="./tex/96458543dc5abd380904d95cae6aa2bc.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/>  and the matrix <img src="./tex/12d3ebda1a212bd89197298f60cf3ce1.svg?invert_in_darkmode" align=middle width=13.652895299999988pt height=22.55708729999998pt/>: <img src="./tex/ca21356486514e18f397d4aa065a0ab2.svg?invert_in_darkmode" align=middle width=700.2741536999999pt height=47.671235699999976pt/>.
 
 _Any_ matrix can be written in terms of its [singular value decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition). Let's do this for our covariance matrix: <img src="./tex/6b131ebac8b7c63ef31cb6925661ad5a.svg?invert_in_darkmode" align=middle width=89.21769614999998pt height=27.91243950000002pt/>, where <img src="./tex/9b2a1625a0911294931a3f1c4aeea9ec.svg?invert_in_darkmode" align=middle width=91.74635744999999pt height=26.76175259999998pt/> are orthonormal matrices and <img src="./tex/ad4f8ffa0b0d4f9b5cd0e611986d5870.svg?invert_in_darkmode" align=middle width=65.32531334999999pt height=26.76175259999998pt/> is a non-negative diagonal matrix:
 
