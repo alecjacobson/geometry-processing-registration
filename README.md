@@ -692,12 +692,14 @@ You may not use the following libigl functions:
 - `igl::AABB`
 - `igl::fit_rotations`
 - `igl::hausdorff`
+- `igl::iterative_closest_point`
 - `igl::point_mesh_squared_distance`
 - `igl::point_simplex_squared_distance`
 - `igl::polar_dec`
 - `igl::polar_svd3x3`
 - `igl::polar_svd`
 - `igl::random_points_on_mesh`
+- `igl::rigid_alignment`
 
 ### Whitelist
 
