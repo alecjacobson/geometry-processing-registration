@@ -345,6 +345,21 @@ The point-to-point (gradient descent) rigid matching problem solves:
 
 <p align="center"><img src="./tex/c7b374c6d51338a4900c611c8c44f5f8.svg?invert_in_darkmode" align=middle width=234.43698465pt height=47.93392394999999pt/></p>
 
+This is a variant of what's known as a [Procrustes
+problem](https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem), named
+after a [mythical psychopath](https://en.wikipedia.org/wiki/Procrustes) who
+would kidnap people and force them to fit in his bed by stretching them or
+cutting off their legs. In our case, we are forcing <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> to be perfectly
+orthogonal (no "longer", no "shorter).
+
+#### Substituting out the translation terms
+
+This energy is _quadratic_ in <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> and there are no other constraints on
+<img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/>. We can immediately solve for the optimal <img src="./tex/2dbfbbc26f524676be39b3f3df0ad0bc.svg?invert_in_darkmode" align=middle width=14.08675289999999pt height=22.63846199999998pt/>---leaving <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> as an unknown---by
+setting all derivatives with respect to unknowns in <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> to zero:
+
+<p align="center"><img src="./tex/82ed179844110f250d8b27caab5ea3a0.svg?invert_in_darkmode" align=middle width=258.00511769999997pt height=74.02030679999999pt/></p>
+
 
 ### Iterative linearization for point-to-plane rigid matching
 
