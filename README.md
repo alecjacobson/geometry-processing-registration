@@ -219,8 +219,8 @@ descent](https://en.wikipedia.org/wiki/Gradient_descent) and the
 minimize f(z)^{2}
   z_{0} ← initial guess
   repeat until convergence
-    f_{0} ←  linearize f(z) around z_{0}
-    z_{0} ←  minimize f_{0}(z)^{2}
+    f_{0} ← linearize f(z) around z_{0}
+    z_{0} ← minimize f_{0}(z)^{2}
 ```
 
 Since our <img src="./tex/47b0192f8f0819d64bce3612c46d15ea.svg?invert_in_darkmode" align=middle width=7.56844769999999pt height=22.831056599999986pt/> is a geometric function, we can derive its linearizations
@@ -228,7 +228,7 @@ _geometrically_.
 
 ### Constant function approximation
 
-If we make the convenient---however unrealistic---assumption that in the
+If we make the convenient–however unrealistic–assumption that in the
 neighborhood of the closest-point projection <img src="./tex/5ea090d44e44319896420959310f0012.svg?invert_in_darkmode" align=middle width=50.49552749999999pt height=24.65753399999998pt/> of the current guess
 <img src="./tex/068e9f4c48765b7e6082c36543e13d10.svg?invert_in_darkmode" align=middle width=14.95432949999999pt height=14.611878600000017pt/> the surface <img src="./tex/91aac9730317276af725abd8cef04ca9.svg?invert_in_darkmode" align=middle width=13.19638649999999pt height=22.465723500000017pt/> is simply the point <img src="./tex/5ea090d44e44319896420959310f0012.svg?invert_in_darkmode" align=middle width=50.49552749999999pt height=24.65753399999998pt/> (perhaps imagine that <img src="./tex/91aac9730317276af725abd8cef04ca9.svg?invert_in_darkmode" align=middle width=13.19638649999999pt height=22.465723500000017pt/>
 is makes a sharp needle-like point at <img src="./tex/5ea090d44e44319896420959310f0012.svg?invert_in_darkmode" align=middle width=50.49552749999999pt height=24.65753399999998pt/> or that <img src="./tex/91aac9730317276af725abd8cef04ca9.svg?invert_in_darkmode" align=middle width=13.19638649999999pt height=22.465723500000017pt/> is very far away
@@ -241,10 +241,10 @@ guess <img src="./tex/068e9f4c48765b7e6082c36543e13d10.svg?invert_in_darkmode" a
 In effect, we are assuming that the surface <img src="./tex/91aac9730317276af725abd8cef04ca9.svg?invert_in_darkmode" align=middle width=13.19638649999999pt height=22.465723500000017pt/> is _constant_ function of its
 parameterization: <img src="./tex/4cb0776dc727de5904c46747e53cc2d8.svg?invert_in_darkmode" align=middle width=120.71227409999999pt height=24.65753399999998pt/>.
 
-Minimizing <img src="./tex/ef03e3adb9f682700bd731e4c2ebeb55.svg?invert_in_darkmode" align=middle width=25.03690529999999pt height=22.465723500000017pt/> iteratively using this linearization (or
-rather _constantization_) of <img src="./tex/47b0192f8f0819d64bce3612c46d15ea.svg?invert_in_darkmode" align=middle width=7.56844769999999pt height=22.831056599999986pt/> is equivalent to the [gradient
-descent](https://en.wikipedia.org/wiki/Gradient_descent). We have simply
-derived our gradients geometrically.
+Minimizing <img src="./tex/ef03e3adb9f682700bd731e4c2ebeb55.svg?invert_in_darkmode" align=middle width=25.03690529999999pt height=22.465723500000017pt/> iteratively using this linearization of
+<img src="./tex/47b0192f8f0819d64bce3612c46d15ea.svg?invert_in_darkmode" align=middle width=7.56844769999999pt height=22.831056599999986pt/> is equivalent to [gradient
+descent](https://en.wikipedia.org/wiki/Gradient_descent). We have simply derived
+our gradients geometrically.
 
 ### Linear function approximation
 
@@ -308,7 +308,7 @@ point on <img src="./tex/91aac9730317276af725abd8cef04ca9.svg?invert_in_darkmode
 point <img src="./tex/b0ea07dc5c00127344a1cad40467b8de.svg?invert_in_darkmode" align=middle width=9.97711604999999pt height=14.611878600000017pt/> in <img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and then minimizing the _linearized_ energy to update the
 rotation <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> and translation <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/>. 
 
-If <img src="./tex/264301219ded214ecf2ec9d61203a03c.svg?invert_in_darkmode" align=middle width=21.263777699999988pt height=22.465723500000017pt/> and <img src="./tex/30e02450834ec46ab5f2f42b4262acc6.svg?invert_in_darkmode" align=middle width=22.245524399999987pt height=22.465723500000017pt/> are the vertices and faces of a triangle mesh surface <img src="./tex/cbfb1b2a33b28eab8a3e59464768e810.svg?invert_in_darkmode" align=middle width=14.908688849999992pt height=22.465723500000017pt/>
+If `V_X` and `F_X` are the vertices and faces of a triangle mesh surface <img src="./tex/cbfb1b2a33b28eab8a3e59464768e810.svg?invert_in_darkmode" align=middle width=14.908688849999992pt height=22.465723500000017pt/>
 (and correspondingly for <img src="./tex/91aac9730317276af725abd8cef04ca9.svg?invert_in_darkmode" align=middle width=13.19638649999999pt height=22.465723500000017pt/>), then we can summarize a generic ICP algorithm in
 pseudocode:
 
@@ -329,11 +329,11 @@ translation vector <img src="./tex/4835152d95e6468a4f5aaf85cd0e3fed.svg?invert_i
 on the target mesh. We have two choices for _linearizing_ our matching energy:
 point-to-point (gradient descent) and point-to-plane (Gauss-Newton).
 
-![ICP using the point-to-point matching energy linearization is slow to
-converge.](images/max-point-to-point.gif)
+_**ICP using the point-to-point matching energy linearization is slow to converge.**_
+![](images/max-point-to-point.gif)
 
-![ICP using the point-to-plane matching energy linearization is
-faster.](images/max-point-to-plane.gif)
+_**ICP using the point-to-plane matching energy linearization is faster.**_
+![](images/max-point-to-plane.gif)
 
 In either case, this is still a non-linear optimization problem. This time due
 to the [constraints](https://en.wikipedia.org/wiki/Constrained_optimization)
