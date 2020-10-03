@@ -345,10 +345,10 @@ Any rotation <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_dark
 
 If <img src="./tex/41872dbb4f4a0b13684d067aebc62846.svg?invert_in_darkmode" align=middle width=84.23493704999998pt height=24.65753399999998pt/>, we know that a rotation by <img src="./tex/27e556cf3caa0673ac49a8f0de3c73ca.svg?invert_in_darkmode" align=middle width=8.17352744999999pt height=22.831056599999986pt/> can be written as:
 
-<p align="center"><img src="./tex/c882a22c427f004d1e8bd605fa8fcb36.svg?invert_in_darkmode" align=middle width=190.0490625pt height=62.822210549999994pt/></p>
+<p align="center"><img src="./tex/db60da1aeacc11d5cb8c2d8ed2486a28.svg?invert_in_darkmode" align=middle width=214.36958565pt height=59.1786591pt/></p>
 
 For a general, rotation axis <img src="./tex/522c69add21191fefe7da3f76ad92547.svg?invert_in_darkmode" align=middle width=13.91546639999999pt height=23.28771720000001pt/>, we can write a generalized formula:
-<p align="center"><img src="./tex/7143ebeae5dbfb7b54a3c37703770fe8.svg?invert_in_darkmode" align=middle width=131.2353108pt height=62.822210549999994pt/></p>
+<p align="center"><img src="./tex/fe0d2f8ecc438fa22bc822b0909e166d.svg?invert_in_darkmode" align=middle width=155.55583395pt height=59.1786591pt/></p>
 
 
 We can _linearize_ this constraint, by assuming that the rotation in <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> will be very small. Any 3D rotation can be written 
