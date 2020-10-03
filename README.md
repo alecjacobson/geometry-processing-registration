@@ -434,7 +434,7 @@ Now, <img src="./tex/35531be55273dc37ee90083451d089ff.svg?invert_in_darkmode" al
 them against a rotation matrix <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> does not change its orthonormality. We can
 pull them out of the maximization if we account for the reflection they _might_
 incur: introduce <img src="./tex/84f085a8ee01510052b15faab48ecc9b.svg?invert_in_darkmode" align=middle width=139.41221085pt height=27.6567522pt/> with <img src="./tex/bc882f306e6b364898c14e65fcffdc53.svg?invert_in_darkmode" align=middle width=124.30338194999999pt height=27.91243950000002pt/>.
-This implies that the optimal rotation for the original probklem is recovered
+This implies that the optimal rotation for the original problem is recovered
 via <img src="./tex/923dfd11bdb9a8940133a2de8cf58616.svg?invert_in_darkmode" align=middle width=102.45405884999998pt height=27.91243950000002pt/>.  When we move the <img src="./tex/a3e6efe097bf3b70a46b0e3e3611d182.svg?invert_in_darkmode" align=middle width=53.47052864999999pt height=14.15524440000002pt/> inside, we now
 look for an orthonormal matrix <img src="./tex/bae5a06f813149fce8f3c8a39745d442.svg?invert_in_darkmode" align=middle width=65.96338484999998pt height=24.65753399999998pt/> that is a reflection (if
 <img src="./tex/d7696a03702713fc787fb978fa395ce5.svg?invert_in_darkmode" align=middle width=108.68696025pt height=27.91243950000002pt/>) or a rotation (if <img src="./tex/e535fddca4193bc96820d56b65569e96.svg?invert_in_darkmode" align=middle width=95.90152769999999pt height=27.91243950000002pt/>):
@@ -455,7 +455,7 @@ one (and only one) of these values to <img src="./tex/e11a8cfcf953c683196d7a4867
 corner since that will multiply against the smallest singular value in <img src="./tex/9f695bec305c31490f90808856401395.svg?invert_in_darkmode" align=middle width=17.35165739999999pt height=24.657735299999988pt/> (add
 negatively affect the maximization the least):
 
-<p align="center"><img src="./tex/2f2ebb3bacd43c9e9e6345a28182b942.svg?invert_in_darkmode" align=middle width=228.15813734999998pt height=69.0417981pt/></p>
+<p align="center"><img src="./tex/5873bfb7a2c2b810e5245e49532420f8.svg?invert_in_darkmode" align=middle width=178.34458289999998pt height=59.1786591pt/></p>
 
 
 Finally, we have a formula for our optimal rotation:
