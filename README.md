@@ -398,12 +398,114 @@ matrix](https://en.wikipedia.org/wiki/Covariance_matrix) of <img src="./tex/d05b
 
 <p align="center"><img src="./tex/423dd647879c621fda9ad0aedc285fdb.svg?invert_in_darkmode" align=middle width=520.55095125pt height=239.00491394999997pt/></p>
 
+Letting <img src="./tex/818e261a8ac45a73aabd65ba9bba3a1b.svg?invert_in_darkmode" align=middle width=80.91279569999999pt height=36.98604359999998pt/>. We can understand this problem as _projecting_ the matrix <img src="./tex/e6bb22a58889cb2e58f4fce2f3a80e02.svg?invert_in_darkmode" align=middle width=17.94511949999999pt height=22.55708729999998pt/> to the nearest rotation matrix <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/>.
+
+#### Closest Rotation Matrix
+
+> In an effort to provide an alternative from "Least-Squares Rigid Motion Using
+> SVD" [Sorkine 2009], this derivation purposefully _avoids_ the [trace
+> operator](https://en.wikipedia.org/wiki/Trace_(linear_algebra)) and its
+> various nice properties.
+
+If <img src="./tex/eec04193aead51ded846dbae8c3b4953.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/>, <img src="./tex/86ef8ef82733de9ba07432e88dd9757e.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/> and <img src="./tex/86ef8ef82733de9ba07432e88dd9757e.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/> are all small, then it may be safe to _interpret_ these
+values as rotation angles about the <img src="./tex/332cc365a4987aacce0ead01b8bdcc0b.svg?invert_in_darkmode" align=middle width=9.39498779999999pt height=14.15524440000002pt/>, <img src="./tex/deceeaf6940a8c7a5a02373728002b0f.svg?invert_in_darkmode" align=middle width=8.649225749999989pt height=14.15524440000002pt/>, and <img src="./tex/f93ce33e511096ed626b4719d50f17d2.svg?invert_in_darkmode" align=middle width=8.367621899999993pt height=14.15524440000002pt/> axes respectively.
+
+In general, it is better to find the closest rotation matrix to <img src="./tex/e6bb22a58889cb2e58f4fce2f3a80e02.svg?invert_in_darkmode" align=middle width=17.94511949999999pt height=22.55708729999998pt/>. In other
+words, we'd like to solve the small optimization problem:
+
+<p align="center"><img src="./tex/842739ed55ed0979a3a9c4178899b2d7.svg?invert_in_darkmode" align=middle width=189.06322544999998pt height=33.1233078pt/></p>
+
+where <img src="./tex/1f2a0ec2ecb40db723721c1512f99c66.svg?invert_in_darkmode" align=middle width=40.83682679999999pt height=26.76175259999998pt/> computes the squared [Frobenius
+norm](https://en.wikipedia.org/wiki/Matrix_norm#Frobenius_norm) of the matrix
+<img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> (i.e., the sum of all squared element values. In MATLAB syntax:
+`sum(sum(A.^2))`). We can expand the norm by taking advantage of the [associativity
+property](https://en.wikipedia.org/wiki/Associative_property) of the Frobenius
+norm:
+<p align="center"><img src="./tex/5b23fe2de73cdb5d0b9da4b94718794d.svg?invert_in_darkmode" align=middle width=310.62239999999997pt height=33.1233078pt/></p>
+
+where <img src="./tex/98a03379352cf0fa6a6609d8d3ac6c5c.svg?invert_in_darkmode" align=middle width=57.937128149999985pt height=24.65753399999998pt/> is the
+[Frobenius inner
+product](https://en.wikipedia.org/wiki/Frobenius_inner_product) of  <img src="./tex/96458543dc5abd380904d95cae6aa2bc.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and
+<img src="./tex/ff44d867a998c08241beb49b30148782.svg?invert_in_darkmode" align=middle width=13.44741914999999pt height=22.55708729999998pt/> (i.e., the sum of all per-element products. In MATLAB syntax:
+`sum(sum(A.*B))`). We can drop the Frobenius norm
+of <img src="./tex/e6bb22a58889cb2e58f4fce2f3a80e02.svg?invert_in_darkmode" align=middle width=17.94511949999999pt height=22.55708729999998pt/> term (<img src="./tex/3ec5996c9e885d6d32796997cee23987.svg?invert_in_darkmode" align=middle width=44.48976344999999pt height=31.360807499999982pt/>) because it is constant with respect to the unknown rotation
+matrix <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/>. We can also drop the Frobenius norm of <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> term because it
+must equal one (<img src="./tex/2fae87c07b255f956ea01283ff2c2109.svg?invert_in_darkmode" align=middle width=71.68138889999999pt height=31.360807499999982pt/>) since <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> is required to be a orthonormal matrix
+(<img src="./tex/9ef0dc2c2b529f2bad33e83fb198c711.svg?invert_in_darkmode" align=middle width=79.2965943pt height=24.65753399999998pt/>). We can drop the factor of <img src="./tex/76c5792347bb90ef71cfbace628572cf.svg?invert_in_darkmode" align=middle width=8.219209349999991pt height=21.18721440000001pt/> and flip the minus sign to
+change our _minimization_ problem into a _maximization_ problem:
+<p align="center"><img src="./tex/d04408a5bc2f9636cdaa41bbea578993.svg?invert_in_darkmode" align=middle width=164.4971691pt height=29.771669399999997pt/></p>
 
 
-Letting <img src="./tex/818e261a8ac45a73aabd65ba9bba3a1b.svg?invert_in_darkmode" align=middle width=80.91279569999999pt height=36.98604359999998pt/> we can now follow the
-steps above using [singular value
-decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) to
-find the optimal <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/>.
+We now take advantage of the [singular value
+decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) of
+<img src="./tex/6b131ebac8b7c63ef31cb6925661ad5a.svg?invert_in_darkmode" align=middle width=89.21769614999998pt height=27.91243950000002pt/>, where <img src="./tex/9b2a1625a0911294931a3f1c4aeea9ec.svg?invert_in_darkmode" align=middle width=91.74635744999999pt height=26.76175259999998pt/> are orthonormal matrices
+and <img src="./tex/ad4f8ffa0b0d4f9b5cd0e611986d5870.svg?invert_in_darkmode" align=middle width=65.32531334999999pt height=26.76175259999998pt/> is a non-negative diagonal matrix:
+
+<p align="center"><img src="./tex/53cafbd2848f7f70d7b4c3f03d9f6c94.svg?invert_in_darkmode" align=middle width=207.59633235pt height=32.2210416pt/></p>
+
+
+The Frobenius inner product will let us move the products by <img src="./tex/26eb59da31fb48cb17abfe4c6dc80375.svg?invert_in_darkmode" align=middle width=14.554737449999989pt height=22.55708729999998pt/> and <img src="./tex/35531be55273dc37ee90083451d089ff.svg?invert_in_darkmode" align=middle width=14.54330789999999pt height=22.55708729999998pt/> from
+the right argument to the left argument:
+
+> Recall some linear algebra properties:
+> 
+>  1. Matrix multiplication (on the left) can be understood as _acting_ on each
+>    column: <img src="./tex/9d3490fe55729135aecebd9021855136.svg?invert_in_darkmode" align=middle width=376.4558853pt height=24.65753399999998pt/>,
+>  4. The [Kronecker product](https://en.wikipedia.org/wiki/Kronecker_product)
+>    <img src="./tex/f751e30bb968304500a783f95a78637a.svg?invert_in_darkmode" align=middle width=41.55228164999998pt height=22.55708729999998pt/> of the identity matrix <img src="./tex/d8471e559d932f20f66bec32f6002e08.svg?invert_in_darkmode" align=middle width=7.168923299999991pt height=22.55708729999998pt/> of size <img src="./tex/63bb9849783d01d91403bc9a5fea12a2.svg?invert_in_darkmode" align=middle width=9.075367949999992pt height=22.831056599999986pt/> and a matrix <img src="./tex/96458543dc5abd380904d95cae6aa2bc.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> simply
+>    repeats <img src="./tex/96458543dc5abd380904d95cae6aa2bc.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> along the diagonal k times. In MATLAB, `repdiag(A,k)`,
+>  3. Properties 1. and 2. imply that the vectorization of a matrix product
+>    <img src="./tex/9ac7623993ca6d8d5bc9b36cdde3c8ff.svg?invert_in_darkmode" align=middle width=27.10031444999999pt height=22.55708729999998pt/> can be written as the Kronecker product of the #-columns-in-<img src="./tex/12d3ebda1a212bd89197298f60cf3ce1.svg?invert_in_darkmode" align=middle width=13.652895299999988pt height=22.55708729999998pt/>
+>    identity matrix and <img src="./tex/ff44d867a998c08241beb49b30148782.svg?invert_in_darkmode" align=middle width=13.44741914999999pt height=22.55708729999998pt/> times the vectorization of <img src="./tex/12d3ebda1a212bd89197298f60cf3ce1.svg?invert_in_darkmode" align=middle width=13.652895299999988pt height=22.55708729999998pt/>:
+>    <img src="./tex/4f5a78bb9fa1f74a9ec8f953df314ce5.svg?invert_in_darkmode" align=middle width=187.39681455pt height=24.65753399999998pt/>,
+>  4. The transpose of a Kronecker product is the Kronecker product of
+>    transposes: <img src="./tex/30732bc83cf909d6edd8de25f2645089.svg?invert_in_darkmode" align=middle width=162.83046779999998pt height=27.91243950000002pt/>,
+>  5. The Frobenius inner product can be written as a [dot
+>    product](://en.wikipedia.org/wiki/Dot_product) of
+>    [vectorized](https://en.wikipedia.org/wiki/Vectorization_(mathematics))
+>    matrices: <img src="./tex/018ac9f687643eb5a4d16c0a4ab4bc06.svg?invert_in_darkmode" align=middle width=353.64434324999996pt height=27.91243950000002pt/>,
+>  6. Properties 3., 4., and 5. imply that Frobenius inner product of a matrix
+>    <img src="./tex/96458543dc5abd380904d95cae6aa2bc.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and the matrix product of matrix <img src="./tex/ff44d867a998c08241beb49b30148782.svg?invert_in_darkmode" align=middle width=13.44741914999999pt height=22.55708729999998pt/> and <img src="./tex/12d3ebda1a212bd89197298f60cf3ce1.svg?invert_in_darkmode" align=middle width=13.652895299999988pt height=22.55708729999998pt/> is equal to the
+>    Frobenius inner product of the matrix product of the transpose of <img src="./tex/ff44d867a998c08241beb49b30148782.svg?invert_in_darkmode" align=middle width=13.44741914999999pt height=22.55708729999998pt/> and
+>    <img src="./tex/96458543dc5abd380904d95cae6aa2bc.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/>  and the matrix <img src="./tex/12d3ebda1a212bd89197298f60cf3ce1.svg?invert_in_darkmode" align=middle width=13.652895299999988pt height=22.55708729999998pt/>:
+>    <img src="./tex/4d9c6a6f9c0e0098e929887dddf57802.svg?invert_in_darkmode" align=middle width=702.93655245pt height=47.671235699999976pt/>.
+>  
+
+<p align="center"><img src="./tex/ef54fe83b00bd0937ccf189fac5b7fa3.svg?invert_in_darkmode" align=middle width=205.4958873pt height=32.2210416pt/></p>
+
+
+Now, <img src="./tex/35531be55273dc37ee90083451d089ff.svg?invert_in_darkmode" align=middle width=14.54330789999999pt height=22.55708729999998pt/> and <img src="./tex/26eb59da31fb48cb17abfe4c6dc80375.svg?invert_in_darkmode" align=middle width=14.554737449999989pt height=22.55708729999998pt/> are both
+[orthonormal](https://en.wikipedia.org/wiki/Orthogonal_matrix), so multiplying
+them against a rotation matrix <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> does not change its orthonormality. We can
+pull them out of the maximization if we account for the reflection they _might_
+incur: introduce <img src="./tex/84f085a8ee01510052b15faab48ecc9b.svg?invert_in_darkmode" align=middle width=139.41221085pt height=27.6567522pt/> with <img src="./tex/bc882f306e6b364898c14e65fcffdc53.svg?invert_in_darkmode" align=middle width=124.30338194999999pt height=27.91243950000002pt/>.
+This implies that the optimal rotation for the original probklem is recovered
+via <img src="./tex/923dfd11bdb9a8940133a2de8cf58616.svg?invert_in_darkmode" align=middle width=102.45405884999998pt height=27.91243950000002pt/>.  When we move the <img src="./tex/a3e6efe097bf3b70a46b0e3e3611d182.svg?invert_in_darkmode" align=middle width=53.47052864999999pt height=14.15524440000002pt/> inside, we now
+look for an orthonormal matrix <img src="./tex/bae5a06f813149fce8f3c8a39745d442.svg?invert_in_darkmode" align=middle width=65.96338484999998pt height=24.65753399999998pt/> that is a reflection (if
+<img src="./tex/d7696a03702713fc787fb978fa395ce5.svg?invert_in_darkmode" align=middle width=108.68696025pt height=27.91243950000002pt/>) or a rotation (if <img src="./tex/e535fddca4193bc96820d56b65569e96.svg?invert_in_darkmode" align=middle width=95.90152769999999pt height=27.91243950000002pt/>):
+
+<p align="center"><img src="./tex/077b1c3e74148e3a3e68860032b4b776.svg?invert_in_darkmode" align=middle width=323.18850795pt height=49.315569599999996pt/></p>
+
+
+This ensures that as a result <img src="./tex/7418159b714ed42bd664b73099a6311f.svg?invert_in_darkmode" align=middle width=20.913202199999986pt height=22.63846199999998pt/> will be a rotation: <img src="./tex/e1aa55f8d78af82fc6c2c53b6de68935.svg?invert_in_darkmode" align=middle width=77.44268894999999pt height=22.831056599999986pt/>.
+
+> Recall that <img src="./tex/ad4f8ffa0b0d4f9b5cd0e611986d5870.svg?invert_in_darkmode" align=middle width=65.32531334999999pt height=26.76175259999998pt/> is a non-negative diagonal matrix of singular values
+> sorted so that the smallest value is in the bottom right corner.
+
+Because <img src="./tex/9f531c9f3f1ebeef802ced46eabb0336.svg?invert_in_darkmode" align=middle width=11.87217899999999pt height=22.465723500000017pt/> is orthonormal, each column (or row) of <img src="./tex/9f531c9f3f1ebeef802ced46eabb0336.svg?invert_in_darkmode" align=middle width=11.87217899999999pt height=22.465723500000017pt/> must have unit norm.
+Placing a non-zero on the off-diagonal will get "killed" when multiplied by the
+corresponding zero in <img src="./tex/7aed918aa12a276a602e30e90b0b109d.svg?invert_in_darkmode" align=middle width=9.98290094999999pt height=14.15524440000002pt/>. So the optimal choice of <img src="./tex/9f531c9f3f1ebeef802ced46eabb0336.svg?invert_in_darkmode" align=middle width=11.87217899999999pt height=22.465723500000017pt/> is to set all values to
+zero except on the diagonal. If <img src="./tex/d7696a03702713fc787fb978fa395ce5.svg?invert_in_darkmode" align=middle width=108.68696025pt height=27.91243950000002pt/>, then we should set
+one (and only one) of these values to <img src="./tex/e11a8cfcf953c683196d7a48677b2277.svg?invert_in_darkmode" align=middle width=21.00464354999999pt height=21.18721440000001pt/>. The best choice is the bottom right
+corner since that will multiply against the smallest singular value in <img src="./tex/9f695bec305c31490f90808856401395.svg?invert_in_darkmode" align=middle width=17.35165739999999pt height=24.657735299999988pt/> (add
+negatively affect the maximization the least):
+
+<p align="center"><img src="./tex/2f2ebb3bacd43c9e9e6345a28182b942.svg?invert_in_darkmode" align=middle width=228.15813734999998pt height=69.0417981pt/></p>
+
+
+Finally, we have a formula for our optimal rotation:
+
+<p align="center"><img src="./tex/4ee960ed89d4b6ef9aa933ba448fa2e5.svg?invert_in_darkmode" align=middle width=100.28508765pt height=14.77813755pt/></p>
 
 
 ### Iterative linearization for point-to-plane rigid matching
