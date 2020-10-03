@@ -358,11 +358,11 @@ This energy is _quadratic_ in <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.s
 <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/>. We can immediately solve for the optimal <img src="./tex/2dbfbbc26f524676be39b3f3df0ad0bc.svg?invert_in_darkmode" align=middle width=14.08675289999999pt height=22.63846199999998pt/> — leaving <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> as an unknown — by
 setting all derivatives with respect to unknowns in <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> to zero:
 
-<p align="center"><img src="./tex/dff2d51dc0bc2208fabf381da1ee9054.svg?invert_in_darkmode" align=middle width=479.1395680499999pt height=87.52486215pt/></p>
+<p align="center"><img src="./tex/e25cbf43ac4b157a64ea2ac631ad99f4.svg?invert_in_darkmode" align=middle width=258.00511769999997pt height=87.52486215pt/></p>
 
 where <img src="./tex/2ac7c6ff1056fe3737fa4395e2efb6c5.svg?invert_in_darkmode" align=middle width=48.68135084999999pt height=27.91243950000002pt/> is a vector ones and <img src="./tex/1f2a0ec2ecb40db723721c1512f99c66.svg?invert_in_darkmode" align=middle width=40.83682679999999pt height=26.76175259999998pt/> computes the squared [Frobenius norm](https://en.wikipedia.org/wiki/Matrix_norm#Frobenius_norm) of the matrix <img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> (i.e., the sum of all squared element values. In MATLAB syntax: `sum(sum(A.^2))`).  Setting the partial derivative with respect to <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> of this quadratic energy to zero finds the minimum:
 
-<p align="center"><img src="./tex/9d06bb65b0ec4d34e2278e2593224b6a.svg?invert_in_darkmode" align=middle width=457.47342464999997pt height=59.27515935pt/></p>
+<p align="center"><img src="./tex/d3cc0b679e2de42b3f0d29e28180477a.svg?invert_in_darkmode" align=middle width=213.85093949999998pt height=58.361920649999995pt/></p>
 
 
 
@@ -373,7 +373,7 @@ variables for the respective centroids <img src="./tex/e28e01c4d55f4abbe81b2eda4
 formula for the optimal  <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/>:
 
 
-<p align="center"><img src="./tex/a9e6db9f6a09f07f15d7506f4ec1f6e4.svg?invert_in_darkmode" align=middle width=418.03393665pt height=60.845893350000004pt/></p>
+<p align="center"><img src="./tex/f5f54ef3885afa3d148e6bf58d8cda31.svg?invert_in_darkmode" align=middle width=133.8212997pt height=59.93265464999999pt/></p>
 
 
 
@@ -383,7 +383,7 @@ unknown rotation <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_
 for all occurrences of <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> in our energy written in its original summation
 form:
 
-<p align="center"><img src="./tex/00e00e26b2f40f54d1d1806f9d448fc6.svg?invert_in_darkmode" align=middle width=496.79341800000003pt height=167.46168615pt/></p>
+<p align="center"><img src="./tex/81cc06815aab39b1aee6a5b645f1d63a.svg?invert_in_darkmode" align=middle width=293.3128374pt height=167.46168615pt/></p>
 
 
 where we introduce <img src="./tex/0666e59c3940e6bce1da734268343091.svg?invert_in_darkmode" align=middle width=70.34807339999999pt height=27.91243950000002pt/> where the ith row contains the
@@ -392,17 +392,17 @@ _relative position_ of the ith point to the centroid <img src="./tex/c28a7e764fb
 
 Now we have the canonical form of the [orthogonal procrustes problem](https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem). To find the optimal rotation matrix <img src="./tex/7418159b714ed42bd664b73099a6311f.svg?invert_in_darkmode" align=middle width=20.913202199999986pt height=22.63846199999998pt/>, using the [associativity property](https://en.wikipedia.org/wiki/Associative_property) of the Frobenius norm, we will massage the terms in the _minimization_ until we have a _maximization_ problem involving the [Frobenius inner-product](https://en.wikipedia.org/wiki/Frobenius_inner_product) of the unknown rotation <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> and [covariance matrix](https://en.wikipedia.org/wiki/Covariance_matrix) of <img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and <img src="./tex/384591906555413c452c93e493b2d4ec.svg?invert_in_darkmode" align=middle width=12.92230829999999pt height=22.55708729999998pt/>:
 
-<p align="center"><img src="./tex/94704e9f0cf2dff6063bf8db051a7806.svg?invert_in_darkmode" align=middle width=579.66035655pt height=154.96835804999998pt/></p>
+<p align="center"><img src="./tex/aaf3cc5babf86dd5cc189f4dcf639be0.svg?invert_in_darkmode" align=middle width=458.22482145pt height=128.83143239999998pt/></p>
 
 where <img src="./tex/98a03379352cf0fa6a6609d8d3ac6c5c.svg?invert_in_darkmode" align=middle width=57.937128149999985pt height=24.65753399999998pt/> is the [Frobenius inner product](https://en.wikipedia.org/wiki/Frobenius_inner_product) of  <img src="./tex/96458543dc5abd380904d95cae6aa2bc.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and <img src="./tex/ff44d867a998c08241beb49b30148782.svg?invert_in_darkmode" align=middle width=13.44741914999999pt height=22.55708729999998pt/> (i.e., the sum of all per-element products. In MATLAB syntax: `sum(sum(A.*B))`).  This can be further reduced:
 
-<p align="center"><img src="./tex/4f1365bedd62467aadecc3260492761b.svg?invert_in_darkmode" align=middle width=520.55095125pt height=62.48408265pt/></p>
+<p align="center"><img src="./tex/1d619c4a729d195ff1e68eafa0acabcc.svg?invert_in_darkmode" align=middle width=340.00603725pt height=36.347157pt/></p>
 
 > **Question:** what is <img src="./tex/aa2e5468bf5994b9e12739cce97eec19.svg?invert_in_darkmode" align=middle width=39.451928999999986pt height=27.91243950000002pt/>?
 >
 > **Hint:** 👁️
 
-<p align="center"><img src="./tex/b32326e1308d474ab8ff82c1186b2148.svg?invert_in_darkmode" align=middle width=448.00195605pt height=75.81739605pt/></p>
+<p align="center"><img src="./tex/becd8c572a0aec4ddf4c82b390fbfb5e.svg?invert_in_darkmode" align=middle width=194.9080023pt height=75.81739605pt/></p>
 
 Letting <img src="./tex/818e261a8ac45a73aabd65ba9bba3a1b.svg?invert_in_darkmode" align=middle width=80.91279569999999pt height=36.98604359999998pt/>. We can understand this problem as _projecting_ the [covariance matrix](https://en.wikipedia.org/wiki/Covariance_matrix)  <img src="./tex/e6bb22a58889cb2e58f4fce2f3a80e02.svg?invert_in_darkmode" align=middle width=17.94511949999999pt height=22.55708729999998pt/> to the nearest rotation matrix <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/>.
 
@@ -537,7 +537,7 @@ This quadratic energy is minimized with its partial derivatives with respect to
 entries in <img src="./tex/129c5b884ff47d80be4d6261a476e9f1.svg?invert_in_darkmode" align=middle width=10.502226899999991pt height=14.611878600000017pt/> are all zero:
 
 
-<p align="center"><img src="./tex/45519f9d7e16159f36db93e8bf18b945.svg?invert_in_darkmode" align=middle width=512.4540267pt height=124.93263584999998pt/></p>
+<p align="center"><img src="./tex/d8ca8bf6e47071840c8816e6e2f9cc33.svg?invert_in_darkmode" align=middle width=324.6340383pt height=124.93263584999998pt/></p>
 
 
 
@@ -679,12 +679,12 @@ Finally, we have a formula for our optimal rotation:
 > <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/>. We can immediately solve for the optimal <img src="./tex/2dbfbbc26f524676be39b3f3df0ad0bc.svg?invert_in_darkmode" align=middle width=14.08675289999999pt height=22.63846199999998pt/> — leaving <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> as an unknown — by
 > setting all derivatives with respect to unknowns in <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> to zero:
 > 
-> <p align="center"><img src="./tex/9e362387214ebe1af7e853291abc1f78.svg?invert_in_darkmode" align=middle width=342.9363135pt height=74.02030679999999pt/></p>
+> <p align="center"><img src="./tex/b9631fd0fa95f672b86721149b8746ba.svg?invert_in_darkmode" align=middle width=342.9363135pt height=74.02030679999999pt/></p>
 
 > where <img src="./tex/2ac7c6ff1056fe3737fa4395e2efb6c5.svg?invert_in_darkmode" align=middle width=48.68135084999999pt height=27.91243950000002pt/> is a vector ones. Setting the partial derivative with
 > respect to <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> of this
 > quadratic energy to zero finds the minimum:
-> <p align="center"><img src="./tex/b3bb46beb0a710d869c642bc8c1439c2.svg?invert_in_darkmode" align=middle width=284.0789424pt height=58.361920649999995pt/></p>
+> <p align="center"><img src="./tex/65143ce1952971c48b07e2d1e1e2df8a.svg?invert_in_darkmode" align=middle width=284.0789424pt height=58.361920649999995pt/></p>
 
 > 
 > Rearranging terms above reveals that the optimal <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> is the vector aligning
@@ -693,7 +693,7 @@ Finally, we have a formula for our optimal rotation:
 > variables for the respective centroids <img src="./tex/64af2fa219a12c6bb69c25da58441a8f.svg?invert_in_darkmode" align=middle width=120.17019629999999pt height=32.51169900000002pt/> and <img src="./tex/00085c1c3a7306fc9ff9974f9fe861dc.svg?invert_in_darkmode" align=middle width=97.20234314999998pt height=32.51169900000002pt/>, we can write the
 > formula for the optimal  <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/>:
 > 
-> <p align="center"><img src="./tex/f96a3a519c3060b59063229376b69f86.svg?invert_in_darkmode" align=middle width=205.19999115pt height=59.93265464999999pt/></p>
+> <p align="center"><img src="./tex/5381fe0cac58a7a095a354260dc2e7ed.svg?invert_in_darkmode" align=middle width=205.19999115pt height=59.93265464999999pt/></p>
 
 > 
 > Now we have a formula for the optimal translation vector <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> in terms of the
@@ -717,7 +717,7 @@ Finally, we have a formula for our optimal rotation:
 > unknown rotation <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> and [covariance
 > matrix](https://en.wikipedia.org/wiki/Covariance_matrix) of <img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and <img src="./tex/384591906555413c452c93e493b2d4ec.svg?invert_in_darkmode" align=middle width=12.92230829999999pt height=22.55708729999998pt/>:
 > 
-> <p align="center"><img src="./tex/78e20bbb1884f37158772ccc9d08d39e.svg?invert_in_darkmode" align=middle width=410.23402035pt height=235.53802799999997pt/></p>
+> <p align="center"><img src="./tex/f2b85b5cbfc59dca04857d09a9fc93a4.svg?invert_in_darkmode" align=middle width=374.70908805pt height=235.53802799999997pt/></p>
 
 > 
 > Letting <img src="./tex/818e261a8ac45a73aabd65ba9bba3a1b.svg?invert_in_darkmode" align=middle width=80.91279569999999pt height=36.98604359999998pt/> we can now follow the
