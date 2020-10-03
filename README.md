@@ -343,7 +343,7 @@ rather than the energy term.
 
 The point-to-point (gradient descent) rigid matching problem solves:
 
-<p align="center"><img src="./tex/9fb7dad24c18a6c63c22c381a036a28a.svg?invert_in_darkmode" align=middle width=378.51935549999996pt height=14.59923135pt/></p>
+<p align="center"><img src="./tex/aef10a89b51ab2d3c4722ba8b29f905f.svg?invert_in_darkmode" align=middle width=142.6118496pt height=47.93392394999999pt/></p>
 
 
 ### Iterative linearization for point-to-plane rigid matching
