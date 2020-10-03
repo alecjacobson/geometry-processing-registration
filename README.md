@@ -1,4 +1,4 @@
-# Geometry Processing – Registration
+# Geometry Processing — Registration
 
 > **To get started:** Clone this repository then issue
 > 
@@ -160,8 +160,8 @@ norms for optimization.
 
 ## Integrated closest-point distance
 
-We would like a distance measure between two surfaces that – like Hausdorff
-distance – does not require a shared parameterization. Unlike Hausdorff
+We would like a distance measure between two surfaces that — like Hausdorff
+distance — does not require a shared parameterization. Unlike Hausdorff
 distance, we would like this distance to _diffuse_ the measurement over the
 entire surfaces rather than generate it from the sole _worst offender_. We can
 accomplish this by replacing the _supremum_ in the Hausdorff distance (<img src="./tex/0bb003a2b7ef9dddb4804e47433f86e1.svg?invert_in_darkmode" align=middle width=24.292324649999987pt height=22.465723500000017pt/>)
@@ -213,7 +213,7 @@ repeat.
 
 This is the core idea behind [gradient
 descent](https://en.wikipedia.org/wiki/Gradient_descent) and the
-[Gauss-Newton](https://en.wikipedia.org/wiki/Gauss–Newton_algorithm) methods:
+[Gauss-Newton](https://en.wikipedia.org/wiki/Gauss—Newton_algorithm) methods:
 
 ```
 minimize f(z)^{2}
@@ -228,7 +228,7 @@ _geometrically_.
 
 ### Constant function approximation
 
-If we make the convenient–however unrealistic–assumption that in the
+If we make the convenient—however unrealistic—assumption that in the
 neighborhood of the closest-point projection <img src="./tex/5ea090d44e44319896420959310f0012.svg?invert_in_darkmode" align=middle width=50.49552749999999pt height=24.65753399999998pt/> of the current guess
 <img src="./tex/068e9f4c48765b7e6082c36543e13d10.svg?invert_in_darkmode" align=middle width=14.95432949999999pt height=14.611878600000017pt/> the surface <img src="./tex/91aac9730317276af725abd8cef04ca9.svg?invert_in_darkmode" align=middle width=13.19638649999999pt height=22.465723500000017pt/> is simply the point <img src="./tex/5ea090d44e44319896420959310f0012.svg?invert_in_darkmode" align=middle width=50.49552749999999pt height=24.65753399999998pt/> (perhaps imagine that <img src="./tex/91aac9730317276af725abd8cef04ca9.svg?invert_in_darkmode" align=middle width=13.19638649999999pt height=22.465723500000017pt/>
 is makes a sharp needle-like point at <img src="./tex/5ea090d44e44319896420959310f0012.svg?invert_in_darkmode" align=middle width=50.49552749999999pt height=24.65753399999998pt/> or that <img src="./tex/91aac9730317276af725abd8cef04ca9.svg?invert_in_darkmode" align=middle width=13.19638649999999pt height=22.465723500000017pt/> is very far away
@@ -263,7 +263,7 @@ where the plane that _best_ approximates <img src="./tex/91aac9730317276af725abd
 
 Minimizing <img src="./tex/ef03e3adb9f682700bd731e4c2ebeb55.svg?invert_in_darkmode" align=middle width=25.03690529999999pt height=22.465723500000017pt/> iteratively using this linearization of
 <img src="./tex/47b0192f8f0819d64bce3612c46d15ea.svg?invert_in_darkmode" align=middle width=7.56844769999999pt height=22.831056599999986pt/> is equivalent to the
-[Gauss-Newton](https://en.wikipedia.org/wiki/Gauss–Newton_algorithm) method. We
+[Gauss-Newton](https://en.wikipedia.org/wiki/Gauss—Newton_algorithm) method. We
 have simply derived our linear approximation geometrically.
 
 Equipped with these linearizations, we may now describe an [optimization
@@ -350,7 +350,7 @@ This is a variant of what's known as a [Procrustes problem](https://en.wikipedia
 #### Substituting out the translation terms
 
 This energy is _quadratic_ in <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> and there are no other constraints on
-<img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/>. We can immediately solve for the optimal <img src="./tex/2dbfbbc26f524676be39b3f3df0ad0bc.svg?invert_in_darkmode" align=middle width=14.08675289999999pt height=22.63846199999998pt/> – leaving <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> as an unknown – by
+<img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/>. We can immediately solve for the optimal <img src="./tex/2dbfbbc26f524676be39b3f3df0ad0bc.svg?invert_in_darkmode" align=middle width=14.08675289999999pt height=22.63846199999998pt/> — leaving <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> as an unknown — by
 setting all derivatives with respect to unknowns in <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> to zero:
 
 <p align="center"><img src="./tex/7d9e531db70d52a78e322246129c5344.svg?invert_in_darkmode" align=middle width=479.1395680499999pt height=74.02030679999999pt/></p>
@@ -544,7 +544,7 @@ Finally, we have a formula for our optimal rotation:
 > #### Substituting out the translation terms
 > 
 > This energy is _quadratic_ in <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> and there are no other constraints on
-> <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/>. We can immediately solve for the optimal <img src="./tex/2dbfbbc26f524676be39b3f3df0ad0bc.svg?invert_in_darkmode" align=middle width=14.08675289999999pt height=22.63846199999998pt/> – leaving <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> as an unknown – by
+> <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/>. We can immediately solve for the optimal <img src="./tex/2dbfbbc26f524676be39b3f3df0ad0bc.svg?invert_in_darkmode" align=middle width=14.08675289999999pt height=22.63846199999998pt/> — leaving <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> as an unknown — by
 > setting all derivatives with respect to unknowns in <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> to zero:
 > 
 > <p align="center"><img src="./tex/9e362387214ebe1af7e853291abc1f78.svg?invert_in_darkmode" align=middle width=342.9363135pt height=74.02030679999999pt/></p>
@@ -557,7 +557,7 @@ Finally, we have a formula for our optimal rotation:
 > 
 > Rearranging terms above reveals that the optimal <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> is the vector aligning
 > the [centroids](https://en.wikipedia.org/wiki/Centroid) of the points in <img src="./tex/384591906555413c452c93e493b2d4ec.svg?invert_in_darkmode" align=middle width=12.92230829999999pt height=22.55708729999998pt/>
-> and the points in <img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> rotated by the – yet-unknown – <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/>. Introducing
+> and the points in <img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> rotated by the — yet-unknown — <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/>. Introducing
 > variables for the respective centroids <img src="./tex/64af2fa219a12c6bb69c25da58441a8f.svg?invert_in_darkmode" align=middle width=120.17019629999999pt height=32.51169900000002pt/> and <img src="./tex/00085c1c3a7306fc9ff9974f9fe861dc.svg?invert_in_darkmode" align=middle width=97.20234314999998pt height=32.51169900000002pt/>, we can write the
 > formula for the optimal  <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/>:
 > 
