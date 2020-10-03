@@ -353,7 +353,7 @@ This energy is _quadratic_ in <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.s
 <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/>. We can immediately solve for the optimal <img src="./tex/2dbfbbc26f524676be39b3f3df0ad0bc.svg?invert_in_darkmode" align=middle width=14.08675289999999pt height=22.63846199999998pt/>---leaving <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> as an unknown---by
 setting all derivatives with respect to unknowns in <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> to zero:
 
-<p align="center"><img src="./tex/0ab7ff8ee04b03b22c943e7eef3427a2.svg?invert_in_darkmode" align=middle width=495.74733449999997pt height=34.4293686pt/></p>
+<p align="center"><img src="./tex/7d9e531db70d52a78e322246129c5344.svg?invert_in_darkmode" align=middle width=479.1395680499999pt height=74.02030679999999pt/></p>
 
 
 ### Iterative linearization for point-to-plane rigid matching
