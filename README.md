@@ -339,6 +339,15 @@ In either case, this is still a non-linear optimization problem. This time due
 to the [constraints](https://en.wikipedia.org/wiki/Constrained_optimization)
 rather than the energy term. 
 
+### Closed-form solution for point-to-point rigid matching
+
+Given <img src="./tex/63bb9849783d01d91403bc9a5fea12a2.svg?invert_in_darkmode" align=middle width=9.075367949999992pt height=22.831056599999986pt/> samples 
+<img src="./tex/af92d8cecae3a6c9ee46d46b59cb1a49.svg?invert_in_darkmode" align=middle width=70.34808pt height=27.91243950000002pt/> on <img src="./tex/cbfb1b2a33b28eab8a3e59464768e810.svg?invert_in_darkmode" align=middle width=14.908688849999992pt height=22.465723500000017pt/> and corresponding closest points 
+<img src="./tex/90edb410784abc121c58a70a1df64781.svg?invert_in_darkmode" align=middle width=68.97822194999999pt height=27.91243950000002pt/> on <img src="./tex/91aac9730317276af725abd8cef04ca9.svg?invert_in_darkmode" align=middle width=13.19638649999999pt height=22.465723500000017pt/>, the point-to-point (gradient descent) rigid matching method seeks to find the best rotation matrix <img src="./tex/cdc1c3863a4fa59460b49dbb8dc69b38.svg?invert_in_darkmode" align=middle width=69.52043834999999pt height=26.76175259999998pt/> and translation vector <img src="./tex/bc48724c8f0baf576bb0a62bad88bd87.svg?invert_in_darkmode" align=middle width=45.86742269999999pt height=26.76175259999998pt/>:
+
+
+### Iterative linearization for point-to-plane rigid matching
+
 We require that <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> is not just any <img src="./tex/46e42d6ebfb1f8b50fe3a47153d01cd2.svg?invert_in_darkmode" align=middle width=36.52961069999999pt height=21.18721440000001pt/> matrix, but a rotation matrix. If we simply optimize the 9 matrix entries of <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> directly, the result will be far from a rotation matrix. Instead, we _linearize_ the constraint that <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> stays a rotation matrix and work with a reduced set of variables.
 
 Any rotation <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> in 3D can be written as scalar rotation angle <img src="./tex/27e556cf3caa0673ac49a8f0de3c73ca.svg?invert_in_darkmode" align=middle width=8.17352744999999pt height=22.831056599999986pt/> around a rotation axis defined by a unit vector <img src="./tex/38b405fb29be61635751df6f2ad66799.svg?invert_in_darkmode" align=middle width=52.431327299999985pt height=26.76175259999998pt/>.
@@ -601,7 +610,7 @@ vector, and <img src="./tex/7eab9509bd92f8ab739bdfe4383e7249.svg?invert_in_darkm
 This energy is quadratic in <img src="./tex/129c5b884ff47d80be4d6261a476e9f1.svg?invert_in_darkmode" align=middle width=10.502226899999991pt height=14.611878600000017pt/> and can be solve by setting all partial
 derivatives with respect to <img src="./tex/129c5b884ff47d80be4d6261a476e9f1.svg?invert_in_darkmode" align=middle width=10.502226899999991pt height=14.611878600000017pt/> to zero.
 
-> ### Closed-form point-to-point minimizer
+> ### Closed-form point-to-planer minimizer
 >
 > To the best of my knowledge, no known closed-form solution exists. I am not
 > sure whether it **_can not_** exist or just whether no one has figured it out
