@@ -347,7 +347,7 @@ If <img src="./tex/96c3741f62813242aaf853b649cf3780.svg?invert_in_darkmode" alig
 
 <p align="center"><img src="./tex/db60da1aeacc11d5cb8c2d8ed2486a28.svg?invert_in_darkmode" align=middle width=214.36958565pt height=59.1786591pt/></p>
 
-For a general, rotation axis <img src="./tex/522c69add21191fefe7da3f76ad92547.svg?invert_in_darkmode" align=middle width=13.91546639999999pt height=23.28771720000001pt/>, we can write a generalized formula:
+For a general, rotation axis <img src="./tex/522c69add21191fefe7da3f76ad92547.svg?invert_in_darkmode" align=middle width=13.91546639999999pt height=23.28771720000001pt/>, we can write a generalized <a id=aa>_**axis-angle to matrix formula**_</a>:
 <p align="center"><img src="./tex/69219d3de030a57e12eb79320ade7d3e.svg?invert_in_darkmode" align=middle width=602.1715788pt height=85.00052385000001pt/></p>
 
 where <img src="./tex/c09091921b6bc51fd934869690606bfe.svg?invert_in_darkmode" align=middle width=75.14827979999998pt height=26.76175259999998pt/> is the [skew-symmetric](https://en.wikipedia.org/wiki/Skew-symmetric_matrix) [cross product matrix](https://en.wikipedia.org/wiki/Cross_product#Conversion_to_matrix_multiplication) of <img src="./tex/522c69add21191fefe7da3f76ad92547.svg?invert_in_darkmode" align=middle width=13.91546639999999pt height=23.28771720000001pt/> so that <img src="./tex/dd8d347bc29ac2275a6105fbc8615132.svg?invert_in_darkmode" align=middle width=95.42179679999998pt height=23.28771720000001pt/>
@@ -393,11 +393,10 @@ entries in <img src="./tex/129c5b884ff47d80be4d6261a476e9f1.svg?invert_in_darkmo
 Solving this small <img src="./tex/6d89de257f7655e1691ec48411787787.svg?invert_in_darkmode" align=middle width=36.52961069999999pt height=21.18721440000001pt/> system gives us our translation vector <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> and the
 linearized rotation angles <img src="./tex/eec04193aead51ded846dbae8c3b4953.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/>, <img src="./tex/86ef8ef82733de9ba07432e88dd9757e.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/> and <img src="./tex/86ef8ef82733de9ba07432e88dd9757e.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/>. If we simply assign 
 
-<p align="center"><img src="./tex/777f7698b106cf5bbda5481a60bb1488.svg?invert_in_darkmode" align=middle width=276.0670176pt height=59.1786591pt/></p>
+<p align="center"><img src="./tex/46d4381fe98b9af4dc1f886f7d4b2d6b.svg?invert_in_darkmode" align=middle width=231.63804345pt height=59.1786591pt/></p>
 
 
-then our transformation will _not_ be rigid. Instead, we should project <img src="./tex/e6bb22a58889cb2e58f4fce2f3a80e02.svg?invert_in_darkmode" align=middle width=17.94511949999999pt height=22.55708729999998pt/>
-onto the space of rotation matrices.
+then our transformation will _not_ be rigid. Instead, we should _recover_ the axis and angle of rotation from <img src="./tex/41f28962986ecdd9c1dc2af8b83fef84.svg?invert_in_darkmode" align=middle width=9.18943409999999pt height=14.611878600000017pt/> via <img src="./tex/d0a7030829b80628644fa618ce84fc92.svg?invert_in_darkmode" align=middle width=55.71901004999999pt height=24.65753399999998pt/> and <img src="./tex/a6581421740d0b194dfd7729e9a4bcc5.svg?invert_in_darkmode" align=middle width=61.41526379999999pt height=24.65753399999998pt/> and then update our rotation via the <a href=#aa>_**axis-angle to matrix formula**_ above</a>. Because we used a linearization of the rotation constraint, we cannot assume that we have _successful_ found the best rigid transformation. To converge on an optimal value, must set <img src="./tex/89b906c53bdb5b977d1e873cf0be3f7a.svg?invert_in_darkmode" align=middle width=79.82653799999999pt height=22.55708729999998pt/> and repeat this process (usually 5 times or so is sufficient).
 
 #### Recovering a pure rotation from its linearization
 
