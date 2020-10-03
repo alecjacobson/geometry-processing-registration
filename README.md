@@ -371,7 +371,7 @@ linearization of the matching energy, our minimization becomes:
 
 This energy is quadratic in the translation vector <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> and the linearized
 rotation angles <img src="./tex/eec04193aead51ded846dbae8c3b4953.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/>, <img src="./tex/86ef8ef82733de9ba07432e88dd9757e.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/> and <img src="./tex/86ef8ef82733de9ba07432e88dd9757e.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/>. Let's gather these degrees of freedom into a
-vector of unknowns: <img src="./tex/252ac1a39530fae146ff364662af4fb8.svg?invert_in_darkmode" align=middle width=116.87758334999998pt height=27.91243950000002pt/>. Then we can write our
+vector of unknowns: <img src="./tex/1fdaedd826e241163120cab972018fe4.svg?invert_in_darkmode" align=middle width=118.80099329999999pt height=27.91243950000002pt/>. Then we can write our
 problem in summation form as:
 
 <p align="center"><img src="./tex/eaccf6a2d1872cb0bdbbaa314c6df49a.svg?invert_in_darkmode" align=middle width=500.35957289999993pt height=62.53032225pt/></p>
@@ -387,7 +387,7 @@ where we introduce the matrix <img src="./tex/7eab9509bd92f8ab739bdfe4383e7249.s
 This quadratic energy is minimized with its partial derivatives with respect to
 entries in <img src="./tex/129c5b884ff47d80be4d6261a476e9f1.svg?invert_in_darkmode" align=middle width=10.502226899999991pt height=14.611878600000017pt/> are all zero:
 
-<p align="center"><img src="./tex/9fea9b76fa7c8822aeb3e9021b84420b.svg?invert_in_darkmode" align=middle width=318.86380679999996pt height=124.93263584999998pt/></p>
+<p align="center"><img src="./tex/80d44b4658f7428a43738d557d189958.svg?invert_in_darkmode" align=middle width=324.6340383pt height=124.93263584999998pt/></p>
 
 
 Solving this small <img src="./tex/6d89de257f7655e1691ec48411787787.svg?invert_in_darkmode" align=middle width=36.52961069999999pt height=21.18721440000001pt/> system gives us our translation vector <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> and the
@@ -437,10 +437,10 @@ change our _minimization_ problem into a _maximization_ problem:
 
 We now take advantage of the [singular value
 decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) of
-<img src="./tex/ac02df3fc6b3f4c944ecfc0a1181ae51.svg?invert_in_darkmode" align=middle width=87.29426639999998pt height=27.91243950000002pt/>, where <img src="./tex/9b2a1625a0911294931a3f1c4aeea9ec.svg?invert_in_darkmode" align=middle width=91.74635744999999pt height=26.76175259999998pt/> are orthonormal matrices
+<img src="./tex/6b131ebac8b7c63ef31cb6925661ad5a.svg?invert_in_darkmode" align=middle width=89.21769614999998pt height=27.91243950000002pt/>, where <img src="./tex/9b2a1625a0911294931a3f1c4aeea9ec.svg?invert_in_darkmode" align=middle width=91.74635744999999pt height=26.76175259999998pt/> are orthonormal matrices
 and <img src="./tex/ad4f8ffa0b0d4f9b5cd0e611986d5870.svg?invert_in_darkmode" align=middle width=65.32531334999999pt height=26.76175259999998pt/> is a non-negative diagonal matrix:
 
-<p align="center"><img src="./tex/62d93360ff63336cdc9bdde409d09426.svg?invert_in_darkmode" align=middle width=205.67292239999998pt height=32.2210416pt/></p>
+<p align="center"><img src="./tex/53cafbd2848f7f70d7b4c3f03d9f6c94.svg?invert_in_darkmode" align=middle width=207.59633235pt height=32.2210416pt/></p>
 
 
 The Frobenius inner product will let us move the products by <img src="./tex/26eb59da31fb48cb17abfe4c6dc80375.svg?invert_in_darkmode" align=middle width=14.554737449999989pt height=22.55708729999998pt/> and <img src="./tex/35531be55273dc37ee90083451d089ff.svg?invert_in_darkmode" align=middle width=14.54330789999999pt height=22.55708729999998pt/> from
@@ -458,32 +458,32 @@ the right argument to the left argument:
 >    identity matrix and <img src="./tex/ff44d867a998c08241beb49b30148782.svg?invert_in_darkmode" align=middle width=13.44741914999999pt height=22.55708729999998pt/> times the vectorization of <img src="./tex/12d3ebda1a212bd89197298f60cf3ce1.svg?invert_in_darkmode" align=middle width=13.652895299999988pt height=22.55708729999998pt/>:
 >    <img src="./tex/4f5a78bb9fa1f74a9ec8f953df314ce5.svg?invert_in_darkmode" align=middle width=187.39681455pt height=24.65753399999998pt/>,
 >  4. The transpose of a Kronecker product is the Kronecker product of
->    transposes: <img src="./tex/b356aee8d966bb7a2f87b2f5a6c83c0e.svg?invert_in_darkmode" align=middle width=157.06021814999997pt height=27.91243950000002pt/>,
+>    transposes: <img src="./tex/30732bc83cf909d6edd8de25f2645089.svg?invert_in_darkmode" align=middle width=162.83046779999998pt height=27.91243950000002pt/>,
 >  5. The Frobenius inner product can be written as a [dot
 >    product](://en.wikipedia.org/wiki/Dot_product) of
 >    [vectorized](https://en.wikipedia.org/wiki/Vectorization_(mathematics))
->    matrices: <img src="./tex/80da057916f1391ad58c67c29bb467e7.svg?invert_in_darkmode" align=middle width=351.72093329999996pt height=27.91243950000002pt/>,
+>    matrices: <img src="./tex/018ac9f687643eb5a4d16c0a4ab4bc06.svg?invert_in_darkmode" align=middle width=353.64434324999996pt height=27.91243950000002pt/>,
 >  6. Properties 3., 4., and 5. imply that Frobenius inner product of a matrix
 >    <img src="./tex/96458543dc5abd380904d95cae6aa2bc.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and the matrix product of matrix <img src="./tex/ff44d867a998c08241beb49b30148782.svg?invert_in_darkmode" align=middle width=13.44741914999999pt height=22.55708729999998pt/> and <img src="./tex/12d3ebda1a212bd89197298f60cf3ce1.svg?invert_in_darkmode" align=middle width=13.652895299999988pt height=22.55708729999998pt/> is equal to the
 >    Frobenius inner product of the matrix product of the transpose of <img src="./tex/ff44d867a998c08241beb49b30148782.svg?invert_in_darkmode" align=middle width=13.44741914999999pt height=22.55708729999998pt/> and
 >    <img src="./tex/96458543dc5abd380904d95cae6aa2bc.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/>  and the matrix <img src="./tex/12d3ebda1a212bd89197298f60cf3ce1.svg?invert_in_darkmode" align=middle width=13.652895299999988pt height=22.55708729999998pt/>:
->    <img src="./tex/efeb486808dd99e587af1321ed719c5c.svg?invert_in_darkmode" align=middle width=700.2741735pt height=47.671235699999976pt/>.
+>    <img src="./tex/4d9c6a6f9c0e0098e929887dddf57802.svg?invert_in_darkmode" align=middle width=702.93655245pt height=47.671235699999976pt/>.
 >  
 
-<p align="center"><img src="./tex/4021f2dd3092665d966f767d6d531816.svg?invert_in_darkmode" align=middle width=203.57247734999999pt height=32.2210416pt/></p>
+<p align="center"><img src="./tex/ef54fe83b00bd0937ccf189fac5b7fa3.svg?invert_in_darkmode" align=middle width=205.4958873pt height=32.2210416pt/></p>
 
 
 Now, <img src="./tex/35531be55273dc37ee90083451d089ff.svg?invert_in_darkmode" align=middle width=14.54330789999999pt height=22.55708729999998pt/> and <img src="./tex/26eb59da31fb48cb17abfe4c6dc80375.svg?invert_in_darkmode" align=middle width=14.554737449999989pt height=22.55708729999998pt/> are both
 [orthonormal](https://en.wikipedia.org/wiki/Orthogonal_matrix), so multiplying
 them against a rotation matrix <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> does not change its orthonormality. We can
 pull them out of the maximization if we account for the reflection they _might_
-incur: introduce <img src="./tex/84f085a8ee01510052b15faab48ecc9b.svg?invert_in_darkmode" align=middle width=139.41221085pt height=27.6567522pt/> with <img src="./tex/49fe195139d6ccf1d8e438cafa335ba9.svg?invert_in_darkmode" align=middle width=122.37995054999998pt height=27.91243950000002pt/>.
+incur: introduce <img src="./tex/84f085a8ee01510052b15faab48ecc9b.svg?invert_in_darkmode" align=middle width=139.41221085pt height=27.6567522pt/> with <img src="./tex/bc882f306e6b364898c14e65fcffdc53.svg?invert_in_darkmode" align=middle width=124.30338194999999pt height=27.91243950000002pt/>.
 This implies that the optimal rotation for the original probklem is recovered
-via <img src="./tex/e817d12342659e3fb1edb6e783d2554d.svg?invert_in_darkmode" align=middle width=100.53062744999998pt height=27.91243950000002pt/>.  When we move the <img src="./tex/a3e6efe097bf3b70a46b0e3e3611d182.svg?invert_in_darkmode" align=middle width=53.47052864999999pt height=14.15524440000002pt/> inside, we now
+via <img src="./tex/923dfd11bdb9a8940133a2de8cf58616.svg?invert_in_darkmode" align=middle width=102.45405884999998pt height=27.91243950000002pt/>.  When we move the <img src="./tex/a3e6efe097bf3b70a46b0e3e3611d182.svg?invert_in_darkmode" align=middle width=53.47052864999999pt height=14.15524440000002pt/> inside, we now
 look for an orthonormal matrix <img src="./tex/bae5a06f813149fce8f3c8a39745d442.svg?invert_in_darkmode" align=middle width=65.96338484999998pt height=24.65753399999998pt/> that is a reflection (if
-<img src="./tex/c3aaecd8804db3e504a466c05f005c59.svg?invert_in_darkmode" align=middle width=106.76355029999998pt height=27.91243950000002pt/>) or a rotation (if <img src="./tex/c4553215b14c8475895e752276942b6f.svg?invert_in_darkmode" align=middle width=93.97811609999998pt height=27.91243950000002pt/>):
+<img src="./tex/d7696a03702713fc787fb978fa395ce5.svg?invert_in_darkmode" align=middle width=108.68696025pt height=27.91243950000002pt/>) or a rotation (if <img src="./tex/e535fddca4193bc96820d56b65569e96.svg?invert_in_darkmode" align=middle width=95.90152769999999pt height=27.91243950000002pt/>):
 
-<p align="center"><img src="./tex/d5a80c823b751b92e935f098eaec7c01.svg?invert_in_darkmode" align=middle width=318.32557844999997pt height=49.315569599999996pt/></p>
+<p align="center"><img src="./tex/077b1c3e74148e3a3e68860032b4b776.svg?invert_in_darkmode" align=middle width=323.18850795pt height=49.315569599999996pt/></p>
 
 
 This ensures that as a result <img src="./tex/7418159b714ed42bd664b73099a6311f.svg?invert_in_darkmode" align=middle width=20.913202199999986pt height=22.63846199999998pt/> will be a rotation: <img src="./tex/e1aa55f8d78af82fc6c2c53b6de68935.svg?invert_in_darkmode" align=middle width=77.44268894999999pt height=22.831056599999986pt/>.
@@ -494,17 +494,17 @@ This ensures that as a result <img src="./tex/7418159b714ed42bd664b73099a6311f.s
 Because <img src="./tex/9f531c9f3f1ebeef802ced46eabb0336.svg?invert_in_darkmode" align=middle width=11.87217899999999pt height=22.465723500000017pt/> is orthonormal, each column (or row) of <img src="./tex/9f531c9f3f1ebeef802ced46eabb0336.svg?invert_in_darkmode" align=middle width=11.87217899999999pt height=22.465723500000017pt/> must have unit norm.
 Placing a non-zero on the off-diagonal will get "killed" when multiplied by the
 corresponding zero in <img src="./tex/7aed918aa12a276a602e30e90b0b109d.svg?invert_in_darkmode" align=middle width=9.98290094999999pt height=14.15524440000002pt/>. So the optimal choice of <img src="./tex/9f531c9f3f1ebeef802ced46eabb0336.svg?invert_in_darkmode" align=middle width=11.87217899999999pt height=22.465723500000017pt/> is to set all values to
-zero except on the diagonal. If <img src="./tex/c3aaecd8804db3e504a466c05f005c59.svg?invert_in_darkmode" align=middle width=106.76355029999998pt height=27.91243950000002pt/>, then we should set
+zero except on the diagonal. If <img src="./tex/d7696a03702713fc787fb978fa395ce5.svg?invert_in_darkmode" align=middle width=108.68696025pt height=27.91243950000002pt/>, then we should set
 one (and only one) of these values to <img src="./tex/e11a8cfcf953c683196d7a48677b2277.svg?invert_in_darkmode" align=middle width=21.00464354999999pt height=21.18721440000001pt/>. The best choice is the bottom right
 corner since that will multiply against the smallest singular value in <img src="./tex/9f695bec305c31490f90808856401395.svg?invert_in_darkmode" align=middle width=17.35165739999999pt height=24.657735299999988pt/> (add
 negatively affect the maximization the least):
 
-<p align="center"><img src="./tex/15e07f4327285382d80cd51bfe1ea044.svg?invert_in_darkmode" align=middle width=226.23472739999997pt height=118.35736770000001pt/></p>
+<p align="center"><img src="./tex/7ad06d716b75a8b1277f63a25ba21499.svg?invert_in_darkmode" align=middle width=228.15813734999998pt height=118.35736770000001pt/></p>
 
 
 Finally, we have a formula for our optimal rotation:
 
-<p align="center"><img src="./tex/651299b379f707cb354e1bb225872659.svg?invert_in_darkmode" align=middle width=98.36167769999999pt height=14.77813755pt/></p>
+<p align="center"><img src="./tex/4ee960ed89d4b6ef9aa933ba448fa2e5.svg?invert_in_darkmode" align=middle width=100.28508765pt height=14.77813755pt/></p>
 
 
 > ### Closed-form point-to-point minimizer
@@ -529,12 +529,12 @@ Finally, we have a formula for our optimal rotation:
 > <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/>. We can immediately solve for the optimal <img src="./tex/2dbfbbc26f524676be39b3f3df0ad0bc.svg?invert_in_darkmode" align=middle width=14.08675289999999pt height=22.63846199999998pt/>---leaving <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> as an unknown---by
 > setting all derivatives with respect to unknowns in <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> to zero:
 > 
-> <p align="center"><img src="./tex/411962325b614ad89018cbe9de7a4436.svg?invert_in_darkmode" align=middle width=337.16608365pt height=100.32167639999999pt/></p>
+> <p align="center"><img src="./tex/dcab22af77453479970f4cbe1cccebb9.svg?invert_in_darkmode" align=middle width=342.9363135pt height=100.32167639999999pt/></p>
 
 > where <img src="./tex/2ac7c6ff1056fe3737fa4395e2efb6c5.svg?invert_in_darkmode" align=middle width=48.68135084999999pt height=27.91243950000002pt/> is a vector ones. Setting the partial derivative with
 > respect to <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> of this
 > quadratic energy to zero finds the minimum:
-> <p align="center"><img src="./tex/558c4e7b6ff601eec20574a000a5f46d.svg?invert_in_darkmode" align=middle width=278.3087109pt height=84.66329024999999pt/></p>
+> <p align="center"><img src="./tex/af6ce5118c6eed8bffc8dda3057e69b9.svg?invert_in_darkmode" align=middle width=284.0789424pt height=84.66329024999999pt/></p>
 
 > 
 > Rearranging terms above reveals that the optimal <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> is the vector aligning
@@ -543,7 +543,7 @@ Finally, we have a formula for our optimal rotation:
 > variables for the respective centroids <img src="./tex/64af2fa219a12c6bb69c25da58441a8f.svg?invert_in_darkmode" align=middle width=120.17019629999999pt height=32.51169900000002pt/> and <img src="./tex/00085c1c3a7306fc9ff9974f9fe861dc.svg?invert_in_darkmode" align=middle width=97.20234314999998pt height=32.51169900000002pt/>, we can write the
 > formula for the optimal  <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/>:
 > 
-> <p align="center"><img src="./tex/365bcb6e3360952b527036dbc1c97837.svg?invert_in_darkmode" align=middle width=201.3531696pt height=84.59019029999999pt/></p>
+> <p align="center"><img src="./tex/e302fc083fec12a98d8c77e5e0775939.svg?invert_in_darkmode" align=middle width=205.19999115pt height=84.59019029999999pt/></p>
 
 > 
 > Now we have a formula for the optimal translation vector <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> in terms of the
@@ -552,7 +552,7 @@ Finally, we have a formula for our optimal rotation:
 > for all occurrences of <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> in our energy written in its original summation
 > form:
 > 
-> <p align="center"><img src="./tex/ef620aca9542ebf83ccc978dd8db9215.svg?invert_in_darkmode" align=middle width=1085.32980435pt height=36.50245665pt/></p>
+> <p align="center"><img src="./tex/f3ebd81fcdaf7850bb51d6f375bf16c2.svg?invert_in_darkmode" align=middle width=1089.1766258999999pt height=36.50245665pt/></p>
 
 > 
 > where we introduce <img src="./tex/0666e59c3940e6bce1da734268343091.svg?invert_in_darkmode" align=middle width=70.34807339999999pt height=27.91243950000002pt/> where the ith row contains the
@@ -567,10 +567,10 @@ Finally, we have a formula for our optimal rotation:
 > unknown rotation <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> and [covariance
 > matrix](https://en.wikipedia.org/wiki/Covariance_matrix) of <img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and <img src="./tex/384591906555413c452c93e493b2d4ec.svg?invert_in_darkmode" align=middle width=12.92230829999999pt height=22.55708729999998pt/>:
 > 
-> <p align="center"><img src="./tex/cbb24b64ac63695a2ee4bc9c622b6015.svg?invert_in_darkmode" align=middle width=406.3871988pt height=339.09967244999996pt/></p>
+> <p align="center"><img src="./tex/4c9d288a4bca9ccb957fbe9942e44640.svg?invert_in_darkmode" align=middle width=410.23402035pt height=339.09967244999996pt/></p>
 
 > 
-> Letting <img src="./tex/83d29abc70b2d18383927c9c5f984546.svg?invert_in_darkmode" align=middle width=78.98938574999998pt height=36.98604359999998pt/> we can now follow the
+> Letting <img src="./tex/818e261a8ac45a73aabd65ba9bba3a1b.svg?invert_in_darkmode" align=middle width=80.91279569999999pt height=36.98604359999998pt/> we can now follow the
 > steps above using [singular value
 > decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) to
 > find the optimal <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/>.
@@ -583,10 +583,10 @@ linearization of the matching energy, our minimization is:
 <p align="center"><img src="./tex/a210a372dddce4251d005af80bfe1a79.svg?invert_in_darkmode" align=middle width=515.01854415pt height=62.53027769999999pt/></p>
 
 
-We can follow similar steps as above. Let's gather a vector of unknowns: <img src="./tex/8a5e880c97953ec2fd7117a6d32a9e46.svg?invert_in_darkmode" align=middle width=144.78301034999998pt height=27.91243950000002pt/>. Then we can write our problem in summation form
+We can follow similar steps as above. Let's gather a vector of unknowns: <img src="./tex/62521b121b6bcb4b180427b4424827f3.svg?invert_in_darkmode" align=middle width=146.7064203pt height=27.91243950000002pt/>. Then we can write our problem in summation form
 as:
 
-<p align="center"><img src="./tex/35069a4108be3a4d3a47e4dd606c1aa0.svg?invert_in_darkmode" align=middle width=565.7364008999999pt height=62.53027769999999pt/></p>
+<p align="center"><img src="./tex/a5c0b6da39a1b42df1dfcca983aece61.svg?invert_in_darkmode" align=middle width=569.58322245pt height=62.53027769999999pt/></p>
 
 
 This can be written compactly in matrix form as:
