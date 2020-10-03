@@ -356,21 +356,22 @@ In this form, we can linearize by considering a small change in <img src="./tex/
 
 <p align="center"><img src="./tex/7f7877cc3239356dcc4f92ef547f2159.svg?invert_in_darkmode" align=middle width=218.50181924999998pt height=59.1786591pt/></p>
 
-By letter <img src="./tex/7f62da91e38ffb51a71a0a156fe685e9.svg?invert_in_darkmode" align=middle width=54.508852199999986pt height=23.28771720000001pt/>, we can write this in terms of only three simple scalar variables:
+By defining <img src="./tex/c1d4dd9f8ef43f6ae2f3d7c1d37ace0e.svg?invert_in_darkmode" align=middle width=53.19605774999998pt height=23.28771720000001pt/>, we can write this in terms of only three simple scalar variables:
 
-<p align="center"><img src="./tex/fa7ef608860287b004bb7a389b8129f5.svg?invert_in_darkmode" align=middle width=186.90656819999998pt height=59.1786591pt/></p>
+<p align="center"><img src="./tex/872476e5e4054f2b8c9267a3427db08a.svg?invert_in_darkmode" align=middle width=184.74316574999997pt height=59.1786591pt/></p>
+
 
 ### Approximate point-to-point minimizer
 
 If we apply our linearization of <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> to the **point-to-point** distance
 linearization of the matching energy, our minimization becomes:
 
-<p align="center"><img src="./tex/357a583b58e6eb11621c971b48b10441.svg?invert_in_darkmode" align=middle width=416.4497106pt height=62.53032225pt/></p>
+<p align="center"><img src="./tex/fbd893d3494efa498ebd7d964a94a92d.svg?invert_in_darkmode" align=middle width=412.36099079999997pt height=62.53032225pt/></p>
 
 
 This energy is quadratic in the translation vector <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> and the linearized
-rotation angles <img src="./tex/132fb28813802e68088ebb9653487ffd.svg?invert_in_darkmode" align=middle width=15.96281939999999pt height=14.15524440000002pt/>, <img src="./tex/7fb7d8eca5b550fba18cf1922171b36b.svg?invert_in_darkmode" align=middle width=15.96281939999999pt height=14.15524440000002pt/> and <img src="./tex/7fb7d8eca5b550fba18cf1922171b36b.svg?invert_in_darkmode" align=middle width=15.96281939999999pt height=14.15524440000002pt/>. Let's gather these degrees of freedom into a
-vector of unknowns: <img src="./tex/f7503b2467b6f52c210e1ec5ddd8091e.svg?invert_in_darkmode" align=middle width=146.94641445pt height=27.91243950000002pt/>. Then we can write our
+rotation angles <img src="./tex/eec04193aead51ded846dbae8c3b4953.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/>, <img src="./tex/86ef8ef82733de9ba07432e88dd9757e.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/> and <img src="./tex/86ef8ef82733de9ba07432e88dd9757e.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/>. Let's gather these degrees of freedom into a
+vector of unknowns: <img src="./tex/252ac1a39530fae146ff364662af4fb8.svg?invert_in_darkmode" align=middle width=116.87758334999998pt height=27.91243950000002pt/>. Then we can write our
 problem in summation form as:
 
 <p align="center"><img src="./tex/eaccf6a2d1872cb0bdbbaa314c6df49a.svg?invert_in_darkmode" align=middle width=500.35957289999993pt height=62.53032225pt/></p>
@@ -389,10 +390,10 @@ entries in <img src="./tex/129c5b884ff47d80be4d6261a476e9f1.svg?invert_in_darkmo
 <p align="center"><img src="./tex/9fea9b76fa7c8822aeb3e9021b84420b.svg?invert_in_darkmode" align=middle width=318.86380679999996pt height=124.93263584999998pt/></p>
 
 
-Solving this small 6\times 6 system gives us our translation vector <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> and the
-linearized rotation angles <img src="./tex/132fb28813802e68088ebb9653487ffd.svg?invert_in_darkmode" align=middle width=15.96281939999999pt height=14.15524440000002pt/>, <img src="./tex/7fb7d8eca5b550fba18cf1922171b36b.svg?invert_in_darkmode" align=middle width=15.96281939999999pt height=14.15524440000002pt/> and <img src="./tex/7fb7d8eca5b550fba18cf1922171b36b.svg?invert_in_darkmode" align=middle width=15.96281939999999pt height=14.15524440000002pt/>. If we simply assign 
+Solving this small <img src="./tex/6d89de257f7655e1691ec48411787787.svg?invert_in_darkmode" align=middle width=36.52961069999999pt height=21.18721440000001pt/> system gives us our translation vector <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> and the
+linearized rotation angles <img src="./tex/eec04193aead51ded846dbae8c3b4953.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/>, <img src="./tex/86ef8ef82733de9ba07432e88dd9757e.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/> and <img src="./tex/86ef8ef82733de9ba07432e88dd9757e.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/>. If we simply assign 
 
-<p align="center"><img src="./tex/d092364af2e64a52421dc07cc2dd1c93.svg?invert_in_darkmode" align=middle width=278.23042169999997pt height=59.1786591pt/></p>
+<p align="center"><img src="./tex/777f7698b106cf5bbda5481a60bb1488.svg?invert_in_darkmode" align=middle width=276.0670176pt height=59.1786591pt/></p>
 
 
 then our transformation will _not_ be rigid. Instead, we should project <img src="./tex/e6bb22a58889cb2e58f4fce2f3a80e02.svg?invert_in_darkmode" align=middle width=17.94511949999999pt height=22.55708729999998pt/>
@@ -405,7 +406,7 @@ onto the space of rotation matrices.
 > operator](https://en.wikipedia.org/wiki/Trace_(linear_algebra)) and its
 > various nice properties.
 
-If <img src="./tex/132fb28813802e68088ebb9653487ffd.svg?invert_in_darkmode" align=middle width=15.96281939999999pt height=14.15524440000002pt/>, <img src="./tex/7fb7d8eca5b550fba18cf1922171b36b.svg?invert_in_darkmode" align=middle width=15.96281939999999pt height=14.15524440000002pt/> and <img src="./tex/7fb7d8eca5b550fba18cf1922171b36b.svg?invert_in_darkmode" align=middle width=15.96281939999999pt height=14.15524440000002pt/> are all small, then it may be safe to _interpret_ these
+If <img src="./tex/eec04193aead51ded846dbae8c3b4953.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/>, <img src="./tex/86ef8ef82733de9ba07432e88dd9757e.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/> and <img src="./tex/86ef8ef82733de9ba07432e88dd9757e.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/> are all small, then it may be safe to _interpret_ these
 values as rotation angles about the <img src="./tex/332cc365a4987aacce0ead01b8bdcc0b.svg?invert_in_darkmode" align=middle width=9.39498779999999pt height=14.15524440000002pt/>, <img src="./tex/deceeaf6940a8c7a5a02373728002b0f.svg?invert_in_darkmode" align=middle width=8.649225749999989pt height=14.15524440000002pt/>, and <img src="./tex/f93ce33e511096ed626b4719d50f17d2.svg?invert_in_darkmode" align=middle width=8.367621899999993pt height=14.15524440000002pt/> axes respectively.
 
 In general, it is better to find the closest rotation matrix to <img src="./tex/e6bb22a58889cb2e58f4fce2f3a80e02.svg?invert_in_darkmode" align=middle width=17.94511949999999pt height=22.55708729999998pt/>. In other
@@ -579,10 +580,10 @@ Finally, we have a formula for our optimal rotation:
 If we apply our linearization of <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> to the **point-to-plane** distance
 linearization of the matching energy, our minimization is:
 
-<p align="center"><img src="./tex/feb4c42a45b7dea87c1b7273c7ae467e.svg?invert_in_darkmode" align=middle width=519.10726395pt height=62.53027769999999pt/></p>
+<p align="center"><img src="./tex/a210a372dddce4251d005af80bfe1a79.svg?invert_in_darkmode" align=middle width=515.01854415pt height=62.53027769999999pt/></p>
 
 
-We can follow similar steps as above. Let's gather a vector of unknowns: <img src="./tex/6e884c5ade65afc8f45b70301e38b684.svg?invert_in_darkmode" align=middle width=146.94641445pt height=27.91243950000002pt/>. Then we can write our problem in summation form
+We can follow similar steps as above. Let's gather a vector of unknowns: <img src="./tex/8a5e880c97953ec2fd7117a6d32a9e46.svg?invert_in_darkmode" align=middle width=144.78301034999998pt height=27.91243950000002pt/>. Then we can write our problem in summation form
 as:
 
 <p align="center"><img src="./tex/35069a4108be3a4d3a47e4dd606c1aa0.svg?invert_in_darkmode" align=middle width=565.7364008999999pt height=62.53027769999999pt/></p>
@@ -643,17 +644,17 @@ In order to pick a point uniformly randomly in a triangle with corners <img src=
 [parallelogram](https://en.wikipedia.org/wiki/Parallelogram) formed by
 reflecting <img src="./tex/f92f752167f1cb7515d84d4657942eb8.svg?invert_in_darkmode" align=middle width=16.529662049999992pt height=14.611878600000017pt/> across the line <img src="./tex/e68a9725799ff7c75d7fa243b723272e.svg?invert_in_darkmode" align=middle width=34.70315144999999pt height=19.871860799999983pt/>:
 
-<p align="center"><img src="./tex/489c572d61561c1be996545dfe91d7d8.svg?invert_in_darkmode" align=middle width=258.1577097pt height=16.438356pt/></p>
+<p align="center"><img src="./tex/09a1e9943500d3845803cab7d3c0a426.svg?invert_in_darkmode" align=middle width=256.7154414pt height=16.438356pt/></p>
 
 
-where <img src="./tex/a13dfb8f389af6aba217927507b9a3a2.svg?invert_in_darkmode" align=middle width=40.05342989999999pt height=14.15524440000002pt/> are uniformly sampled from the unit interval <img src="./tex/acf5ce819219b95070be2dbeb8a671e9.svg?invert_in_darkmode" align=middle width=32.87674994999999pt height=24.65753399999998pt/>. If <img src="./tex/f6c4519d01bec212d6fec7638c61e3e0.svg?invert_in_darkmode" align=middle width=83.79748409999999pt height=21.18721440000001pt/>
+where <img src="./tex/c5ca62d9d8a39f2e2f82d053f4ec2275.svg?invert_in_darkmode" align=middle width=38.611176449999995pt height=14.15524440000002pt/> are uniformly sampled from the unit interval <img src="./tex/acf5ce819219b95070be2dbeb8a671e9.svg?invert_in_darkmode" align=middle width=32.87674994999999pt height=24.65753399999998pt/>. If <img src="./tex/f48e9ddd1da29c1be9cbfc3f7ea192b9.svg?invert_in_darkmode" align=middle width=82.35521579999998pt height=21.18721440000001pt/>
 then the point <img src="./tex/b0ea07dc5c00127344a1cad40467b8de.svg?invert_in_darkmode" align=middle width=9.97711604999999pt height=14.611878600000017pt/> above will lie in the reflected triangle rather than the
-original one. In this case, preprocess <img src="./tex/132fb28813802e68088ebb9653487ffd.svg?invert_in_darkmode" align=middle width=15.96281939999999pt height=14.15524440000002pt/> and <img src="./tex/7fb7d8eca5b550fba18cf1922171b36b.svg?invert_in_darkmode" align=middle width=15.96281939999999pt height=14.15524440000002pt/> by setting <img src="./tex/ef08957796825be371be674caeeacadd.svg?invert_in_darkmode" align=middle width=86.62854749999998pt height=21.18721440000001pt/> and
-<img src="./tex/899aecef05742705499bc940ccb7f090.svg?invert_in_darkmode" align=middle width=86.62854749999998pt height=21.18721440000001pt/> to reflect the point <img src="./tex/b0ea07dc5c00127344a1cad40467b8de.svg?invert_in_darkmode" align=middle width=9.97711604999999pt height=14.611878600000017pt/> back into the original triangle.
+original one. In this case, preprocess <img src="./tex/eec04193aead51ded846dbae8c3b4953.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/> and <img src="./tex/86ef8ef82733de9ba07432e88dd9757e.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/> by setting <img src="./tex/9c00a8bc01f19fc667b68ba3bb18ee18.svg?invert_in_darkmode" align=middle width=85.18629404999999pt height=21.18721440000001pt/> and
+<img src="./tex/627a30497b1285c8664e46597b798464.svg?invert_in_darkmode" align=middle width=85.18629404999999pt height=21.18721440000001pt/> to reflect the point <img src="./tex/b0ea07dc5c00127344a1cad40467b8de.svg?invert_in_darkmode" align=middle width=9.97711604999999pt height=14.611878600000017pt/> back into the original triangle.
 
 ### Area-weighted random sampling of triangles
 
-Assuming we know how to draw a _continuous_ uniform random variable <img src="./tex/7fb7d8eca5b550fba18cf1922171b36b.svg?invert_in_darkmode" align=middle width=15.96281939999999pt height=14.15524440000002pt/> from
+Assuming we know how to draw a _continuous_ uniform random variable <img src="./tex/86ef8ef82733de9ba07432e88dd9757e.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/> from
 the unit interval <img src="./tex/acf5ce819219b95070be2dbeb8a671e9.svg?invert_in_darkmode" align=middle width=32.87674994999999pt height=24.65753399999998pt/>, we would now like to draw a _discrete_ random
 triangle index <img src="./tex/2f118ee06d05f3c2d98361d9c30e38ce.svg?invert_in_darkmode" align=middle width=11.889314249999991pt height=22.465723500000017pt/> from the sequence <img src="./tex/12ae120cf77557772d65127ef3360fb5.svg?invert_in_darkmode" align=middle width=37.26407684999999pt height=21.18721440000001pt/> with likelihood proportional to
 the relative area of each triangle in the mesh.
@@ -666,7 +667,7 @@ areas:
 
 
 Then our random index is found by identifying the first entry in <img src="./tex/12d3ebda1a212bd89197298f60cf3ce1.svg?invert_in_darkmode" align=middle width=13.652895299999988pt height=22.55708729999998pt/> whose
-value is greater than a uniform random variable <img src="./tex/7fb7d8eca5b550fba18cf1922171b36b.svg?invert_in_darkmode" align=middle width=15.96281939999999pt height=14.15524440000002pt/>. Since <img src="./tex/12d3ebda1a212bd89197298f60cf3ce1.svg?invert_in_darkmode" align=middle width=13.652895299999988pt height=22.55708729999998pt/> is sorted,
+value is greater than a uniform random variable <img src="./tex/86ef8ef82733de9ba07432e88dd9757e.svg?invert_in_darkmode" align=middle width=15.24170009999999pt height=14.15524440000002pt/>. Since <img src="./tex/12d3ebda1a212bd89197298f60cf3ce1.svg?invert_in_darkmode" align=middle width=13.652895299999988pt height=22.55708729999998pt/> is sorted,
 locating this entry can be done in <img src="./tex/03fb15b258f821e5f4081e2e77f57a5c.svg?invert_in_darkmode" align=middle width=64.18652789999999pt height=24.65753399999998pt/>
 [time](https://en.wikipedia.org/wiki/Big_O_notation).
 
