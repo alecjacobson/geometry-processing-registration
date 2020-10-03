@@ -1,11 +1,11 @@
 #ifndef POINT_TO_POINT_RIGID_MATCHING_H
 #define POINT_TO_POINT_RIGID_MATCHING_H
 #include <Eigen/Core>
-// Given a set of source points X and corresponding target points P, find the
-// optimal rigid transformation (R,t) that aligns X to P, minimizing the
-// matching energy:
+// Given a set of source points X and corresponding target points P, find the optimal rigid transformation (R,t) that aligns X to P, minimizing the matching energy:
 //
 //   ‖ R X' - t' 1' - P' ‖²
+//
+// This implementation should solve the Procrustes problem directly using SVD.
 //
 // Inputs:
 //   X  #X by 3 set of source points

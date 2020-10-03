@@ -12,9 +12,7 @@ enum ICPMethod
 // (`VX`,`FX`) to (`VY`,`FY`) by finding the rigid transformation
 // (`R`,`t`)minimizing the matching energy:
 //
-// \\[
 //    ∫_X ‖ Rx+t - P_Y( Rx +t ) ‖² dA
-// \\]
 //
 //
 // Inputs:
