@@ -434,9 +434,9 @@ for all occurrences of $\mathbf{t}$ in our energy written in its original summat
 form:
 
 \begin{align*}
-\mathop{\text{minimize}}_{\mathbf{R} \in  SO(3)}  {\sum}\limits_{i=1}^k \left\| \mathbf{R} \mathbf{x}_i + ( \overline{\mathbf{p}} - \mathbf{R}\overline{\mathbf{x}}) - \mathbf{p}_i \right\|^2 \\
-\mathop{\text{minimize}}_{\mathbf{R} \in  SO(3)}  {\sum}\limits_{i=1}^k \left\| \mathbf{R} (\mathbf{x}_i - \overline{\mathbf{x}}) - (\mathbf{p}_i - \overline{\mathbf{p}}) \right\|^2 \\
-\mathop{\text{minimize}}_{\mathbf{R} \in  SO(3)}  {\sum}\limits_{i=1}^k \left\| \mathbf{R} \overline{\mathbf{x}}_i - \overline{\mathbf{p}}_i \right\|^2 \\
+\mathop{\text{minimize}}_{\mathbf{R} \in  SO(3)}  \sum\limits_{i=1}^k \left\| \mathbf{R} \mathbf{x}_i + ( \overline{\mathbf{p}} - \mathbf{R}\overline{\mathbf{x}}) - \mathbf{p}_i \right\|^2 \\
+\mathop{\text{minimize}}_{\mathbf{R} \in  SO(3)}  \sum\limits_{i=1}^k \left\| \mathbf{R} (\mathbf{x}_i - \overline{\mathbf{x}}) - (\mathbf{p}_i - \overline{\mathbf{p}}) \right\|^2 \\
+\mathop{\text{minimize}}_{\mathbf{R} \in  SO(3)}  \sum\limits_{i=1}^k \left\| \mathbf{R} \overline{\mathbf{x}}_i - \overline{\mathbf{p}}_i \right\|^2 \\
 \mathop{\text{minimize}}_{\mathbf{R} \in  SO(3)}  \left\| \mathbf{R} \overline{\mathbf{X}}^{\top} - \overline{\mathbf{P}}^{\top} \right\|_F^2,
 \end{align*}
 
@@ -751,7 +751,7 @@ $$
 $$
 
 
-then our transformation will _not_ be rigid. Instead, we should _recover_ the axis and angle of rotation from $\mathbf{a}$ via $\theta = \|\mathbf{a}\|$ and $\hat{\mathbf{w}} = \mathbf{a}/\theta}$ and then update our rotation via the <a href=#aa>_**axis-angle to matrix formula**_ above</a>. Because we used a linearization of the rotation constraint, we cannot assume that we have _successful_ found the best rigid transformation. To converge on an optimal value, must set $\mathbf{x}_i ← \mathbf{R} \mathbf{x}_i + \mathbf{t}$ and repeat this process (usually 5 times or so is sufficient).
+then our transformation will _not_ be rigid. Instead, we should _recover_ the axis and angle of rotation from $\mathbf{a}$ via $\theta = \|\mathbf{a}\|$ and $\hat{\mathbf{w}} = \mathbf{a}/\theta$ and then update our rotation via the <a href=#aa>_**axis-angle to matrix formula**_ above</a>. Because we used a linearization of the rotation constraint, we cannot assume that we have _successful_ found the best rigid transformation. To converge on an optimal value, must set $\mathbf{x}_i ← \mathbf{R} \mathbf{x}_i + \mathbf{t}$ and repeat this process (usually 5 times or so is sufficient).
 
 ## Uniform random sampling of a triangle mesh
 
@@ -807,7 +807,7 @@ ${a_2}\Leftarrow 1-{a_2}$ to reflect the point $\mathbf{x}$ back into the origin
 
 Assuming we know how to draw a _continuous_ uniform random variable ${a_2}$ from
 the unit interval $[0,1]$, we would now like to draw a _discrete_ random
-triangle index $T$ from the sequence ${1,‥,m}$ with likelihood proportional to
+triangle index $T$ from the sequence ${1,\ldots,m}$ with likelihood proportional to
 the relative area of each triangle in the mesh.
 
 We can achieve this by first computing the [cumulative
