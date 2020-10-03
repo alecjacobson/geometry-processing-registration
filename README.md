@@ -339,13 +339,23 @@ In either case, this is still a non-linear optimization problem. This time due
 to the [constraints](https://en.wikipedia.org/wiki/Constrained_optimization)
 rather than the energy term. 
 
-We require that <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> is not just any 3\times 3 matrix, but a rotation matrix. We
-can _linearize_ this constraint, by assuming that the rotation in <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> will
-be very small and thus well approximated by the identity matrix <img src="./tex/d8471e559d932f20f66bec32f6002e08.svg?invert_in_darkmode" align=middle width=7.168923299999991pt height=22.55708729999998pt/> plus a
-skew-symmetric matrix:
+We require that <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> is not just any <img src="./tex/46e42d6ebfb1f8b50fe3a47153d01cd2.svg?invert_in_darkmode" align=middle width=36.52961069999999pt height=21.18721440000001pt/> matrix, but a rotation matrix. If we simply optimize the 9 matrix entries of <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> directly, the result will be far from a rotation matrix. Instead, we _linearize_ the constraint that <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> stays a rotation matrix and work with a reduced set of variables.
+
+Any rotation <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> in 3D can be written as scalar rotation angle <img src="./tex/27e556cf3caa0673ac49a8f0de3c73ca.svg?invert_in_darkmode" align=middle width=8.17352744999999pt height=22.831056599999986pt/> around a rotation axis defined by a unit vector <img src="./tex/38b405fb29be61635751df6f2ad66799.svg?invert_in_darkmode" align=middle width=52.431327299999985pt height=26.76175259999998pt/>.
+
+If <img src="./tex/41872dbb4f4a0b13684d067aebc62846.svg?invert_in_darkmode" align=middle width=84.23493704999998pt height=24.65753399999998pt/>, we know that a rotation by <img src="./tex/27e556cf3caa0673ac49a8f0de3c73ca.svg?invert_in_darkmode" align=middle width=8.17352744999999pt height=22.831056599999986pt/> can be written as:
+
+<p align="center"><img src="./tex/c882a22c427f004d1e8bd605fa8fcb36.svg?invert_in_darkmode" align=middle width=190.0490625pt height=62.822210549999994pt/></p>
+
+For a general, rotation axis <img src="./tex/522c69add21191fefe7da3f76ad92547.svg?invert_in_darkmode" align=middle width=13.91546639999999pt height=23.28771720000001pt/>, we can write a generalized formula:
+<p align="center"><img src="./tex/7143ebeae5dbfb7b54a3c37703770fe8.svg?invert_in_darkmode" align=middle width=131.2353108pt height=62.822210549999994pt/></p>
+
+
+We can _linearize_ this constraint, by assuming that the rotation in <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> will be very small. Any 3D rotation can be written 
+
+and thus well approximated by the identity matrix <img src="./tex/d8471e559d932f20f66bec32f6002e08.svg?invert_in_darkmode" align=middle width=7.168923299999991pt height=22.55708729999998pt/> plus a skew-symmetric matrix:
 
 <p align="center"><img src="./tex/cbb823dc659c49f9d0d2b361d0cb77d1.svg?invert_in_darkmode" align=middle width=209.96017185pt height=59.1786591pt/></p>
-
 
 where we can now work directly with the three scalar unknowns <img src="./tex/dbbd12c1d7f968c7fca71ae001318ee6.svg?invert_in_darkmode" align=middle width=10.57650494999999pt height=14.15524440000002pt/>, <img src="./tex/10bc4a49c81f5dd5800ca54295c8fc4e.svg?invert_in_darkmode" align=middle width=10.16555099999999pt height=22.831056599999986pt/> and <img src="./tex/193089f7a231633473714830d2edc62a.svg?invert_in_darkmode" align=middle width=9.423880949999988pt height=14.15524440000002pt/>.
 
