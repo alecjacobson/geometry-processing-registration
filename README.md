@@ -683,7 +683,7 @@ Compute a lower bound on the _directed_ Hausdorff distance from a given mesh
 randomly sampling the <img src="./tex/cbfb1b2a33b28eab8a3e59464768e810.svg?invert_in_darkmode" align=middle width=14.908688849999992pt height=22.465723500000017pt/> mesh.
 
 ### `src/closest_rotation.cpp`
-Given a 3\times 3 matrix `M`, find the closest rotation matrix `R`.
+Given a <img src="./tex/46e42d6ebfb1f8b50fe3a47153d01cd2.svg?invert_in_darkmode" align=middle width=36.52961069999999pt height=21.18721440000001pt/> matrix `M`, find the closest rotation matrix `R`.
 
 ### `src/point_to_point_rigid_matching.cpp`
 Given a set of source points X and corresponding target points P, find the
