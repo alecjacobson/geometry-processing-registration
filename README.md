@@ -366,11 +366,11 @@ quadratic energy to zero finds the minimum:
 Rearranging terms above reveals that the optimal <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> is the vector aligning
 the [centroids](https://en.wikipedia.org/wiki/Centroid) of the points in <img src="./tex/384591906555413c452c93e493b2d4ec.svg?invert_in_darkmode" align=middle width=12.92230829999999pt height=22.55708729999998pt/>
 and the points in <img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> rotated by the — yet-unknown — <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/>. Introducing
-variables for the respective centroids <img src="./tex/cedc93fa3a634fab4478c86fe0661ade.svg?invert_in_darkmode" align=middle width=103.73188319999998pt height=32.51169900000002pt/> and <img src="./tex/00085c1c3a7306fc9ff9974f9fe861dc.svg?invert_in_darkmode" align=middle width=97.20234314999998pt height=32.51169900000002pt/>, we can write the
+variables for the respective centroids <img src="./tex/e28e01c4d55f4abbe81b2eda4a4d3811.svg?invert_in_darkmode" align=middle width=103.73188319999998pt height=32.51169900000002pt/> and <img src="./tex/1879b1cd74e6963ce884b7a7e3196b6a.svg?invert_in_darkmode" align=middle width=97.20234314999998pt height=32.51169900000002pt/>, we can write the
 formula for the optimal  <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/>:
 
 
-<p align="center"><img src="./tex/804930dfbabd86d2bfee5936df7caf89.svg?invert_in_darkmode" align=middle width=418.03393665pt height=60.845893350000004pt/></p>
+<p align="center"><img src="./tex/a9e6db9f6a09f07f15d7506f4ec1f6e4.svg?invert_in_darkmode" align=middle width=418.03393665pt height=60.845893350000004pt/></p>
 
 
 
@@ -380,12 +380,12 @@ unknown rotation <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_
 for all occurrences of <img src="./tex/f40598ec49a99f9a93c399f7dacc6d3e.svg?invert_in_darkmode" align=middle width=7.35155849999999pt height=20.87411699999998pt/> in our energy written in its original summation
 form:
 
-<p align="center"><img src="./tex/80b1c9d212d824c137a66da199f2e2de.svg?invert_in_darkmode" align=middle width=995.1131322pt height=36.50245665pt/></p>
+<p align="center"><img src="./tex/a8f8df4e1e60a89668875592f73dc767.svg?invert_in_darkmode" align=middle width=995.1131322pt height=36.50245665pt/></p>
 
 
 where we introduce <img src="./tex/0666e59c3940e6bce1da734268343091.svg?invert_in_darkmode" align=middle width=70.34807339999999pt height=27.91243950000002pt/> where the ith row contains the
-_relative position_ of the ith point to the centroid <img src="./tex/9a741103081d04ca0a4a97a8e6c28ce6.svg?invert_in_darkmode" align=middle width=9.97711604999999pt height=24.200985600000003pt/>: i.e.,
-<img src="./tex/049a4d4763f53136c65dd204d7dca240.svg?invert_in_darkmode" align=middle width=95.67119594999998pt height=24.65753399999998pt/> (and analagously for <img src="./tex/12096d414736789db645c9547a5804cc.svg?invert_in_darkmode" align=middle width=12.92230829999999pt height=27.817082700000007pt/>).
+_relative position_ of the ith point to the centroid <img src="./tex/c28a7e764fb3e1d562204f0d05b4ec04.svg?invert_in_darkmode" align=middle width=9.97711604999999pt height=19.871860799999983pt/>: i.e.,
+<img src="./tex/69f39cdb5b0d045862c4b5e8172d7988.svg?invert_in_darkmode" align=middle width=95.67119594999998pt height=24.65753399999998pt/> (and analagously for <img src="./tex/12096d414736789db645c9547a5804cc.svg?invert_in_darkmode" align=middle width=12.92230829999999pt height=27.817082700000007pt/>).
 
 Now we have the canonical form of the [orthogonal procrustes
 problem](https://en.wikipedia.org/wiki/Orthogonal_Procrustes_problem). To
