@@ -389,44 +389,16 @@ Now we have the canonical form of the [orthogonal procrustes problem](https://en
 
 <p align="center"><img src="./tex/06667758b5dd0cc55d54c099049e9e42.svg?invert_in_darkmode" align=middle width=700.2739854pt height=336.1574403pt/></p>
 
-where <img src="./tex/98a03379352cf0fa6a6609d8d3ac6c5c.svg?invert_in_darkmode" align=middle width=57.937128149999985pt height=24.65753399999998pt/> is the [Frobenius inner product](https://en.wikipedia.org/wiki/Frobenius_inner_product) of  <img src="./tex/96458543dc5abd380904d95cae6aa2bc.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and <img src="./tex/ff44d867a998c08241beb49b30148782.svg?invert_in_darkmode" align=middle width=13.44741914999999pt height=22.55708729999998pt/> (i.e., the sum of all per-element products. In MATLAB syntax: `sum(sum(A.*B))`). 
-
-Letting <img src="./tex/818e261a8ac45a73aabd65ba9bba3a1b.svg?invert_in_darkmode" align=middle width=80.91279569999999pt height=36.98604359999998pt/>. We can understand this problem as _projecting_ the [covariance matrix](https://en.wikipedia.org/wiki/Covariance_matrix)  <img src="./tex/e6bb22a58889cb2e58f4fce2f3a80e02.svg?invert_in_darkmode" align=middle width=17.94511949999999pt height=22.55708729999998pt/> to the nearest rotation matrix <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/>.
-
-#### Closest Rotation Matrix
+where <img src="./tex/98a03379352cf0fa6a6609d8d3ac6c5c.svg?invert_in_darkmode" align=middle width=57.937128149999985pt height=24.65753399999998pt/> is the [Frobenius inner product](https://en.wikipedia.org/wiki/Frobenius_inner_product) of  <img src="./tex/96458543dc5abd380904d95cae6aa2bc.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and <img src="./tex/ff44d867a998c08241beb49b30148782.svg?invert_in_darkmode" align=middle width=13.44741914999999pt height=22.55708729999998pt/> (i.e., the sum of all per-element products. In MATLAB syntax: `sum(sum(A.*B))`). Letting <img src="./tex/818e261a8ac45a73aabd65ba9bba3a1b.svg?invert_in_darkmode" align=middle width=80.91279569999999pt height=36.98604359999998pt/>. We can understand this problem as _projecting_ the [covariance matrix](https://en.wikipedia.org/wiki/Covariance_matrix)  <img src="./tex/e6bb22a58889cb2e58f4fce2f3a80e02.svg?invert_in_darkmode" align=middle width=17.94511949999999pt height=22.55708729999998pt/> to the nearest rotation matrix <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/>.
 
 > In an effort to provide an alternative from "Least-Squares Rigid Motion Using
 > SVD" [Sorkine 2009], this derivation purposefully _avoids_ the [trace
 > operator](https://en.wikipedia.org/wiki/Trace_(linear_algebra)) and its
 > various nice properties.
 
-In general, it is better to find the closest rotation matrix to <img src="./tex/e6bb22a58889cb2e58f4fce2f3a80e02.svg?invert_in_darkmode" align=middle width=17.94511949999999pt height=22.55708729999998pt/>. In other
-words, we'd like to solve the small optimization problem:
-
-<p align="center"><img src="./tex/842739ed55ed0979a3a9c4178899b2d7.svg?invert_in_darkmode" align=middle width=189.06322544999998pt height=33.1233078pt/></p>
-
-<p align="center"><img src="./tex/5b23fe2de73cdb5d0b9da4b94718794d.svg?invert_in_darkmode" align=middle width=310.62239999999997pt height=33.1233078pt/></p>
-
-where <img src="./tex/98a03379352cf0fa6a6609d8d3ac6c5c.svg?invert_in_darkmode" align=middle width=57.937128149999985pt height=24.65753399999998pt/> is the
-[Frobenius inner
-product](https://en.wikipedia.org/wiki/Frobenius_inner_product) of  <img src="./tex/96458543dc5abd380904d95cae6aa2bc.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> and
-<img src="./tex/ff44d867a998c08241beb49b30148782.svg?invert_in_darkmode" align=middle width=13.44741914999999pt height=22.55708729999998pt/> (i.e., the sum of all per-element products. In MATLAB syntax:
-`sum(sum(A.*B))`). We can drop the Frobenius norm
-of <img src="./tex/e6bb22a58889cb2e58f4fce2f3a80e02.svg?invert_in_darkmode" align=middle width=17.94511949999999pt height=22.55708729999998pt/> term (<img src="./tex/3ec5996c9e885d6d32796997cee23987.svg?invert_in_darkmode" align=middle width=44.48976344999999pt height=31.360807499999982pt/>) because it is constant with respect to the unknown rotation
-matrix <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/>. We can also drop the Frobenius norm of <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> term because it
-must equal one (<img src="./tex/2fae87c07b255f956ea01283ff2c2109.svg?invert_in_darkmode" align=middle width=71.68138889999999pt height=31.360807499999982pt/>) since <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> is required to be a orthonormal matrix
-(<img src="./tex/9ef0dc2c2b529f2bad33e83fb198c711.svg?invert_in_darkmode" align=middle width=79.2965943pt height=24.65753399999998pt/>). We can drop the factor of <img src="./tex/76c5792347bb90ef71cfbace628572cf.svg?invert_in_darkmode" align=middle width=8.219209349999991pt height=21.18721440000001pt/> and flip the minus sign to
-change our _minimization_ problem into a _maximization_ problem:
-<p align="center"><img src="./tex/d04408a5bc2f9636cdaa41bbea578993.svg?invert_in_darkmode" align=middle width=164.4971691pt height=29.771669399999997pt/></p>
-
-
-We now take advantage of the [singular value
-decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition) of
-<img src="./tex/6b131ebac8b7c63ef31cb6925661ad5a.svg?invert_in_darkmode" align=middle width=89.21769614999998pt height=27.91243950000002pt/>, where <img src="./tex/9b2a1625a0911294931a3f1c4aeea9ec.svg?invert_in_darkmode" align=middle width=91.74635744999999pt height=26.76175259999998pt/> are orthonormal matrices
-and <img src="./tex/ad4f8ffa0b0d4f9b5cd0e611986d5870.svg?invert_in_darkmode" align=middle width=65.32531334999999pt height=26.76175259999998pt/> is a non-negative diagonal matrix:
+_Any_ matrix can be written in terms of its [singular value decomposition](https://en.wikipedia.org/wiki/Singular_value_decomposition). Let's do this for our covariance matrix: <img src="./tex/6b131ebac8b7c63ef31cb6925661ad5a.svg?invert_in_darkmode" align=middle width=89.21769614999998pt height=27.91243950000002pt/>, where <img src="./tex/9b2a1625a0911294931a3f1c4aeea9ec.svg?invert_in_darkmode" align=middle width=91.74635744999999pt height=26.76175259999998pt/> are orthonormal matrices and <img src="./tex/ad4f8ffa0b0d4f9b5cd0e611986d5870.svg?invert_in_darkmode" align=middle width=65.32531334999999pt height=26.76175259999998pt/> is a non-negative diagonal matrix:
 
 <p align="center"><img src="./tex/53cafbd2848f7f70d7b4c3f03d9f6c94.svg?invert_in_darkmode" align=middle width=207.59633235pt height=32.2210416pt/></p>
-
 
 The Frobenius inner product will let us move the products by <img src="./tex/26eb59da31fb48cb17abfe4c6dc80375.svg?invert_in_darkmode" align=middle width=14.554737449999989pt height=22.55708729999998pt/> and <img src="./tex/35531be55273dc37ee90083451d089ff.svg?invert_in_darkmode" align=middle width=14.54330789999999pt height=22.55708729999998pt/> from
 the right argument to the left argument:
