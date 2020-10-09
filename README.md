@@ -472,7 +472,7 @@ where <img src="./tex/248c260a57c30bb1b2a031ed6d865a92.svg?invert_in_darkmode" a
 
 <p align="center"><img src="./tex/6a0a0a7a1e74eb0e0c9314971ac43466.svg?invert_in_darkmode" align=middle width=279.54420945pt height=47.93392394999999pt/></p>
 
-Unlike the point-to-point problem above, there is closed-form solution to this problem. Instead we will ensure that 
+Unlike the point-to-point problem above, there is **no** closed-form solution to this problem. Instead we will ensure that 
 that <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> is not just any <img src="./tex/46e42d6ebfb1f8b50fe3a47153d01cd2.svg?invert_in_darkmode" align=middle width=36.52961069999999pt height=21.18721440000001pt/> matrix, but a rotation matrix by iteartive linearization.
 
 If we simply optimize the 9 matrix entries of <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> directly, the result will be far from a rotation matrix: for example, if <img src="./tex/d05b996d2c08252f77613c25205a0f04.svg?invert_in_darkmode" align=middle width=14.29216634999999pt height=22.55708729999998pt/> is a twice scaled version of <img src="./tex/384591906555413c452c93e493b2d4ec.svg?invert_in_darkmode" align=middle width=12.92230829999999pt height=22.55708729999998pt/>, then this unconstrained optimization would happily declare the entries of <img src="./tex/6423e0d54c2545769ad013e5f6a4cf94.svg?invert_in_darkmode" align=middle width=14.17800779999999pt height=22.55708729999998pt/> to describe a (non-orthonormal) scaling matrix.
