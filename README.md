@@ -761,8 +761,8 @@ Solving this small $6\times 6$ system gives us our translation vector $\mathbf{t
 $$
 \mathbf{R} \leftarrow  \mathbf{I} + 
   \left(\begin{array}{ccc}
-   0 & -{a_2} &  {a_2} \\
-   {a_2} &  0 & -{a_1} \\
+   0 & -{a_3} &  {a_2} \\
+   {a_3} &  0 & -{a_1} \\
   -{a_2} &  {a_1} &  0 \\
   \end{array}\right)
 $$
