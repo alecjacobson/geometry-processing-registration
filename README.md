@@ -897,6 +897,7 @@ You are encouraged to use the following libigl functions:
 - `igl::cumsum` computes cumulative sum
 - `igl::doublearea` computes triangle areas
 - `igl::per_face_normals` computes normal vectors for each triangle face
+- `Eigen::JacobiSVD` computes singular value decomposition of a matrix
 
 ### `src/random_points_on_mesh.cpp`
 
